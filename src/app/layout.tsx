@@ -1,18 +1,15 @@
-import './globals.css'
+import { Heebo } from '@next/font/google';
+import { clsx } from 'clsx';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+import '@/styles/global.css';
+
+const sans = Heebo({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-sans' });
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
       <head />
-      <body>{children}</body>
+      <body className={clsx(sans.variable, 'bg-black font-sans text-white')}>{children}</body>
     </html>
-  )
+  );
 }

@@ -9,15 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/font": "13.1.6",
-    "@types/node": "18.14.0",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
-    "eslint": "8.34.0",
-    "eslint-config-next": "13.1.6",
+    "@ant-design/icons": "^5.0.1",
+    "@next/font": "^13.1.6",
+    "@prisma/client": "^4.10.1",
+    "@supabase/supabase-js": "^2.8.0",
+    "clsx": "^1.2.1",
+    "immer": "^9.0.19",
+    "jotai": "^2.0.2",
+    "nanoid": "^4.0.1",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "swr": "^2.0.3",
+    "usehooks-ts": "^2.9.1",
+    "zod": "^3.20.6",
+    "zustand": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "18.14.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "^10.4.13",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
+    "postcss": "^8.4.21",
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.3",
+    "tailwindcss": "^3.2.7",
     "typescript": "4.9.5"
   }
 }

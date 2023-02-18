@@ -1,0 +1,56 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @db.VarChar(12)
+  username  String   @unique
+  firstname String?
+  lastname  String?
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  List      List[]
+}
+
+model List {
+  id        String       @id @db.VarChar(12)
+  name      String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  sessionId String?
+  user      User?        @relation(fields: [userId], references: [id])
+  userId    String?
+  movies    ListMovies[]
+}
+
+model Movie {
+  id               Int          @id
+  title            String
+  originalTitle    String
+  originalLanguage String
+  overview         String
+  releaseDate      DateTime
+  posterPath       String
+  backdropPath     String?
+  lists            ListMovies[]
+}
+
+model ListMovies {
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  list      List     @relation(fields: [listId], references: [id])
+  listId    String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   Int
+
+  @@id([listId, movieId])
+}
