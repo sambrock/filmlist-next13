@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface HandlerReq extends NextApiRequest {
   cookies: {
-    'session-token': string;
+    session_token?: string;
   };
 }
 

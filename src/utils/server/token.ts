@@ -1,3 +1,3 @@
-import { generateNanoid } from '..';
+import { generateNanoId } from '..';
 
 

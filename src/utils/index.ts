@@ -2,7 +2,7 @@ import { customAlphabet } from 'nanoid';
 
 import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from './constants';
 
-export const generateNanoid = customAlphabet(NANO_ID_ALPHABET, NANO_ID_LENGTH);
+export const generateNanoId = customAlphabet(NANO_ID_ALPHABET, NANO_ID_LENGTH);
 
 const minute = 60;
 const hour = minute * 60;

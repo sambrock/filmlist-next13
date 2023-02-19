@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
 
-fetch('/api/v1/initialize', { method: 'POST' });
+// fetch('/api/v1/initialize', { method: 'POST' });
 
 export const MovieSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
