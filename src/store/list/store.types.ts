@@ -1,4 +1,5 @@
 import type { List, ListMovies, Movie } from '@prisma/client';
+import type { Patch } from 'immer';
 import type { Action } from './action.types';
 
 export type ListStore = {
@@ -8,6 +9,9 @@ export type ListStore = {
   };
 
   dispatch: (action: Action) => void;
+
+  patches: Patch[][];
+  inversePatches: Patch[][];
 };
 
 // export type ListStoreMovie = {

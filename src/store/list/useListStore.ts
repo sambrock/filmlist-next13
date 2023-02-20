@@ -12,7 +12,6 @@ export const useListStore = create<ListStore>((set) => ({
     list: {
       id: '',
       userId: '',
-      sessionId: '',
       title: '',
       description: '',
       createdAt: new Date(),
@@ -22,12 +21,14 @@ export const useListStore = create<ListStore>((set) => ({
   },
 
   dispatch: (action) => set((state) => listReducer(state, action)),
+
+  patches: [],
+  inversePatches: [],
 }));
 
 useListStore.subscribe(async (state) => {
   console.log(state);
-  // console.log(state.patches, state.inversePatches);
-  // if (state.patches.length === 0) return;
+  if (state.patches.length === 0) return;
   // await saveTransactions(state.data.id, state.patches);
-  // useListStore.setState({ patches: [] });
+  useListStore.setState({ patches: [] });
 });

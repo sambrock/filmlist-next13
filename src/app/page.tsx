@@ -1,17 +1,18 @@
 import { cookies } from 'next/headers';
-import type { List, ListMovies, Movie } from '@prisma/client';
 
 import { MovieSearch } from '@/components/MovieSearch';
-import { getInitialListStoreData } from '@/server/list/getInitialListStoreData';
-import { readSessionToken } from '@/server/session/sessionToken';
+import { getInitialListStoreData, InitialListStoreData } from '@/server/list/getInitialListStoreData';
+import { verifySessionToken } from '@/server/session/sessionToken';
 import { InitListStore } from './InitListStore';
 import { InitSession } from './InitSession';
+import { SESSION_TOKEN_NAME } from '@/utils/constants';
+import { ListTitle } from '@/components/list/ListTitle/ListTitle';
 
 const Index = async () => {
-  let initialListData: (List & { movies: (ListMovies & { movie: Movie })[] }) | null = null;
-  const sessionTokenCookie = cookies().get('session_token');
+  let initialListData: InitialListStoreData | null = null;
+  const sessionTokenCookie = cookies().get(SESSION_TOKEN_NAME);
   if (sessionTokenCookie?.value) {
-    const session = readSessionToken(sessionTokenCookie.value);
+    const session = verifySessionToken(sessionTokenCookie.value);
     if (session?.listId) {
       initialListData = await getInitialListStoreData(session.listId);
     }
@@ -19,7 +20,12 @@ const Index = async () => {
 
   return (
     <main className="grid grid-cols-2">
-      <MovieSearch />
+      <div>
+        <MovieSearch />
+      </div>
+      <div>
+        <ListTitle />
+      </div>
 
       {/* @ts-expect-error Server Component */}
       <InitListStore initialListData={JSON.stringify(initialListData)} />
