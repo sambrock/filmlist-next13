@@ -7,6 +7,18 @@ const setTitle = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
   draft.data.list.title = payload ?? '';
 });
 
+const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIE'>) => {
+  const listId = draft.data.list.id;
+  draft.data.movies.set(listId + payload.id, {
+    listId,
+    movieId: payload.id,
+    order: draft.data.movies.size,
+    movie: payload,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+});
+
 export const listReducer = (state: ListStore, action: Action): ListStore => {
   console.log(action);
   switch (action.type) {
@@ -14,8 +26,16 @@ export const listReducer = (state: ListStore, action: Action): ListStore => {
       const [newState, patches, inversePatches] = setTitle(state, action.payload);
       return {
         ...newState,
-        patches: [...state.patches, patches],
-        inversePatches: [...state.inversePatches, inversePatches],
+        patches: [patches, ...state.patches],
+        inversePatches: [inversePatches, ...state.inversePatches],
+      };
+    }
+    case 'ADD_MOVIE': {
+      const [newState, patches, inversePatches] = addMovie(state, action.payload);
+      return {
+        ...newState,
+        patches: [patches, ...state.patches],
+        inversePatches: [inversePatches, ...state.inversePatches],
       };
     }
     default: {

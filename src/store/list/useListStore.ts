@@ -28,7 +28,19 @@ export const useListStore = create<ListStore>((set) => ({
 
 useListStore.subscribe(async (state) => {
   console.log(state);
+  console.log([...state.data.movies.values()]);
   if (state.patches.length === 0) return;
   // await saveTransactions(state.data.id, state.patches);
   useListStore.setState({ patches: [] });
+
+  fetch('/api/v1/saveTransactions', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'post',
+    body: JSON.stringify({
+      listId: state.data.list.id,
+      transactions: state.patches[0],
+    }),
+  });
 });

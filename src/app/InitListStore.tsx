@@ -7,19 +7,19 @@ import { useListStore } from '@/store/list/useListStore';
 import { InitialListStoreData } from '@/server/list/getInitialListStoreData';
 
 export const InitListStore = ({ initialListData }: { initialListData: string }) => {
-  const isInit = useRef(false);
-  const isClient = useIsClient();
+  // const isInit = useRef(false);
 
-  if (!isInit.current && isClient) {
-    if (!initialListData || initialListData === 'null') return;
-    const parsed = JSON.parse(initialListData) as InitialListStoreData;
-    useListStore.setState({
-      data: {
-        list: parsed,
-        movies: new Map(parsed.movies.map((movie) => [`${movie.listId}${movie.movieId}`, movie])),
-      },
-    });
-  }
+  const parsed = JSON.parse(initialListData) as InitialListStoreData;
+  useListStore.setState({
+    data: {
+      list: parsed,
+      movies: new Map(parsed?.movies.map((movie) => [`${movie.listId}${movie.movieId}`, movie])),
+    },
+  });
+
+  // if (!isInit.current && isClient) {
+  //   if (!initialListData || initialListData === 'null') return;
+  // }
 
   return null;
 };

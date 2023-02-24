@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-
 import type { Session } from '@prisma/client';
+
 import { SESSION_TOKEN_NAME } from '@/utils/constants';
 
 export const createSessionToken = (session: Omit<Session, 'createdAt' | 'updatedAt'>) => {

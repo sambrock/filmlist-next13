@@ -24,10 +24,9 @@ const Index = async () => {
         <MovieSearch />
       </div>
       <div>
-        <ListTitle />
+        <ListTitle initialTitle={initialListData?.title || ''} />
       </div>
 
-      {/* @ts-expect-error Server Component */}
       <InitListStore initialListData={JSON.stringify(initialListData)} />
       <InitSession isSession={sessionTokenCookie?.value ? true : false} />
     </main>

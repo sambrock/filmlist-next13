@@ -3,8 +3,9 @@
 import { useRef, useState } from 'react';
 
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
+import { useListStore } from '@/store/list/useListStore';
 
-// fetch('/api/v1/initialize', { method: 'POST' });
+const dispatch = useListStore.getState().dispatch;
 
 export const MovieSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,7 +29,14 @@ export const MovieSearch = () => {
 
       <div>
         {data?.map((movie) => (
-          <div key={movie.id}>{movie.title}</div>
+          <div
+            key={movie.id}
+            onClick={(e) => {
+              dispatch({ type: 'ADD_MOVIE', payload: movie });
+            }}
+          >
+            {movie.title}
+          </div>
         ))}
       </div>
     </div>
