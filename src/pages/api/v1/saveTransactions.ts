@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { handler, HandlerError } from '@/server/handler';
 import { convertToPrismaTransactions, transactionSchema } from '@/server/transactions/convertToPrismaTransactions';
 import { prisma } from '@/server/prisma';
+import { saveTransactionMedia } from '@/server/transactions/saveTransactionMedia';
 
 const saveTransactionsSchema = z.object({
   listId: z.string(),
@@ -16,9 +17,8 @@ export default handler({
 
     const { listId, transactions } = parsedBody.data;
 
-    const prismaTransactions = convertToPrismaTransactions(listId, transactions);
-
-    await prisma.$transaction(prismaTransactions);
+    await prisma.$transaction(convertToPrismaTransactions(listId, transactions));
+    await saveTransactionMedia(transactions);
 
     return res.status(204).end();
   },

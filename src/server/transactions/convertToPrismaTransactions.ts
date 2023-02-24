@@ -32,12 +32,7 @@ export const convertToPrismaTransactions = (listId: string, transactions: Transa
               lists: {
                 connectOrCreate: {
                   where: { listId_movieId: { listId, movieId: data.movieId } },
-                  create: {
-                    listId,
-                    order: data.order,
-                    createdAt: data.createdAt,
-                    updatedAt: data.updatedAt,
-                  },
+                  create: { listId, order: data.order, createdAt: data.createdAt, updatedAt: data.updatedAt },
                 },
               },
             },
@@ -45,17 +40,19 @@ export const convertToPrismaTransactions = (listId: string, transactions: Transa
               lists: {
                 connectOrCreate: {
                   where: { listId_movieId: { listId, movieId: data.movieId } },
-                  create: {
-                    listId,
-                    order: data.order,
-                    createdAt: data.createdAt,
-                    updatedAt: data.updatedAt,
-                  },
+                  create: { listId, order: data.order, createdAt: data.createdAt, updatedAt: data.updatedAt },
                 },
               },
             },
           });
         }
+        case 'remove': {
+          const data = value as ListMovies & { movie: Movie };
+          return prisma.listMovies.delete({
+            where: { listId_movieId: { listId: data.listId, movieId: data.movieId } },
+          });
+        }
+        case 'replace':
         default:
           return undefined;
       }
