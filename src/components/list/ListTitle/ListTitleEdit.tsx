@@ -7,8 +7,8 @@ import { useListStore } from '@/store/list/useListStore';
 
 const dispatch = useListStore.getState().dispatch;
 
-export const ListTitle = ({ initialTitle }: { initialTitle: string }) => {
-  const title = useListStore((state) => state.data.list.title);
+export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
+  const title = useListStore((state) => state.data.list?.title || '');
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 

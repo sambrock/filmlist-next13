@@ -47,9 +47,9 @@ export const convertToPrismaTransactions = (listId: string, transactions: Transa
           });
         }
         case 'remove': {
-          const data = value as ListMovies & { movie: Movie };
+          const movieId = +path[2];
           return prisma.listMovies.delete({
-            where: { listId_movieId: { listId: data.listId, movieId: data.movieId } },
+            where: { listId_movieId: { listId, movieId } },
           });
         }
         case 'replace':

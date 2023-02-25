@@ -24,6 +24,7 @@ const getSearchMovies = async (query: string) => {
   const parsed = movies
     .filter((m) => {
       if (!m.poster_path || m.adult) return false;
+      if (m.popularity < 2) return false;
       return true;
     })
     .map((m) => ({
