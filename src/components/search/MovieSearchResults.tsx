@@ -6,7 +6,6 @@ import type { Movie } from '@prisma/client';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
 import { searchQueryAtom } from './MovieSearch';
 import { MoviePoster } from '../movie/MoviePoster';
-import { MAX_SEARCH_RESULTS } from '@/utils/constants';
 import { useListStore } from '@/store/list/useListStore';
 
 const dispatch = useListStore.getState().dispatch;
@@ -19,8 +18,8 @@ export const MovieSearchResults = () => {
   if (q === '') return null;
   if (!data || data.length === 0) return null;
   return (
-    <ul className="space-y-2 border-t border-black-400 bg-black-700 pt-2 pb-2">
-      {data?.slice(0, MAX_SEARCH_RESULTS / 2).map((movie) => (
+    <ul className="absolute left-0 w-full space-y-2 rounded-b-md border border-black-500 bg-black-700 px-2 py-2 shadow-xl shadow-black/30">
+      {data.map((movie) => (
         <MovieSearchResult key={movie.id} movie={movie} />
       ))}
     </ul>

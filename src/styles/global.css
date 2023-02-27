@@ -5,3 +5,7 @@
 .debug {
   @apply border border-red-500;
 }
+
+.fade-black-gradient {
+  background: linear-gradient(180deg, rgba(13, 13, 13, 1) 0%, rgba(13, 13, 13, 0) 100%);
+}

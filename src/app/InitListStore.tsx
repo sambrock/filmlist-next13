@@ -6,6 +6,8 @@ import { InitialListStoreData } from '@/server/list/getInitialListStoreData';
 export const InitListStore = ({ initialListData }: { initialListData: string }) => {
   // const isInit = useRef(false);
 
+  console.log('InitListStore', initialListData);
+
   const parsed = JSON.parse(initialListData) as InitialListStoreData;
   if (!parsed) return null;
   useListStore.setState({

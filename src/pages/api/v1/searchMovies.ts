@@ -38,7 +38,8 @@ const getSearchMovies = async (query: string) => {
       backdropPath: m.backdrop_path,
     })) satisfies Movie[];
 
-  return parsed.slice(0, MAX_SEARCH_RESULTS);
+  // return parsed.slice(0, MAX_SEARCH_RESULTS);
+  return parsed;
 };
 
 export default handler({
