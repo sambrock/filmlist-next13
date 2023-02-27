@@ -1,5 +1,5 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import { GetApiParams, GetApiReturn, GetUrl, PostApiData, PostApiReturn, PostUrl } from './api.types';
+import type { GetApiParams, GetApiReturn, GetUrl, PostApiData, PostApiReturn, PostUrl } from './api.types';
 
 type QueryParams = { [key: string]: string | number | boolean | undefined };
 export type ApiConfig<TParams = {}> = RequestInit & { params?: TParams };
