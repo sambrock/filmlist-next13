@@ -4,6 +4,13 @@ import { handler, HandlerError } from '@/server/handler';
 import { convertToPrismaTransactions, transactionSchema } from '@/server/transactions/convertToPrismaTransactions';
 import { prisma } from '@/server/prisma';
 import { saveTransactionMedia } from '@/server/transactions/saveTransactionMedia';
+import type { PostApiDefinition } from '@/api/api.types';
+
+export type POST_SaveTransactions = PostApiDefinition<{
+  url: '/api/v1/saveTransactions';
+  data: z.infer<typeof saveTransactionsSchema>;
+  return: {};
+}>;
 
 const saveTransactionsSchema = z.object({
   listId: z.string(),
@@ -20,6 +27,6 @@ export default handler({
     await prisma.$transaction(convertToPrismaTransactions(listId, transactions));
     await saveTransactionMedia(transactions);
 
-    return res.status(204).end();
+    return res.status(200).send({});
   },
 });

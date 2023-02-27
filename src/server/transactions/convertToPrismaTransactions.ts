@@ -7,8 +7,8 @@ export type Transaction = z.infer<typeof transactionSchema>;
 
 export const transactionSchema = z.object({
   op: z.enum(['add', 'remove', 'replace', 'update']),
-  path: z.string().array(),
-  value: z.unknown(),
+  path: z.string().or(z.number()).array(),
+  value: z.any(),
 });
 
 export const convertToPrismaTransactions = (listId: string, transactions: Transaction[]) => {

@@ -1,25 +1,28 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
+import useSWRImmutable from 'swr/immutable';
 import type { Movie } from '@prisma/client';
 
-import { useSearchMovies } from '@/hooks/api/useSearchMovies';
 import { searchQueryAtom } from './MovieSearch';
 import { MoviePoster } from '../movie/MoviePoster';
 import { useListStore } from '@/store/list/useListStore';
+import { api } from '@/api/api';
 
 const dispatch = useListStore.getState().dispatch;
 
 export const MovieSearchResults = () => {
   const q = useAtomValue(searchQueryAtom);
 
-  const { data } = useSearchMovies(q);
+  const { data } = useSWRImmutable(['search', q], q ? () => api.get('/api/v1/searchMovies', { params: { q } }) : null, {
+    keepPreviousData: true,
+  });
 
   if (q === '') return null;
   if (!data || data.length === 0) return null;
   return (
     <ul className="absolute left-0 w-full space-y-2 rounded-b-md border border-black-500 bg-black-700 px-2 py-2 shadow-xl shadow-black/30">
-      {data.map((movie) => (
+      {data.slice(0, 4).map((movie) => (
         <MovieSearchResult key={movie.id} movie={movie} />
       ))}
     </ul>
