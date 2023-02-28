@@ -6,6 +6,10 @@
   @apply border border-red-500;
 }
 
-.fade-black-gradient {
+.fade-black-gradient-180 {
   background: linear-gradient(180deg, rgba(13, 13, 13, 1) 0%, rgba(13, 13, 13, 0) 100%);
+}
+
+.fade-black-gradient-0 {
+  background: linear-gradient(0deg, rgba(13, 13, 13, 1) 0%, rgba(13, 13, 13, 0) 100%);
 }

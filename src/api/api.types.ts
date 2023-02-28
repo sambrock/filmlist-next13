@@ -1,9 +1,10 @@
 import type { POST_CreateList } from '@/pages/api/v1/createList';
+import type { GET_getListMovies } from '@/pages/api/v1/getListMovies';
 import type { POST_Initialize } from '@/pages/api/v1/initialize';
 import type { POST_SaveTransactions } from '@/pages/api/v1/saveTransactions';
 import type { GET_SearchMovie } from '@/pages/api/v1/searchMovies';
 
-export type GetApi = GET_SearchMovie;
+export type GetApi = GET_SearchMovie | GET_getListMovies;
 export type PostApi = POST_Initialize | POST_CreateList | POST_SaveTransactions;
 
 export interface GetApiDefinition<T extends { url: string; params?: Record<string, string>; return: unknown }> {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { PlusOutlined } from '@ant-design/icons';
 import { clsx } from 'clsx';
@@ -20,15 +20,12 @@ export const MovieSearch = () => {
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   return (
-    <div className="relative">
+    <Fragment>
       <div
-        className={clsx(
-          'flex items-center gap-2 border-black-500 bg-black-700 px-2 mix-blend-luminosity shadow-xl shadow-black/30',
-          {
-            'rounded-lg border': !isSearchActive,
-            'rounded-t-lg border-x border-t': isSearchActive,
-          }
-        )}
+        className={clsx('flex items-center gap-2 border-black-500 bg-black-700 px-2', {
+          'rounded-lg border': !isSearchActive,
+          'rounded-t-lg border-x border-t': isSearchActive,
+        })}
       >
         <PlusOutlined className="text-lg font-bold text-white/60" />
         <input
@@ -45,6 +42,6 @@ export const MovieSearch = () => {
         />
       </div>
       <MovieSearchResults />
-    </div>
+    </Fragment>
   );
 };

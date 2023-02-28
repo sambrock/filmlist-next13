@@ -9,10 +9,13 @@ const setTitle = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
 
 const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIE'>) => {
   const listId = draft.data.list.id;
+  // get order of last movie in list
+  const order =
+    draft.data.movies.size > 0 ? Math.max(...Array.from(draft.data.movies.values()).map((m) => m.order)) + 1 : 1;
   draft.data.movies.set(payload.id.toString(), {
     listId,
     movieId: payload.id,
-    order: draft.data.movies.size,
+    order: order,
     movie: payload,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -21,6 +24,15 @@ const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
 
 const removeMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'REMOVE_MOVIE'>) => {
   draft.data.movies.delete(payload);
+});
+
+const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIES'>) => {
+  payload.forEach((listMovie) =>
+    draft.data.movies.set(listMovie.movieId.toString(), {
+      ...listMovie,
+      movie: listMovie.movie,
+    })
+  );
 });
 
 export const listReducer = (state: ListStore, action: Action): ListStore => {
@@ -49,6 +61,10 @@ export const listReducer = (state: ListStore, action: Action): ListStore => {
         patches: [patches, ...state.patches],
         inversePatches: [inversePatches, ...state.inversePatches],
       };
+    }
+    case 'ADD_MOVIES': {
+      const newState = addListMovies(state, action.payload);
+      return newState;
     }
     default: {
       return state;

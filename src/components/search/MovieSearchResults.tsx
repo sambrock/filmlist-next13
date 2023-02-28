@@ -21,8 +21,8 @@ export const MovieSearchResults = () => {
   if (q === '') return null;
   if (!data || data.length === 0) return null;
   return (
-    <ul className="absolute left-0 w-full space-y-2 rounded-b-md border border-black-500 bg-black-700 px-2 py-2 shadow-xl shadow-black/30">
-      {data.map((movie) => (
+    <ul className="w-full space-y-2 rounded-b-md border border-black-500 bg-black-700 px-2 py-2 shadow-xl shadow-black/30">
+      {data.slice(0, 4).map((movie) => (
         <MovieSearchResult key={movie.id} movie={movie} />
       ))}
     </ul>

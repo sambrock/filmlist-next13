@@ -1,6 +1,7 @@
 import type { Prisma } from '@prisma/client';
 
 import { prisma } from '../prisma';
+import { MAX_LIST_MOVIES } from '@/utils/constants';
 
 export type InitialListStoreData = Prisma.ListGetPayload<{
   where: { id: number };
@@ -12,6 +13,8 @@ export const getInitialListStoreData = async (listId: string) => {
     where: { id: listId },
     include: {
       movies: {
+        take: MAX_LIST_MOVIES,
+        orderBy: { order: 'asc' },
         include: {
           movie: true,
         },
@@ -19,5 +22,9 @@ export const getInitialListStoreData = async (listId: string) => {
     },
   });
 
-  return initialData;
+  const listCount = await prisma.listMovies.count({
+    where: { listId },
+  });
+
+  return { initialData, listCount };
 };

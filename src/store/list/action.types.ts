@@ -1,6 +1,6 @@
-import type { Movie } from '@prisma/client';
+import type { ListMovies, Movie } from '@prisma/client';
 
-export type ActionType = 'INITIALIZE' | 'SET_TITLE' | 'ADD_MOVIE' | 'REMOVE_MOVIE';
+export type ActionType = 'INITIALIZE' | 'SET_TITLE' | 'ADD_MOVIE' | 'REMOVE_MOVIE' | 'ADD_MOVIES';
 
 interface BaseAction<T extends ActionType> {
   type: T;
@@ -19,6 +19,10 @@ export interface DeleteMovieAction extends BaseAction<'REMOVE_MOVIE'> {
   payload: string;
 }
 
-export type Action = SetTitleAction | AddMovieAction | DeleteMovieAction;
+export interface AddListMovies extends BaseAction<'ADD_MOVIES'> {
+  payload: (ListMovies & { movie: Movie })[];
+}
+
+export type Action = SetTitleAction | AddMovieAction | DeleteMovieAction | AddListMovies;
 
 export type ActionPayload<T extends ActionType> = Extract<Action, { type: T }>['payload'];

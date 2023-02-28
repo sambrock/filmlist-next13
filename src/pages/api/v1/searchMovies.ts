@@ -3,16 +3,15 @@ import type { Movie } from '@prisma/client';
 
 import { TMDbApi } from '@/services/tmdb';
 import { handler } from '@/server/handler';
-import { MAX_SEARCH_RESULTS } from '@/utils/constants';
 import { GetApiDefinition } from '@/api/api.types';
 
 export type GET_SearchMovie = GetApiDefinition<{
   url: '/api/v1/searchMovies';
-  params: z.input<typeof searchQueryParamsSchema>;
+  params: z.input<typeof queryParamsSchema>;
   return: Awaited<ReturnType<typeof getSearchMovies>>;
 }>;
 
-const searchQueryParamsSchema = z.object({
+const queryParamsSchema = z.object({
   q: z.string().default(''),
   page: z
     .string()
@@ -48,10 +47,10 @@ const getSearchMovies = async (query: string) => {
 
 export default handler({
   async get(req, res) {
-    const parsedParams = searchQueryParamsSchema.safeParse(req.query);
-    if (!parsedParams.success) return res.send([]);
+    const parsedQueryParams = queryParamsSchema.safeParse(req.query);
+    if (!parsedQueryParams.success) return res.send([]);
 
-    const data = await getSearchMovies(parsedParams.data.q);
+    const data = await getSearchMovies(parsedQueryParams.data.q);
 
     return res.send(data);
   },
