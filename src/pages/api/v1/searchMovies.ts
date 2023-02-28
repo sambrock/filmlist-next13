@@ -29,6 +29,7 @@ const getSearchMovies = async (query: string) => {
     .filter((m) => {
       if (!m.poster_path || m.adult) return false;
       if (m.popularity < 2) return false;
+      if (m.adult) return false;
       return true;
     })
     .map((m) => ({
@@ -42,7 +43,7 @@ const getSearchMovies = async (query: string) => {
       backdropPath: m.backdrop_path,
     })) satisfies Movie[];
 
-  return parsed.slice(0, MAX_SEARCH_RESULTS);
+  return parsed;
 };
 
 export default handler({

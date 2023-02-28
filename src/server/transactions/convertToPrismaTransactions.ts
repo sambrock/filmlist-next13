@@ -15,7 +15,6 @@ export const convertToPrismaTransactions = (listId: string, transactions: Transa
   const prismaTransactions = transactions.map((transaction) => {
     const { op, path, value } = transaction;
     const joinedPath = path.join('.').replace('data.', '');
-    console.log(joinedPath);
 
     if (joinedPath === 'list.title') {
       return prisma.list.update({ where: { id: listId }, data: { title: value as string } });

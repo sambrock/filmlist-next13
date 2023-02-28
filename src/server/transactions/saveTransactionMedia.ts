@@ -12,7 +12,7 @@ export const saveTransactionMedia = async (transactions: Transaction[]) => {
     movieTransactions.map(async (transaction) => {
       const { movie } = transaction.value as { movie: Movie };
       await uploadMoviePoster(movie.posterPath);
-      if (movie.backdropPath) await uploadMovieBackdrop(movie.backdropPath);
+      // if (movie.backdropPath) await uploadMovieBackdrop(movie.backdropPath);
     })
   );
 };
