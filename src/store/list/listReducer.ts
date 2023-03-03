@@ -20,10 +20,13 @@ const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
     createdAt: new Date(),
     updatedAt: new Date(),
   });
+
+  draft._listMovieIds.push(payload.id);
 });
 
 const removeMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'REMOVE_MOVIE'>) => {
   draft.data.movies.delete(payload);
+  draft._listMovieIds = draft._listMovieIds.filter((id) => id.toString() !== payload);
 });
 
 const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIES'>) => {

@@ -24,7 +24,10 @@ const getSearchMovies = async (query: string) => {
     query,
   });
 
-  const parsed = movies
+  const full = await Promise.all(movies.map((m) => TMDbApi.getMovieById(m.id)));
+
+  const parsed = full
+    .slice(0, 4)
     .filter((m) => {
       if (!m.poster_path || m.adult) return false;
       if (m.popularity < 2) return false;
@@ -40,7 +43,12 @@ const getSearchMovies = async (query: string) => {
       releaseDate: new Date(m.release_date),
       posterPath: m.poster_path,
       backdropPath: m.backdrop_path,
-    })) satisfies Movie[];
+      director:
+        m.credits?.crew
+          .filter((c) => c.job === 'Director')
+          .map((c) => c.name)
+          .join(', ') || '',
+    })) satisfies (Movie & { director: string })[];
 
   return parsed;
 };

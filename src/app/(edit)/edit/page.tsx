@@ -8,7 +8,7 @@ import { InitSession } from '../../InitSession';
 import { SESSION_TOKEN_NAME } from '@/utils/constants';
 import { ListTitleEdit } from '@/components/list/ListTitle/ListTitleEdit';
 import { Header } from '@/components/layout/Header';
-import { MovieSearch } from '@/components/search/MovieSearch';
+import { MovieSearch } from '@/components/search/MovieSearchInput';
 import { ListMoviesEdit } from '@/components/list/ListMovies/ListMoviesEdit';
 
 const Index = async () => {

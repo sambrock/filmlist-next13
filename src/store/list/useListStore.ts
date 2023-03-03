@@ -21,6 +21,8 @@ export const useListStore = create<ListStore>((set) => ({
     movies: new Map(),
   },
 
+  _listMovieIds: [],
+
   dispatch: (action) => set((state) => listReducer(state, action)),
 
   patches: [],

@@ -8,6 +8,8 @@ export type ListStore = {
     movies: Map<string, ListMovies & { movie: Movie }>;
   };
 
+  _listMovieIds: number[];
+
   dispatch: (action: Action) => void;
 
   patches: Patch[][];

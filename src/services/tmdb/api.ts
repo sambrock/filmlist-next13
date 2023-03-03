@@ -38,7 +38,7 @@ export class TMDbApi {
 
   static async getMovieById(movieId: number): Promise<TMDbMovieResponse> {
     this.endpoint = `/movie/${movieId}`;
-    this.params = { append_to_response: 'watch/providers' };
+    this.params = { append_to_response: 'credits' };
 
     const data = await this.request<TMDbMovieResponse>();
 

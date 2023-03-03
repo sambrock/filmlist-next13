@@ -15,27 +15,24 @@ type ListPageProps = {
 };
 
 const ListPage = async ({ params }: ListPageProps) => {
-  const { initialData, listCount } = await getInitialListStoreData(params.listId);
+  const { initialData, listCount, listMovieIds } = await getInitialListStoreData(params.listId);
 
   return (
     <Fragment>
       <Header />
-      <main className="">
+      <main>
+        <div className="fixed left-1/2 top-4 w-full max-w-lg -translate-x-1/2">
+          <MovieSearch />
+        </div>
+
         <div className="grid gap-6">
           <div></div>
           <ListTitleEdit initialTitle={initialData?.title || ''} />
-          <ListMoviesEdit initialMovies={initialData?.movies.map((m) => m.movie) || []} />
+          <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
         </div>
 
         <MovieLoader listId={params.listId} count={listCount} />
-
-        <div className="fade-black-gradient-0 container sticky bottom-0 flex h-20 items-center justify-center">
-          <div className="w-full max-w-md">
-            <MovieSearch />
-          </div>
-        </div>
-
-        <InitListStore initialListData={JSON.stringify(initialData)} />
+        <InitListStore initialListData={JSON.stringify(initialData)} initialListMovieIds={listMovieIds || []} />
       </main>
     </Fragment>
   );

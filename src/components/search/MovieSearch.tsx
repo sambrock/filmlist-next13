@@ -1,47 +1,95 @@
 'use client';
 
-import { Fragment, useRef } from 'react';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
-import { PlusOutlined } from '@ant-design/icons';
+import { useRef } from 'react';
+import { atom, useAtomValue } from 'jotai';
+import useSWR from 'swr';
 import { clsx } from 'clsx';
+import { shallow } from 'zustand/shallow';
 
-import { MovieSearchResults } from './MovieSearchResults';
+import { useListKeyboardNavigate } from '@/hooks/useListKeyboardNavigate';
+import { MovieSearchInput } from './MovieSearchInput';
+import { api } from '@/api/api';
+import { useListStore } from '@/store/list/useListStore';
+import { MovieSearchResultsList, MovieSearchResultsListItem } from './MovieSearchResultsList';
+import { Badge } from '../common/Badge';
 
 export const searchQueryAtom = atom('', (get, set, value: string) => {
   set(searchQueryAtom, value);
-  set(isSearchActiveAtom, value !== '');
 });
-export const isSearchActiveAtom = atom(false);
+
+const dispatch = useListStore.getState().dispatch;
 
 export const MovieSearch = () => {
-  const setSearchQuery = useSetAtom(searchQueryAtom);
-  const isSearchActive = useAtomValue(isSearchActiveAtom);
-
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <Fragment>
-      <div
-        className={clsx('flex items-center gap-2 border-black-500 bg-black-700 px-2', {
-          'rounded-lg border': !isSearchActive,
-          'rounded-t-lg border-x border-t': isSearchActive,
-        })}
-      >
-        <PlusOutlined className="text-lg font-bold text-white/60" />
-        <input
-          type="text"
-          className="mt-0.5 w-full bg-transparent text-sm leading-9 text-white-text placeholder:text-white/60 focus:outline-none"
-          placeholder="Add a film"
-          spellCheck={false}
-          onChange={(e) => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-            timeoutRef.current = setTimeout(() => {
-              setSearchQuery(e.target.value);
-            }, 350);
+    <div
+      ref={searchContainerRef}
+      tabIndex={0}
+      className={clsx('rounded-md bg-black-700 shadow-lg shadow-black/60 outline-none')}
+    >
+      <MovieSearchInput ref={inputRef} />
+      <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
+    </div>
+  );
+};
+
+const MovieSearchResults = ({
+  searchContainerRef,
+  inputRef,
+}: {
+  searchContainerRef: React.RefObject<HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement>;
+}) => {
+  const movieIds = useListStore((state) => state._listMovieIds, shallow);
+
+  const q = useAtomValue(searchQueryAtom);
+
+  const { data } = useSWR(['search', q], q ? () => api.get('/api/v1/searchMovies', { params: { q } }) : null, {
+    keepPreviousData: true,
+    onSuccess: () => {
+      setFocusedIndex(0);
+    },
+  });
+
+  const handleSelect = (index: number) => {
+    if (!data) return;
+    if (movieIds.includes(data?.[index]?.id)) return;
+    dispatch({ type: 'ADD_MOVIE', payload: data?.[index] });
+    inputRef.current?.focus();
+    inputRef.current?.setSelectionRange(0, inputRef.current?.value.length ?? 0);
+  };
+
+  const { focusedIndex, setFocusedIndex } = useListKeyboardNavigate({
+    listRef: searchContainerRef,
+    length: data?.slice(0, 4).length ?? 0,
+    onSelect: (index) => {
+      if (!data) return;
+      handleSelect(index);
+      setFocusedIndex(-1);
+    },
+  });
+
+  if (!data) return null;
+  return (
+    <MovieSearchResultsList>
+      {data?.slice(0, 4).map((movie, index) => (
+        <MovieSearchResultsListItem
+          key={movie.id}
+          movie={movie}
+          isHighlighted={focusedIndex === index}
+          onClick={() => {
+            handleSelect(index);
           }}
+          onMouseEnter={() => {
+            setFocusedIndex(index);
+          }}
+          trailing={
+            movieIds.includes(movie.id) ? <Badge>Added</Badge> : focusedIndex === index ? <Badge>Add ⏎</Badge> : null
+          }
         />
-      </div>
-      <MovieSearchResults />
-    </Fragment>
+      ))}
+    </MovieSearchResultsList>
   );
 };

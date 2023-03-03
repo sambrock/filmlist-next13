@@ -9,22 +9,33 @@ export type InitialListStoreData = Prisma.ListGetPayload<{
 }>;
 
 export const getInitialListStoreData = async (listId: string) => {
-  const initialData = await prisma.list.findUnique({
-    where: { id: listId },
-    include: {
-      movies: {
-        take: MAX_LIST_MOVIES,
-        orderBy: { order: 'asc' },
-        include: {
-          movie: true,
+  const [initialData, listCount, listMovieIds] = await Promise.all([
+    await prisma.list.findUnique({
+      where: { id: listId },
+      include: {
+        movies: {
+          take: MAX_LIST_MOVIES,
+          orderBy: { order: 'asc' },
+          include: {
+            movie: true,
+          },
         },
       },
-    },
-  });
+    }),
 
-  const listCount = await prisma.listMovies.count({
-    where: { listId },
-  });
+    await prisma.listMovies.count({
+      where: { listId },
+    }),
 
-  return { initialData, listCount };
+    await prisma.list.findUnique({
+      where: { id: listId },
+      include: {
+        movies: {
+          select: { movieId: true },
+        },
+      },
+    }),
+  ]);
+
+  return { initialData, listCount, listMovieIds: listMovieIds?.movies.map((movie) => movie.movieId) };
 };
