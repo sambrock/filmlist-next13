@@ -46,7 +46,7 @@ export const MovieSearchResultsListItem = ({
             {movie.title}
           </div>
           <div
-            className={clsx('max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-xs', {
+            className={clsx('text-xs', {
               'text-white/60': isHighlighted,
               'text-white/40': !isHighlighted,
             })}
@@ -54,7 +54,9 @@ export const MovieSearchResultsListItem = ({
             {new Date(movie.releaseDate).getFullYear()}
           </div>
         </div>
-        <span className="text-xs leading-none text-white/40">Dir. {movie.director}</span>
+        <span className="max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-xs leading-none text-white/40">
+          Dir. {movie.director}
+        </span>
       </div>
       {trailing && <div className="ml-auto mr-1">{trailing}</div>}
     </li>

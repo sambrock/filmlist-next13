@@ -21,6 +21,7 @@ export const MovieSearchInput = forwardRef<HTMLInputElement, React.ComponentProp
         type="text"
         className="mt-1 w-full bg-transparent py-2 text-sm text-white-text placeholder:text-white/60 focus:outline-none"
         placeholder="Add a film"
+        autoFocus={true}
         spellCheck={false}
         onChange={(e) => {
           if (timeoutRef.current) clearTimeout(timeoutRef.current);

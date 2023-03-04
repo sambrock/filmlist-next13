@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef } from 'react';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { useEffect, useRef } from 'react';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
+import { useEventListener } from 'usehooks-ts';
 
 import { useListKeyboardNavigate } from '@/hooks/useListKeyboardNavigate';
 import { MovieSearchInput } from './MovieSearchInput';
@@ -13,6 +14,7 @@ import { Badge } from '../common/Badge';
 import { disableLoadMoreAtom, MovieSearchHelper } from './MovieSearchHelper';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
 
+export const searchIsActiveAtom = atom(false);
 export const searchQueryAtom = atom('', (get, set, value: string) => {
   set(searchQueryAtom, value);
   set(searchPageAtom, 1);
@@ -25,6 +27,19 @@ export const MovieSearch = () => {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [searchIsActive, setSearchIsActive] = useAtom(searchIsActiveAtom);
+
+  useEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'Escape') {
+        setSearchIsActive(false);
+      }
+    },
+    searchContainerRef
+  );
+
+  if (!searchIsActive) return null;
   return (
     <div
       ref={searchContainerRef}
@@ -86,6 +101,8 @@ const MovieSearchResults = ({
       setFocusedIndex(-1);
     },
   });
+
+  useEffect(() => setFocusedIndex(0), [q]);
 
   if (!data || data.length === 0) return null;
   return (

@@ -1,4 +1,4 @@
-import { useReducer, useRef } from 'react';
+import { useReducer } from 'react';
 import { useEventListener } from 'usehooks-ts';
 
 type Actions = { type: 'ARROW_UP' } | { type: 'ARROW_DOWN' } | { type: 'SET_INDEX'; payload: number };

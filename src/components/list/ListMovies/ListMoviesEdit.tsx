@@ -5,6 +5,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItem } from '@/components/movie/MovieItem';
+import { MovieAdd } from '@/components/movie/MovieAdd';
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key)?.movie as Movie;
 
@@ -20,6 +21,7 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
         {(JSON.parse(initialMovies) as Movie[]).map((movie) => (
           <MovieItem key={movie.id} movie={movie} />
         ))}
+        <MovieAdd />
       </ul>
     );
   }
@@ -28,6 +30,7 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
       {keys.map((key) => (
         <MovieItem key={key} movie={getMovie(key)} />
       ))}
+      <MovieAdd />
     </ul>
   );
 };

@@ -6,7 +6,11 @@ import type { GET_SearchMovie } from '@/pages/api/v1/searchMovies';
 
 // Might be a better way to do this, but this works for now
 
-export const useSearchMovies = (params: GET_SearchMovie['params'], onHasMoreChange?: (hasMore: boolean) => void) => {
+export const useSearchMovies = (
+  params: GET_SearchMovie['params'],
+  onHasMoreChange?: (hasMore: boolean) => void,
+  onSuccess?: () => void
+) => {
   const [prevData, setPrevData] = useState<GET_SearchMovie['return']>([]);
 
   const prevKey = useRef<string[]>([]);
@@ -21,6 +25,8 @@ export const useSearchMovies = (params: GET_SearchMovie['params'], onHasMoreChan
         return true;
       },
       onSuccess(data, key) {
+        onSuccess?.();
+
         if (prevKey.current[1] !== key.split(',')[1]) {
           setPrevData([...data]);
         } else {
