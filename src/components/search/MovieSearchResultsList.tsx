@@ -2,12 +2,20 @@
 
 import type { Movie } from '@prisma/client';
 import { clsx } from 'clsx';
+import { forwardRef, Fragment } from 'react';
 
 import { MoviePoster } from '../movie/MoviePoster';
 
-export const MovieSearchResultsList = (props: React.PropsWithChildren<object>) => {
-  return <ul className="rounded-b-md border-t border-black-500 bg-black-700 px-2 py-2">{props.children}</ul>;
-};
+export const MovieSearchResultsList = forwardRef<HTMLUListElement, React.PropsWithChildren<object>>((props, ref) => {
+  return (
+    <Fragment>
+      <div className="border-t border-black-500 pt-2" />
+      <ul ref={ref} className="mx-2 mb-2 max-h-80  overflow-y-auto rounded-b-md bg-black-700">
+        {props.children}
+      </ul>
+    </Fragment>
+  );
+});
 
 export const MovieSearchResultsListItem = ({
   movie,
@@ -26,13 +34,25 @@ export const MovieSearchResultsListItem = ({
       })}
       {...props}
     >
-      <MoviePoster posterPath={movie.posterPath} className="max-w-[32px] shadow-sm shadow-black/70" />
+      <MoviePoster posterPath={movie.posterPath} className="h-[48px] w-[32px] shadow-sm shadow-black/70" />
       <div className="flex w-full flex-col gap-1 rounded py-[4.5px] px-2">
         <div className="flex items-center space-x-1">
-          <span className="text-sm font-medium text-white/70 group-hover:text-white-text">{movie.title}</span>
-          <span className="text-xs text-white/40 group-hover:text-white/60">
+          <div
+            className={clsx('max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-medium', {
+              'text-white-text': isHighlighted,
+              'text-white/70': !isHighlighted,
+            })}
+          >
+            {movie.title}
+          </div>
+          <div
+            className={clsx('max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-xs', {
+              'text-white/60': isHighlighted,
+              'text-white/40': !isHighlighted,
+            })}
+          >
             {new Date(movie.releaseDate).getFullYear()}
-          </span>
+          </div>
         </div>
         <span className="text-xs leading-none text-white/40">Dir. {movie.director}</span>
       </div>

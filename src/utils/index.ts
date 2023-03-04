@@ -1,4 +1,5 @@
 import { customAlphabet } from 'nanoid';
+import { createRegExp, exactly } from 'magic-regexp';
 
 import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from './constants';
 
@@ -44,3 +45,30 @@ export function getRelativeTimeString(date: Date | number, lang = navigator.lang
 
   return rtf.format(Math.floor(delta / divider), timeType);
 }
+
+export const parseSearchQuery = (q: string) => {
+  let query = '';
+  let director = '';
+  let year = '';
+
+  const split = q.split(' ');
+
+  const r1 = createRegExp(exactly('d:').at.lineStart()); // director
+  const r2 = createRegExp(exactly('y:').at.lineStart()); // year
+
+  split.forEach((s, i) => {
+    if (r1.test(s)) {
+      director = s.replace('d:', '');
+    } else if (r2.test(s)) {
+      year = s.replace('y:', '');
+    } else {
+      query += s + ' ';
+    }
+  });
+
+  return {
+    query: query.trim(),
+    director: director.replaceAll('_', ' ').trim(),
+    year,
+  };
+};

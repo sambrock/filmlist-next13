@@ -19,6 +19,7 @@
     "immer": "^9.0.19",
     "jotai": "^2.0.2",
     "jsonwebtoken": "^9.0.0",
+    "magic-regexp": "^0.6.3",
     "nanoid": "^4.0.1",
     "next": "13.1.6",
     "react": "18.2.0",

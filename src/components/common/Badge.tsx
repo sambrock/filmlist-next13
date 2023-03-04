@@ -7,7 +7,7 @@ type BadgeProps = {
 export const Badge = ({ tone = 'neutral', ...props }: React.PropsWithChildren<BadgeProps>) => {
   return (
     <span
-      className={clsx('inline-block whitespace-nowrap rounded-md px-1 pt-[2px] text-xs', {
+      className={clsx('inline-block whitespace-nowrap rounded px-1 pt-[2px] text-xs', {
         'bg-white/10 text-white/40': tone === 'neutral',
       })}
     >

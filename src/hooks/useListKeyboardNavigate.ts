@@ -30,10 +30,12 @@ const reducer = (state: State, action: Actions) => {
 };
 
 export const useListKeyboardNavigate = ({
+  listenerRef,
   listRef,
   length,
   onSelect,
 }: {
+  listenerRef: React.RefObject<HTMLElement>;
   listRef: React.RefObject<HTMLElement>;
   length: number;
   onSelect: (focusedIndex: number) => void;
@@ -50,26 +52,31 @@ export const useListKeyboardNavigate = ({
       if (!listRef.current) return;
 
       switch (e.key) {
-        case 'ArrowUp':
-          {
-            e.preventDefault();
-            if (state.focusedIndex === 0) return;
-            dispatch({ type: 'ARROW_UP' });
-          }
+        case 'ArrowUp': {
+          e.preventDefault();
+          if (state.focusedIndex === 0) return;
+          dispatch({ type: 'ARROW_UP' });
+          const element = listRef.current.children[state.focusedIndex - 1];
+          element.scrollIntoView({ block: 'nearest' });
           break;
-        case 'ArrowDown':
+        }
+        case 'ArrowDown': {
           e.preventDefault();
           if (state.focusedIndex === length - 1) return;
           dispatch({ type: 'ARROW_DOWN' });
+          const element = listRef.current.children[state.focusedIndex + 1];
+          element.scrollIntoView({ block: 'nearest' });
           break;
-        case 'Enter':
+        }
+        case 'Enter': {
           onSelect(state.focusedIndex);
           break;
+        }
         default:
           break;
       }
     },
-    listRef
+    listenerRef
   );
 
   return {

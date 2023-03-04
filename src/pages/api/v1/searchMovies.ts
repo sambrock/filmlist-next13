@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import type { Movie } from '@prisma/client';
 
-import { TMDbApi } from '@/services/tmdb';
+import { TMDbApi, type TMDbMovieResponse } from '@/services/tmdb';
 import { handler } from '@/server/handler';
-import { GetApiDefinition } from '@/api/api.types';
+import type { GetApiDefinition } from '@/api/api.types';
+import { parseSearchQuery } from '@/utils';
+import { MAX_SEARCH_RESULTS } from '@/utils/constants';
 
 export type GET_SearchMovie = GetApiDefinition<{
   url: '/api/v1/searchMovies';
@@ -19,18 +21,50 @@ const queryParamsSchema = z.object({
     .transform((v) => +v),
 });
 
-const getSearchMovies = async (query: string) => {
-  const movies = await TMDbApi.getSearchMovies({
-    query,
-  });
+export const getSearchMovies = async (query: string, page: number) => {
+  const parsedQuery = parseSearchQuery(query);
 
-  const full = await Promise.all(movies.map((m) => TMDbApi.getMovieById(m.id)));
+  const start = (page - 1) * MAX_SEARCH_RESULTS;
+  const end = start + MAX_SEARCH_RESULTS;
+
+  let full: TMDbMovieResponse[] = [];
+
+  if (parsedQuery.director) {
+    const director = await TMDbApi.getSearchPeople({ query: parsedQuery.director });
+    if (director.length > 0) {
+      const movies = await TMDbApi.getPersonMovieCredits(director[0].id);
+      full = await Promise.all(
+        movies.crew
+          .filter((m) => {
+            if (m.job !== 'Director' && m.job !== 'Directing') return false;
+            if (parsedQuery.year) {
+              const releaseYear = new Date(m.release_date).getFullYear();
+              if (releaseYear !== +parsedQuery.year) return false;
+            }
+            if (parsedQuery.query) {
+              if (!m.title.toLowerCase().includes(parsedQuery.query.toLowerCase())) return false;
+            }
+            return true;
+          })
+          .slice(start, end)
+          .map((m) => TMDbApi.getMovieById(m.id))
+      );
+    }
+  } else {
+    const movies = await TMDbApi.getSearchMovies({
+      query: parsedQuery.query,
+      year: parsedQuery.year,
+    });
+
+    full = await Promise.all(movies.slice(start, end).map((m) => TMDbApi.getMovieById(m.id)));
+  }
+
+  console.log(full, 'full');
 
   const parsed = full
-    .slice(0, 4)
     .filter((m) => {
       if (!m.poster_path || m.adult) return false;
-      if (m.popularity < 2) return false;
+      if (m.popularity < 1) return false;
       if (m.adult) return false;
       return true;
     })
@@ -45,10 +79,14 @@ const getSearchMovies = async (query: string) => {
       backdropPath: m.backdrop_path,
       director:
         m.credits?.crew
-          .filter((c) => c.job === 'Director')
+          .filter((c) => c.job === 'Director' || c.job === 'Directing')
           .map((c) => c.name)
           .join(', ') || '',
-    })) satisfies (Movie & { director: string })[];
+    }))
+    .filter((m) => {
+      if (m.director === '') return false;
+      return true;
+    }) satisfies (Movie & { director: string })[];
 
   return parsed;
 };
@@ -58,7 +96,7 @@ export default handler({
     const parsedQueryParams = queryParamsSchema.safeParse(req.query);
     if (!parsedQueryParams.success) return res.send([]);
 
-    const data = await getSearchMovies(parsedQueryParams.data.q);
+    const data = await getSearchMovies(parsedQueryParams.data.q, parsedQueryParams.data.page);
 
     return res.send(data);
   },

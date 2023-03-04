@@ -1,11 +1,12 @@
 import { handler } from '@/server/handler';
-import { getInitialListStoreData } from '@/server/list/getInitialListStoreData';
-
+import { getSearchMovies } from './searchMovies';
 
 export default handler({
   get: async (req, res) => {
-    const data = await getInitialListStoreData('qv8cerx845ku');
+    const query = 'd:kubrick';
 
-    return res.send(data);
+    const parsedQuery = await getSearchMovies(query);
+
+    return res.send(parsedQuery);
   },
 });

@@ -9,10 +9,10 @@ export const MoviePoster = ({ posterPath, ...props }: React.ComponentProps<'img'
   const { handleOnLoad, imgClassName } = useImageOnLoad();
 
   return (
-    <div className="aspect-poster rounded-sm bg-black-500">
+    <div className={clsx("aspect-poster rounded-sm bg-black-500", props.className)}>
       <img
         {...props}
-        className={clsx('h-full rounded-sm', imgClassName(), props.className)}
+        className={clsx('h-full w-full rounded-sm', imgClassName())}
         src={MOVIE_IMAGE_URL['poster']['w92'] + posterPath}
         onLoad={handleOnLoad}
       />

@@ -1,21 +1,23 @@
 'use client';
 
 import { useRef } from 'react';
-import { atom, useAtomValue } from 'jotai';
-import useSWR from 'swr';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
 
 import { useListKeyboardNavigate } from '@/hooks/useListKeyboardNavigate';
 import { MovieSearchInput } from './MovieSearchInput';
-import { api } from '@/api/api';
 import { useListStore } from '@/store/list/useListStore';
 import { MovieSearchResultsList, MovieSearchResultsListItem } from './MovieSearchResultsList';
 import { Badge } from '../common/Badge';
+import { disableLoadMoreAtom, MovieSearchHelper } from './MovieSearchHelper';
+import { useSearchMovies } from '@/hooks/api/useSearchMovies';
 
 export const searchQueryAtom = atom('', (get, set, value: string) => {
   set(searchQueryAtom, value);
+  set(searchPageAtom, 1);
 });
+export const searchPageAtom = atom(1);
 
 const dispatch = useListStore.getState().dispatch;
 
@@ -31,6 +33,7 @@ export const MovieSearch = () => {
     >
       <MovieSearchInput ref={inputRef} />
       <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
+      <MovieSearchHelper searchContainerRef={searchContainerRef} />
     </div>
   );
 };
@@ -45,36 +48,49 @@ const MovieSearchResults = ({
   const movieIds = useListStore((state) => state._listMovieIds, shallow);
 
   const q = useAtomValue(searchQueryAtom);
+  const page = useAtomValue(searchPageAtom);
+  const setDisableLoadMore = useSetAtom(disableLoadMoreAtom);
 
-  const { data } = useSWR(['search', q], q ? () => api.get('/api/v1/searchMovies', { params: { q } }) : null, {
-    keepPreviousData: true,
-    onSuccess: () => {
-      setFocusedIndex(0);
-    },
-  });
+  const { data } = useSearchMovies({ q, page: page.toString() }, (hasMore) => setDisableLoadMore(!hasMore));
 
   const handleSelect = (index: number) => {
-    if (!data) return;
+    if (!data || data.length === 0) return;
     if (movieIds.includes(data?.[index]?.id)) return;
-    dispatch({ type: 'ADD_MOVIE', payload: data?.[index] });
+    const payload = data?.[index];
+    dispatch({
+      type: 'ADD_MOVIE',
+      payload: {
+        id: payload.id,
+        title: payload.title,
+        posterPath: payload.posterPath,
+        releaseDate: payload.releaseDate,
+        backdropPath: payload.backdropPath,
+        originalLanguage: payload.originalLanguage,
+        originalTitle: payload.originalTitle,
+        overview: payload.overview,
+      },
+    });
     inputRef.current?.focus();
     inputRef.current?.setSelectionRange(0, inputRef.current?.value.length ?? 0);
   };
 
+  const listRef = useRef<HTMLUListElement>(null);
+
   const { focusedIndex, setFocusedIndex } = useListKeyboardNavigate({
-    listRef: searchContainerRef,
-    length: data?.slice(0, 4).length ?? 0,
+    listenerRef: searchContainerRef,
+    listRef: listRef,
+    length: data?.length ?? 0,
     onSelect: (index) => {
-      if (!data) return;
+      if (!data || data.length === 0) return;
       handleSelect(index);
       setFocusedIndex(-1);
     },
   });
 
-  if (!data) return null;
+  if (!data || data.length === 0) return null;
   return (
-    <MovieSearchResultsList>
-      {data?.slice(0, 4).map((movie, index) => (
+    <MovieSearchResultsList ref={listRef}>
+      {data.map((movie, index) => (
         <MovieSearchResultsListItem
           key={movie.id}
           movie={movie}
@@ -82,11 +98,15 @@ const MovieSearchResults = ({
           onClick={() => {
             handleSelect(index);
           }}
-          onMouseEnter={() => {
+          onMouseMove={() => {
             setFocusedIndex(index);
           }}
           trailing={
-            movieIds.includes(movie.id) ? <Badge>Added</Badge> : focusedIndex === index ? <Badge>Add ⏎</Badge> : null
+            movieIds.includes(movie.id) ? (
+              <Badge>Added</Badge>
+            ) : focusedIndex === index ? (
+              <span className="text-xs text-white/40">⏎</span>
+            ) : null
           }
         />
       ))}
