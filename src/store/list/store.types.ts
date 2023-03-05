@@ -5,7 +5,13 @@ import type { Action } from './action.types';
 export type ListStore = {
   data: {
     list: List;
-    movies: Map<string, ListMovies & { movie: Movie }>;
+    movies: Map<
+      string,
+      ListMovies & {
+        _isFromInitialData: boolean;
+        movie: Movie;
+      }
+    >;
   };
 
   _listMovieIds: number[];

@@ -104,7 +104,7 @@ const MovieSearchResults = ({
 
   useEffect(() => setFocusedIndex(0), [q]);
 
-  if (!data || data.length === 0) return null;
+  if (!data || data.length === 0 || !q) return null;
   return (
     <MovieSearchResultsList ref={listRef}>
       {data.map((movie, index) => (

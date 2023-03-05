@@ -7,7 +7,7 @@ import { useListStore } from '@/store/list/useListStore';
 import { MovieItem } from '@/components/movie/MovieItem';
 import { MovieAdd } from '@/components/movie/MovieAdd';
 
-const getMovie = (key: string) => useListStore.getState().data.movies.get(key)?.movie as Movie;
+const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
 export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => {
   const keys = useListStore(
@@ -27,9 +27,13 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
   }
   return (
     <ul className="mb-44 grid grid-cols-7 gap-2" suppressHydrationWarning={true}>
-      {keys.map((key) => (
-        <MovieItem key={key} movie={getMovie(key)} />
-      ))}
+      {keys.map((key) => {
+        const data = getMovie(key);
+        if (!data) return null;
+        return (
+          <MovieItem key={data.movieId} movie={data.movie} posterSrc={data._isFromInitialData ? 'default' : 'tmdb'} />
+        );
+      })}
       <MovieAdd />
     </ul>
   );

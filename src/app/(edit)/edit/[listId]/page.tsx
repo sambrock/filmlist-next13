@@ -7,6 +7,7 @@ import { ListMoviesEdit } from '@/components/list/ListMovies/ListMoviesEdit';
 import { InitListStore } from '@/app/InitListStore';
 import { MovieLoader } from './MovieLoader';
 import { MovieSearch } from '@/components/search/MovieSearch';
+import { EditShortcuts } from './EditShortcuts';
 
 type ListPageProps = {
   params: {
@@ -31,6 +32,7 @@ const ListPage = async ({ params }: ListPageProps) => {
           <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
         </div>
 
+        <EditShortcuts />
         <MovieLoader listId={params.listId} count={listCount} />
         <InitListStore initialListData={JSON.stringify(initialData)} initialListMovieIds={listMovieIds || []} />
       </main>

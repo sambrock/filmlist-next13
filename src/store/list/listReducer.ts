@@ -9,7 +9,6 @@ const setTitle = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
 
 const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIE'>) => {
   const listId = draft.data.list.id;
-  // get order of last movie in list
   const order =
     draft.data.movies.size > 0 ? Math.max(...Array.from(draft.data.movies.values()).map((m) => m.order)) + 1 : 1;
   draft.data.movies.set(payload.id.toString(), {
@@ -19,6 +18,7 @@ const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
     movie: payload,
     createdAt: new Date(),
     updatedAt: new Date(),
+    _isFromInitialData: false,
   });
 
   draft._listMovieIds.push(payload.id);
@@ -34,6 +34,7 @@ const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'
     draft.data.movies.set(listMovie.movieId.toString(), {
       ...listMovie,
       movie: listMovie.movie,
+      _isFromInitialData: true,
     })
   );
 });

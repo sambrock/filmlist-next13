@@ -19,7 +19,7 @@ export const MovieSearchHelper = ({ searchContainerRef }: { searchContainerRef: 
   useEventListener(
     'keydown',
     (e) => {
-      if (e.key === 'l' && e.metaKey) {
+      if (e.key === 'l' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         handleLoadMore();
       }
