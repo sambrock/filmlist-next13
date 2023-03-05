@@ -8,6 +8,8 @@ import { InitListStore } from '@/app/InitListStore';
 import { MovieLoader } from './MovieLoader';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { EditShortcuts } from './EditShortcuts';
+import { ListActionsEdit } from '@/components/list/ListActions/ListActionsEdit';
+import { ListHeader } from '@/components/list/ListHeader';
 
 type ListPageProps = {
   params: {
@@ -26,9 +28,11 @@ const ListPage = async ({ params }: ListPageProps) => {
           <MovieSearch />
         </div>
 
-        <div className="grid gap-6">
-          <div></div>
-          <ListTitleEdit initialTitle={initialData?.title || ''} />
+        <div className="grid gap-4">
+          <ListHeader>
+            <ListActionsEdit />
+            <ListTitleEdit initialTitle={initialData?.title || ''} />
+          </ListHeader>
           <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
         </div>
 
