@@ -4,12 +4,15 @@ import { Button } from '@/components/common/Button';
 
 import { DeleteOutlined, ExportOutlined, FormOutlined, PictureOutlined, ShareAltOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
-import { atom, useAtom, useAtomValue } from 'jotai';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { isEditingListDescriptionAtom } from '../ListDescription/ListDescriptionEdit';
 
 export const listActionsIsActiveAtom = atom(false);
 
 export const ListActionsEdit = () => {
   const isActive = useAtomValue(listActionsIsActiveAtom);
+
+  const setIsEditingDescription = useSetAtom(isEditingListDescriptionAtom);
 
   return (
     <div
@@ -19,7 +22,12 @@ export const ListActionsEdit = () => {
       })}
     >
       <div className="flex items-center">
-        <Button size="small" variant="transparent" icon={<FormOutlined />}>
+        <Button
+          onClick={() => setIsEditingDescription(true)}
+          size="small"
+          variant="transparent"
+          icon={<FormOutlined />}
+        >
           Add description
         </Button>
         <Button size="small" variant="transparent" icon={<PictureOutlined />}>

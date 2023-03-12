@@ -18,8 +18,8 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
   if (!keys || !keys.length) {
     return (
       <ul className="mb-44 grid grid-cols-7 gap-2" suppressHydrationWarning={true}>
-        {(JSON.parse(initialMovies) as Movie[]).map((movie) => (
-          <MovieItem key={movie.id} movie={movie} />
+        {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
+          <MovieItem key={movie.id} movie={movie} index={index} />
         ))}
         <MovieAdd />
       </ul>
@@ -27,11 +27,16 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
   }
   return (
     <ul className="mb-44 grid grid-cols-7 gap-2" suppressHydrationWarning={true}>
-      {keys.map((key) => {
+      {keys.map((key, index) => {
         const data = getMovie(key);
         if (!data) return null;
         return (
-          <MovieItem key={data.movieId} movie={data.movie} posterSrc={data._isFromInitialData ? 'default' : 'tmdb'} />
+          <MovieItem
+            key={data.movieId}
+            movie={data.movie}
+            posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
+            index={index}
+          />
         );
       })}
       <MovieAdd />

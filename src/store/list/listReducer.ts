@@ -7,6 +7,10 @@ const setTitle = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
   draft.data.list.title = payload ?? '';
 });
 
+const setDescription = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'SET_DESCRIPTION'>) => {
+  draft.data.list.description = payload;
+});
+
 const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIE'>) => {
   const listId = draft.data.list.id;
   const order =
@@ -44,6 +48,14 @@ export const listReducer = (state: ListStore, action: Action): ListStore => {
   switch (action.type) {
     case 'SET_TITLE': {
       const [newState, patches, inversePatches] = setTitle(state, action.payload);
+      return {
+        ...newState,
+        patches: [patches, ...state.patches],
+        inversePatches: [inversePatches, ...state.inversePatches],
+      };
+    }
+    case 'SET_DESCRIPTION': {
+      const [newState, patches, inversePatches] = setDescription(state, action.payload);
       return {
         ...newState,
         patches: [patches, ...state.patches],

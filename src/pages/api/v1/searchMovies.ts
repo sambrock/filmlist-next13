@@ -59,8 +59,6 @@ export const getSearchMovies = async (query: string, page: number) => {
     full = await Promise.all(movies.slice(start, end).map((m) => TMDbApi.getMovieById(m.id)));
   }
 
-  console.log(full, 'full');
-
   const parsed = full
     .filter((m) => {
       if (!m.poster_path || m.adult) return false;

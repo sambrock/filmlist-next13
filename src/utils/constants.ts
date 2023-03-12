@@ -23,3 +23,5 @@ export const MOVIE_IMAGE_URL = {
     },
   },
 } as const;
+export const MAX_DESCRIPTION_LENGTH = 3000;
+export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;

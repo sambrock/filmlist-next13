@@ -42,6 +42,7 @@ export const MovieSearch = () => {
   useOnClickOutside(
     searchContainerRef,
     () => {
+      if (window.getSelection()?.toString()) return;
       setSearchIsActive(false);
     },
     'mouseup'

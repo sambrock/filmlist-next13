@@ -10,6 +10,8 @@ import { MovieSearch } from '@/components/search/MovieSearch';
 import { EditShortcuts } from './EditShortcuts';
 import { ListActionsEdit } from '@/components/list/ListActions/ListActionsEdit';
 import { ListHeader } from '@/components/list/ListHeader';
+import { ListDescriptionEdit } from '@/components/list/ListDescription/ListDescriptionEdit';
+import { parseMarkdown } from '@/utils/parseMarkdown';
 
 type ListPageProps = {
   params: {
@@ -29,10 +31,11 @@ const ListPage = async ({ params }: ListPageProps) => {
         </div>
 
         <div className="grid gap-4">
-          <ListHeader>
-            <ListActionsEdit />
-            <ListTitleEdit initialTitle={initialData?.title || ''} />
-          </ListHeader>
+          <ListHeader
+            actions={<ListActionsEdit />}
+            title={<ListTitleEdit initialTitle={initialData?.title || ''} />}
+            description={<ListDescriptionEdit initialDescription={parseMarkdown(initialData?.description) || ''} />}
+          />
           <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
         </div>
 
