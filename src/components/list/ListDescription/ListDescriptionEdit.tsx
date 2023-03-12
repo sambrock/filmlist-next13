@@ -1,19 +1,16 @@
 'use client';
 
 import { useLayoutEffect, useRef } from 'react';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useSetAtom } from 'jotai';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import { shallow } from 'zustand/shallow';
-import { clsx } from 'clsx';
 
 import { useListStore } from '@/store/list/useListStore';
 import { Shortcut } from '@/components/common/Shortcut';
-import { parseMarkdown } from '@/utils/parseMarkdown';
-import { useShowMore } from './hooks/useShowMore';
 import { MAX_DESCRIPTION_LENGTH, MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/utils/constants';
+import { isListDescriptionShowMoreAtom, ListDescriptionStatic } from './ListDescriptionStatic';
 
 export const isEditingListDescriptionAtom = atom(false);
-export const isListDescriptionShowMoreAtom = atom(false);
 
 const dispatch = useListStore.getState().dispatch;
 
@@ -47,46 +44,16 @@ export const ListDescriptionEdit = ({ initialDescription }: { initialDescription
   );
 };
 
-const ListDescriptionShowMore = () => {
-  const [isShowMore, setIsShowMore] = useAtom(isListDescriptionShowMoreAtom);
-
-  return (
-    <span className="ml-2">
-      <button
-        className="text-sm font-medium text-white/60 hover:text-white/80"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsShowMore(!isShowMore);
-        }}
-      >
-        {isShowMore ? 'Show less' : 'Show more'}
-      </button>
-    </span>
-  );
-};
-
 const ListDescriptionEditStatic = ({ initialDescription }: { initialDescription: string }) => {
   const description = useListStore((state) => state.data.list.description, shallow);
 
   const setIsEditingListDescription = useSetAtom(isEditingListDescriptionAtom);
 
-  const isShowMore = useAtomValue(isListDescriptionShowMoreAtom);
-  const { enableShowMore, text } = useShowMore(description || initialDescription);
-
   return (
-    <div onClick={() => setIsEditingListDescription(true)}>
-      <div
-        className={clsx(
-          'inline whitespace-pre-wrap font-serif text-white/60 [&>ol]:ml-4 [&>ol]:list-decimal [&>ol]:pl-4 [&>ul]:ml-4 [&>ul]:list-disc [&>ul]:pl-4',
-          {
-            'max-h-48 overflow-clip': !isShowMore,
-          }
-        )}
-        suppressHydrationWarning={true}
-        dangerouslySetInnerHTML={{ __html: parseMarkdown(text) || text }}
-      />
-      {enableShowMore() && <ListDescriptionShowMore />}
-    </div>
+    <ListDescriptionStatic
+      onClick={() => setIsEditingListDescription(true)}
+      description={description || initialDescription}
+    />
   );
 };
 

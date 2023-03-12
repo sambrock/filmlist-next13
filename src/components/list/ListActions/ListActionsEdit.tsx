@@ -1,26 +1,16 @@
 'use client';
 
-import { Button } from '@/components/common/Button';
+import { useSetAtom } from 'jotai';
 
 import { DeleteOutlined, ExportOutlined, FormOutlined, PictureOutlined, ShareAltOutlined } from '@ant-design/icons';
-import clsx from 'clsx';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { isEditingListDescriptionAtom } from '../ListDescription/ListDescriptionEdit';
-
-export const listActionsIsActiveAtom = atom(false);
+import { Button } from '@/components/common/Button';
 
 export const ListActionsEdit = () => {
-  const isActive = useAtomValue(listActionsIsActiveAtom);
-
   const setIsEditingDescription = useSetAtom(isEditingListDescriptionAtom);
 
   return (
-    <div
-      className={clsx('flex justify-between', {
-        'opacity-100': isActive,
-        'opacity-0': !isActive,
-      })}
-    >
+    <div className="flex justify-between">
       <div className="flex items-center">
         <Button
           onClick={() => setIsEditingDescription(true)}

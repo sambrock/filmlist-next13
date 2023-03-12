@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 import { useAtomValue } from 'jotai';
 
 import { MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/utils/constants';
-import { isListDescriptionShowMoreAtom } from '../ListDescriptionEdit';
+import { isListDescriptionShowMoreAtom } from '../ListDescriptionStatic';
 
-export const useShowMore = (text: string, maxLength = MAX_DESCRIPTION_PREVIEW_LENGTH) => {
+export const useToggleShow = (text: string, maxLength = MAX_DESCRIPTION_PREVIEW_LENGTH) => {
   const isShowMore = useAtomValue(isListDescriptionShowMoreAtom);
 
-  const enableShowMore = useCallback(() => {
+  const enableToggleShow = useCallback(() => {
     return text.length > maxLength || text.split('\n').length > 6;
   }, [text.length, maxLength]);
 
@@ -19,7 +19,7 @@ export const useShowMore = (text: string, maxLength = MAX_DESCRIPTION_PREVIEW_LE
   }, [isShowMore, text]);
 
   return {
-    enableShowMore,
-    text: enableShowMore() ? getText() : text,
+    enableToggleShow,
+    text: enableToggleShow() ? getText() : text,
   };
 };

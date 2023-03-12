@@ -1,9 +1,3 @@
-'use client';
-
-import { useSetAtom } from 'jotai';
-
-import { listActionsIsActiveAtom } from './ListActions/ListActionsEdit';
-
 type ListHeaderProps = {
   actions: React.ReactNode;
   title: React.ReactNode;
@@ -11,15 +5,9 @@ type ListHeaderProps = {
 };
 
 export const ListHeader = (props: ListHeaderProps) => {
-  const setIsListActionsActive = useSetAtom(listActionsIsActiveAtom);
-
   return (
-    <div
-      className="grid grid-cols-2 gap-2"
-      onMouseOver={() => setIsListActionsActive(true)}
-      onMouseLeave={() => setIsListActionsActive(false)}
-    >
-      <div className="col-span-2 col-start-1">{props.actions}</div>
+    <div className="group grid grid-cols-2 gap-2">
+      <div className="invisible col-span-2 col-start-1 group-hover:visible">{props.actions}</div>
       <div className="col-span-1 col-start-1 space-y-4">
         {props.title}
         {props.description}

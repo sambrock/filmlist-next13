@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { clsx } from 'clsx';
 
 import { useListStore } from '@/store/list/useListStore';
+import { listTitleStyles } from './ListTitleStatic';
 
 const dispatch = useListStore.getState().dispatch;
 
@@ -23,9 +24,9 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
 
   return (
     <div
-      className={clsx('text-4xl font-bold focus:outline-none', {
+      className={clsx(listTitleStyles, 'focus:outline-none', {
         'text-white/30 after:content-["Untitled"]': !initialTitle && !title,
-        'text-white': initialTitle || title,
+        'text-white-text': initialTitle || title,
       })}
       onInput={handleInput}
       contentEditable={true}

@@ -1,9 +1,15 @@
 import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
 
 import { handler } from '@/server/handler';
 import { GetApiDefinition } from '@/api/api.types';
 import { prisma } from '@/server/prisma';
 import { MAX_LIST_MOVIES } from '@/utils/constants';
+
+export type ListMoviesWithMovie = Prisma.ListMoviesGetPayload<{
+  where: { listId: number },
+  include: { movie: true },
+}>;
 
 export type GET_getListMovies = GetApiDefinition<{
   url: '/api/v1/getListMovies';
