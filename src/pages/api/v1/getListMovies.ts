@@ -19,12 +19,6 @@ export type GetListMoviesRoute = ApiRoute<{
   data: Awaited<ReturnType<typeof getListMovies>>;
 }>;
 
-// export type GET_getListMovies = GetApiDefinition<{
-//   url: '/api/v1/getListMovies';
-//   params: z.input<typeof queryParamsSchema>;
-//   return: Awaited<ReturnType<typeof getListMovies>>;
-// }>;
-
 const queryParamsSchema = z.object({
   listId: z.string().default(''),
   page: z
