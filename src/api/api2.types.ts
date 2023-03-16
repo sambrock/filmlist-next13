@@ -1,6 +1,7 @@
 import { GetListMoviesRoute } from '@/pages/api/v1/getListMovies';
+import { SearchMoviesRoute } from '@/pages/api/v1/searchMovies';
 
-export type ApiRoutes = GetListMoviesRoute;
+export type ApiRoutes = GetListMoviesRoute | SearchMoviesRoute;
 
 export interface ApiRoute<
   T extends {

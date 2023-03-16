@@ -28,3 +28,8 @@ export const api = {
 };
 
 api.get('/api/v1/getListMovies', { params: {} });
+api.get('/api/v1/searchMovies', {
+  params: {
+    q: 'hello',
+  },
+});
