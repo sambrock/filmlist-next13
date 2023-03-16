@@ -5,10 +5,9 @@ import { TMDbApi, type TMDbMovieResponse } from '@/services/tmdb';
 import { handler } from '@/server/handler';
 import { parseSearchQuery } from '@/utils';
 import { MAX_SEARCH_RESULTS } from '@/utils/constants';
-import type { ApiRoute } from '@/api/api2.types';
+import type { Api } from '@/api/api.types';
 
-export type SearchMoviesRoute = ApiRoute<{
-  method: 'GET';
+export type GET_SearchMovies = Api.GetRoute<{
   url: '/api/v1/searchMovies';
   params: z.input<typeof queryParamsSchema>;
   data: Awaited<ReturnType<typeof getSearchMovies>>;

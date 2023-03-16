@@ -15,7 +15,9 @@ export const InitListStore = ({
   useListStore.setState({
     data: {
       list: parsed,
-      movies: new Map(parsed?.movies.map((movie) => [movie.movieId.toString(), movie])),
+      movies: new Map(
+        parsed?.movies.map((movie) => [movie.movieId.toString(), { ...movie, _isFromInitialData: true }])
+      ),
     },
     _listMovieIds: initialListMovieIds,
   });

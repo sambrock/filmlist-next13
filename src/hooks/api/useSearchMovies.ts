@@ -2,16 +2,16 @@ import { useRef, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 
 import { api } from '@/api/api';
-import type { GET_SearchMovie } from '@/pages/api/v1/searchMovies';
+import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
 // Might be a better way to do this, but this works for now
 
 export const useSearchMovies = (
-  params: GET_SearchMovie['params'],
+  params: GET_SearchMovies['params'],
   onHasMoreChange?: (hasMore: boolean) => void,
   onSuccess?: () => void
 ) => {
-  const [prevData, setPrevData] = useState<GET_SearchMovie['return']>([]);
+  const [prevData, setPrevData] = useState<GET_SearchMovies['data']>([]);
 
   const prevKey = useRef<string[]>([]);
 

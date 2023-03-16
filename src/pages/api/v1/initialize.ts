@@ -1,12 +1,12 @@
-import { PostApiDefinition } from '@/api/api.types';
+import type { Api } from '@/api/api.types';
 import { handler } from '@/server/handler';
 import { initializeSession } from '@/server/session/initializeSession';
 import { createSessionToken, setSessionTokenCookie } from '@/server/session/sessionToken';
 
-export type POST_Initialize = PostApiDefinition<{
+export type POST_Initialize = Api.PostRoute<{
   url: '/api/v1/initialize';
-  data: null;
-  return: {};
+  body: null;
+  data: {};
 }>;
 
 export default handler({

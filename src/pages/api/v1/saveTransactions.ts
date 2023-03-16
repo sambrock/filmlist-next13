@@ -4,12 +4,12 @@ import { handler, HandlerError } from '@/server/handler';
 import { convertToPrismaTransactions, transactionSchema } from '@/server/transactions/convertToPrismaTransactions';
 import { prisma } from '@/server/prisma';
 import { saveTransactionMedia } from '@/server/transactions/saveTransactionMedia';
-import type { PostApiDefinition } from '@/api/api.types';
+import type { Api } from '@/api/api.types';
 
-export type POST_SaveTransactions = PostApiDefinition<{
+export type POST_SaveTransactions = Api.PostRoute<{
   url: '/api/v1/saveTransactions';
-  data: z.infer<typeof saveTransactionsSchema>;
-  return: {};
+  body: z.infer<typeof saveTransactionsSchema>;
+  data: {};
 }>;
 
 const saveTransactionsSchema = z.object({

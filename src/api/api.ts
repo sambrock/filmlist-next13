@@ -1,65 +1,28 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import type { GetApiParams, GetApiReturn, GetUrl, PostApiData, PostApiReturn, PostUrl } from './api.types';
 
-type QueryParams = { [key: string]: string | number | boolean | undefined };
-export type ApiConfig<TParams = {}> = RequestInit & { params?: TParams };
-
-const buildQueryString = (params: QueryParams): string => {
-  const query = Object.entries(params)
-    .filter(([_, value]) => value !== undefined)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value!)}`)
-    .join('&');
-  return query ? `?${query}` : '';
-};
-
-const BASE_CONFIG = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
+import { buildQueryString } from '@/utils';
+import type { Api } from './api.types';
 
 export const api = {
-  get: <T extends GetUrl>(
+  get: async <T extends Api.ApiGetRouteUrls>(
     url: T,
-    { params, ...config } = {} as ApiConfig<GetApiParams<T>>
-  ): Promise<GetApiReturn<T>> => {
+    { params, body, ...config }: RequestInit & { params?: Api.ApiRouteParams<T>; body?: Api.ApiRouteBody<T> } = {}
+  ): Promise<Api.ApiRouteData<T>> => {
     return fetch(`${url}${buildQueryString(params || {})}`, {
-      ...BASE_CONFIG,
       ...config,
-      method: 'GET',
+      headers: { 'Content-Type': 'application/json', ...config.headers },
     }).then((res) => res.json());
   },
 
-  post: <T extends PostUrl>(url: T, data: PostApiData<T>, config = {} as ApiConfig): Promise<PostApiReturn<T>> => {
-    return fetch(`${url}`, {
-      ...BASE_CONFIG,
+  post: async <T extends Api.ApiPostRouteUrls>(
+    url: T,
+    data: Api.ApiRouteBody<T>,
+    { body, ...config }: RequestInit = {}
+  ): Promise<Api.ApiRouteData<T>> => {
+    return fetch(url, {
       ...config,
-      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...config.headers },
       body: JSON.stringify(data),
     }).then((res) => res.json());
   },
-
-  // put: <T>(url: string, { params, ...config } = {} as ApiConfig) => {
-  //   return fetch(`${url}${buildQueryString(params || {})}`, {
-  //     ...BASE_CONFIG,
-  //     ...config,
-  //     method: 'PUT',
-  //   }).then((res) => res.json() as Promise<T>);
-  // },
-
-  // patch: <T>(url: string, { params, ...config } = {} as ApiConfig) => {
-  //   return fetch(`${url}${buildQueryString(params || {})}`, {
-  //     ...BASE_CONFIG,
-  //     ...config,
-  //     method: 'PATCH',
-  //   }).then((res) => res.json() as Promise<T>);
-  // },
-
-  // delete: <T>(url: string, { params, ...config } = {} as ApiConfig) => {
-  //   return fetch(`${url}${buildQueryString(params || {})}`, {
-  //     ...BASE_CONFIG,
-  //     ...config,
-  //     method: 'DELETE',
-  //   }).then((res) => res.json() as Promise<T>);
-  // },
 };

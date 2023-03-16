@@ -1,28 +1,39 @@
-import type { POST_CreateList } from '@/pages/api/v1/createList';
-import type { GET_GetListMovies } from '@/pages/api/v1/getListMovies';
-import type { POST_Initialize } from '@/pages/api/v1/initialize';
-import type { POST_SaveTransactions } from '@/pages/api/v1/saveTransactions';
-import type { GET_SearchMovie } from '@/pages/api/v1/searchMovies';
+import { POST_CreateList } from '@/pages/api/v1/createList';
+import { GET_GetListMovies } from '@/pages/api/v1/getListMovies';
+import { POST_Initialize } from '@/pages/api/v1/initialize';
+import { POST_SaveTransactions } from '@/pages/api/v1/saveTransactions';
+import { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
-export type GetApi = GET_SearchMovie | GET_GetListMovies;
-export type PostApi = POST_Initialize | POST_CreateList | POST_SaveTransactions;
+type ApiRoutes = GET_SearchMovies | GET_GetListMovies | POST_CreateList | POST_Initialize | POST_SaveTransactions;
 
-export interface GetApiDefinition<T extends { url: string; params?: Record<string, string>; return: unknown }> {
-  url: T['url'];
-  params: T['params'];
-  return: T['return'];
+export namespace Api {
+  export interface GetRoute<T extends Required<{ url: string; data: unknown; params?: Record<string, string> }>> {
+    method: 'GET';
+    url: T['url'];
+    params: T['params'];
+    data: T['data'];
+    body: null;
+  }
+
+  export interface PostRoute<
+    T extends { url: string; data: unknown; params?: Record<string, string>; body?: unknown }
+  > {
+    method: 'POST';
+    url: T['url'];
+    params: T['params'];
+    data: T['data'];
+    body: T['body'];
+  }
+
+  export type ApiRouteUrl = ApiRoutes['url'];
+  export type ApiRouteMethod<T> = Extract<ApiRoutes, { url: T }>['method'];
+  export type ApiRouteParams<T> = Extract<ApiRoutes, { url: T }>['params'];
+  export type ApiRouteData<T> = Extract<ApiRoutes, { url: T }>['data'];
+  export type ApiRouteBody<T> = Extract<ApiRoutes, { url: T }>['body'];
+
+  export type ApiGetRouteUrls = Extract<ApiRoutes, { method: 'GET' }>['url'];
+  export type ApiPostRouteUrls = Extract<ApiRoutes, { method: 'POST' }>['url'];
+  export type ApiDeleteRouteUrls = Extract<ApiRoutes, { method: 'DELETE' }>['url'];
+  export type ApiPatchRouteUrls = Extract<ApiRoutes, { method: 'PATCH' }>['url'];
+  export type ApiPutRouteUrls = Extract<ApiRoutes, { method: 'PUT' }>['url'];
 }
-
-export interface PostApiDefinition<T extends { url: string; data: unknown; return: unknown }> {
-  url: T['url'];
-  data: T['data'];
-  return: T['return'];
-}
-
-export type GetUrl = GetApi['url'];
-export type GetApiParams<T extends string> = Extract<GetApi, { url: T }>['params'];
-export type GetApiReturn<T extends string> = Extract<GetApi, { url: T }>['return'];
-
-export type PostUrl = PostApi['url'];
-export type PostApiReturn<T extends string> = Extract<PostApi, { url: T }>['return'];
-export type PostApiData<T extends string> = Extract<PostApi, { url: T }>['data'];
