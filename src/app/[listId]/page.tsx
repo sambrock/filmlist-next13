@@ -21,7 +21,10 @@ const StaticListPage = async ({ params }: StaticListPageProps) => {
           title={<ListTitleStatic title={initialData?.title || ''} />}
           description={<ListDescriptionStatic description={initialData?.description || ''} />}
         />
-        <ListMoviesStatic initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
+        <ListMoviesStatic
+          listId={params.listId}
+          initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
+        />
       </div>
     </main>
   );

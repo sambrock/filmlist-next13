@@ -1,35 +1,34 @@
 'use client';
 
 import type { Movie } from '@prisma/client';
-import { atom, useAtomValue } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
+import { useSsr } from 'usehooks-ts';
 
 import { MovieItem } from '@/components/movie/MovieItem';
 import { ListMoviesGrid } from './ListMoviesGrid';
+import { Observable } from '@/components/common/Observable';
+import { useGetListMoviesInfinite } from '@/hooks/api/useGetListMoviesInfinite';
 
-export const listMoviesAtom = atom<Movie[]>([]);
+export const ListMoviesStatic = ({ listId, initialMovies }: { listId: string; initialMovies: string }) => {
+  const { isServer } = useSsr();
 
-export const ListMoviesStatic = ({ initialMovies }: { initialMovies: string }) => {
-  useHydrateAtoms([[listMoviesAtom, JSON.parse(initialMovies) as Movie[]]]);
+  const { data, size, setSize } = useGetListMoviesInfinite(listId);
 
-  const movies = useAtomValue(listMoviesAtom);
+  const movies: Movie[] = JSON.parse(initialMovies)
+    .concat(data?.flat().map((m) => m?.movie))
+    .filter(Boolean);
 
-  // Fixes hydration warning
-  // should remove this and use a better solution
-  if (typeof window === 'undefined')
-    return (
-      <ListMoviesGrid>
-        {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
-          <MovieItem key={movie.id} movie={movie} index={index} />
-        ))}
-      </ListMoviesGrid>
-    );
+    // FIX:
+    // SHouldn't load same page more than once
+    // Stop loading if no more results
+    // Show loading indicator (calculate expected results and show skeleton)
+    // Can i use suspense?
 
   return (
     <ListMoviesGrid>
-      {movies.map((movie, index) => (
+      {(isServer ? (JSON.parse(initialMovies) as Movie[]) : movies).map((movie, index) => (
         <MovieItem key={movie.id} movie={movie} index={index} />
       ))}
+      <Observable onObserve={() => setSize(size + 1)} />
     </ListMoviesGrid>
   );
 };
