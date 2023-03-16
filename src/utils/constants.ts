@@ -10,7 +10,7 @@ export const MOVIE_IMAGE_URL = {
   poster: {
     w92: 'https://image.tmdb.org/t/p/w92',
     w342: {
-      default: 'https://zrbwwfldzlttegneqhzw.supabase.co/storage/v1/object/public/media/posters',
+      default: 'https://zrbwwfldzlttegneqhzw.supabase.co/storage/v1/object/public/media/posters/w342',
       tmdb: 'https://image.tmdb.org/t/p/w342',
     },
   },
@@ -18,8 +18,10 @@ export const MOVIE_IMAGE_URL = {
     w300: 'https://image.tmdb.org/t/p/w300',
     w780: 'https://image.tmdb.org/t/p/w780',
     w1280: {
-      default: 'https://zrbwwfldzlttegneqhzw.supabase.co/storage/v1/object/public/media/backdrops',
+      default: 'https://zrbwwfldzlttegneqhzw.supabase.co/storage/v1/object/public/media/backdrops/w1280',
       tmdb: 'https://image.tmdb.org/t/p/w1280',
     },
   },
 } as const;
+export const MAX_DESCRIPTION_LENGTH = 3000;
+export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;

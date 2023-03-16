@@ -3,6 +3,7 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useEventListener } from 'usehooks-ts';
 
+import { Shortcut } from '../common/Shortcut';
 import { searchPageAtom } from './MovieSearch';
 
 export const disableLoadMoreAtom = atom(false);
@@ -19,7 +20,7 @@ export const MovieSearchHelper = ({ searchContainerRef }: { searchContainerRef: 
   useEventListener(
     'keydown',
     (e) => {
-      if (e.key === 'l' && e.metaKey) {
+      if (e.key === 'l' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         handleLoadMore();
       }
@@ -29,17 +30,13 @@ export const MovieSearchHelper = ({ searchContainerRef }: { searchContainerRef: 
 
   return (
     <div className="flex items-center border-t border-black-500 px-2 py-1">
-      <button
-        className="cursor-pointer text-xs font-medium text-white/40 outline-none hover:text-white/60"
-        onClick={handleLoadMore}
-      >
-        ⌘L Load more
+      <button className="flex cursor-pointer" onClick={handleLoadMore}>
+        <Shortcut>⌘L Load more</Shortcut>
       </button>
 
       <div className="ml-4 flex gap-4">
-        <span className="text-xs font-medium text-white/40">⏎ Add</span>
-        <span className="text-xs font-medium text-white/40">⌘⏎ Add and close</span>
-        {/* <span className="text-xs font-medium text-white/40">⌘⏎ Add and close</span> */}
+        <Shortcut>⏎ Add</Shortcut>
+        {/* <Shortcut>⌘⏎ Add and close</Shortcut> */}
       </div>
     </div>
   );

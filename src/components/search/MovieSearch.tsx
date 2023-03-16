@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
-import { useEventListener } from 'usehooks-ts';
+import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 
 import { useListKeyboardNavigate } from '@/hooks/useListKeyboardNavigate';
 import { MovieSearchInput } from './MovieSearchInput';
@@ -37,6 +37,15 @@ export const MovieSearch = () => {
       }
     },
     searchContainerRef
+  );
+
+  useOnClickOutside(
+    searchContainerRef,
+    () => {
+      if (window.getSelection()?.toString()) return;
+      setSearchIsActive(false);
+    },
+    'mouseup'
   );
 
   if (!searchIsActive) return null;
@@ -104,7 +113,7 @@ const MovieSearchResults = ({
 
   useEffect(() => setFocusedIndex(0), [q]);
 
-  if (!data || data.length === 0) return null;
+  if (!data || data.length === 0 || !q) return null;
   return (
     <MovieSearchResultsList ref={listRef}>
       {data.map((movie, index) => (

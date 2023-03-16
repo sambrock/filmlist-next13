@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 
 import { verifySessionToken } from '@/server/session/sessionToken';
 import { SESSION_TOKEN_NAME } from '@/utils/constants';
-import ListPage from './(edit)/edit/[listId]/page';
+import EditListPage from './[listId]/edit/page';
 import { InitSession } from './InitSession';
 
 const Index = () => {
@@ -18,7 +18,7 @@ const Index = () => {
   return (
     <Fragment>
       {/* @ts-expect-error Server Component */}
-      <ListPage params={{ listId }} />
+      <EditListPage params={{ listId }} />
       <InitSession isSession={sessionTokenCookie?.value ? true : false} />
     </Fragment>
   );

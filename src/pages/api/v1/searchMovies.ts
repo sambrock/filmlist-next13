@@ -3,14 +3,15 @@ import type { Movie } from '@prisma/client';
 
 import { TMDbApi, type TMDbMovieResponse } from '@/services/tmdb';
 import { handler } from '@/server/handler';
-import type { GetApiDefinition } from '@/api/api.types';
 import { parseSearchQuery } from '@/utils';
 import { MAX_SEARCH_RESULTS } from '@/utils/constants';
+import type { ApiRoute } from '@/api/api2.types';
 
-export type GET_SearchMovie = GetApiDefinition<{
+export type SearchMoviesRoute = ApiRoute<{
+  method: 'GET';
   url: '/api/v1/searchMovies';
   params: z.input<typeof queryParamsSchema>;
-  return: Awaited<ReturnType<typeof getSearchMovies>>;
+  data: Awaited<ReturnType<typeof getSearchMovies>>;
 }>;
 
 const queryParamsSchema = z.object({
@@ -58,8 +59,6 @@ export const getSearchMovies = async (query: string, page: number) => {
 
     full = await Promise.all(movies.slice(start, end).map((m) => TMDbApi.getMovieById(m.id)));
   }
-
-  console.log(full, 'full');
 
   const parsed = full
     .filter((m) => {

@@ -2,6 +2,7 @@
 
 import { PlusOutlined } from '@ant-design/icons';
 import { useSetAtom } from 'jotai';
+
 import { searchIsActiveAtom } from '../search/MovieSearch';
 
 export const MovieAdd = () => {
@@ -9,7 +10,7 @@ export const MovieAdd = () => {
 
   return (
     <div
-      className="flex aspect-poster cursor-pointer items-center justify-center rounded-md bg-black-700 outline-none transition-all"
+      className="relative flex aspect-poster cursor-pointer flex-col items-center justify-center gap-4 rounded-md bg-black-700 outline-none transition-all"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
@@ -20,7 +21,11 @@ export const MovieAdd = () => {
         setSearchIsActive(true);
       }}
     >
-      <PlusOutlined className="text-4xl text-black-100" />
+      <PlusOutlined className="text-4xl text-black-100 mix-blend-lighten" />
+
+      <span className="absolute left-1/2 -translate-x-1/2 bottom-4 mt-auto self-start text-xs font-medium text-white/40">
+        ⌘K Add a film
+      </span>
     </div>
   );
 };

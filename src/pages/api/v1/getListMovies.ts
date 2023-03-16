@@ -1,14 +1,22 @@
 import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
 
 import { handler } from '@/server/handler';
 import { GetApiDefinition } from '@/api/api.types';
 import { prisma } from '@/server/prisma';
 import { MAX_LIST_MOVIES } from '@/utils/constants';
+import { ApiRoute } from '@/api/api2.types';
 
-export type GET_getListMovies = GetApiDefinition<{
+export type ListMoviesWithMovie = Prisma.ListMoviesGetPayload<{
+  where: { listId: number };
+  include: { movie: true };
+}>;
+
+export type GetListMoviesRoute = ApiRoute<{
+  method: 'GET';
   url: '/api/v1/getListMovies';
   params: z.input<typeof queryParamsSchema>;
-  return: Awaited<ReturnType<typeof getListMovies>>;
+  data: Awaited<ReturnType<typeof getListMovies>>;
 }>;
 
 const queryParamsSchema = z.object({

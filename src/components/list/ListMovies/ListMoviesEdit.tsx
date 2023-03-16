@@ -6,8 +6,9 @@ import { shallow } from 'zustand/shallow';
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItem } from '@/components/movie/MovieItem';
 import { MovieAdd } from '@/components/movie/MovieAdd';
+import { ListMoviesGrid } from './ListMoviesGrid';
 
-const getMovie = (key: string) => useListStore.getState().data.movies.get(key)?.movie as Movie;
+const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
 export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => {
   const keys = useListStore(
@@ -17,20 +18,29 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
 
   if (!keys || !keys.length) {
     return (
-      <ul className="mb-44 grid grid-cols-7 gap-2" suppressHydrationWarning={true}>
-        {(JSON.parse(initialMovies) as Movie[]).map((movie) => (
-          <MovieItem key={movie.id} movie={movie} />
+      <ListMoviesGrid>
+        {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
+          <MovieItem key={movie.id} movie={movie} index={index} />
         ))}
         <MovieAdd />
-      </ul>
+      </ListMoviesGrid>
     );
   }
   return (
-    <ul className="mb-44 grid grid-cols-7 gap-2" suppressHydrationWarning={true}>
-      {keys.map((key) => (
-        <MovieItem key={key} movie={getMovie(key)} />
-      ))}
+    <ListMoviesGrid>
+      {keys.map((key, index) => {
+        const data = getMovie(key);
+        if (!data) return null;
+        return (
+          <MovieItem
+            key={data.movieId}
+            movie={data.movie}
+            posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
+            index={index}
+          />
+        );
+      })}
       <MovieAdd />
-    </ul>
+    </ListMoviesGrid>
   );
 };

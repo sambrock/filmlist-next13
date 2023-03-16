@@ -1,19 +1,26 @@
 import { memo } from 'react';
+import Image from 'next/image';
+
 import type { Movie } from '@prisma/client';
-import { MovieItemDelete } from './MovieItemDelete';
+import { MOVIE_IMAGE_URL } from '@/utils/constants';
 
 type MovieItemProps = {
   movie: Movie;
+  index: number;
+  posterSrc?: 'tmdb' | 'default';
 };
 
-export const MovieItem = memo(({ movie }: MovieItemProps) => {
+export const MovieItem = memo(({ movie, posterSrc = 'default', index }: MovieItemProps) => {
   return (
     <li className="cursor-pointer rounded-sm" suppressHydrationWarning={true}>
-      <img
+      <Image
         className="aspect-poster h-full w-full rounded-sm"
-        src={`https://image.tmdb.org/t/p/w342${movie.posterPath}`}
+        src={`${MOVIE_IMAGE_URL.poster.w342[posterSrc]}${movie.posterPath}`}
+        width={342}
+        height={513}
+        alt={movie.title}
+        priority={index < 20}
       />
-      {/* <MovieItemDelete id={movie.id} /> */}
     </li>
   );
 });
