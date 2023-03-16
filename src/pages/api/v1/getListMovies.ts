@@ -11,7 +11,7 @@ export type ListMoviesWithMovie = Prisma.ListMoviesGetPayload<{
   include: { movie: true },
 }>;
 
-export type GET_getListMovies = GetApiDefinition<{
+export type GET_GetListMovies = GetApiDefinition<{
   url: '/api/v1/getListMovies';
   params: z.input<typeof queryParamsSchema>;
   return: Awaited<ReturnType<typeof getListMovies>>;
