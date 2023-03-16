@@ -72,3 +72,13 @@ export const parseSearchQuery = (q: string) => {
     year,
   };
 };
+
+type QueryParams = { [key: string]: string | number | boolean | undefined };
+
+export const buildQueryString = (params: QueryParams): string => {
+  const query = Object.entries(params)
+    .filter(([_, value]) => value !== undefined)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value!)}`)
+    .join('&');
+  return query ? `?${query}` : '';
+};
