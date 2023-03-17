@@ -25,7 +25,7 @@ const queryParamsSchema = z.object({
     .transform((v) => +v),
 });
 
-const getListMovies = async (listId: string, page: number) => {
+export const getListMovies = async (listId: string, page: number) => {
   return await prisma.listMovies.findMany({
     where: { listId },
     include: { movie: true },

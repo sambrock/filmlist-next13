@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import Image from 'next/image';
-
 import type { Movie } from '@prisma/client';
+
 import { MOVIE_IMAGE_URL } from '@/constants';
 
 type MovieItemProps = {

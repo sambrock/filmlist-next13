@@ -23,7 +23,7 @@ export const MovieAdd = () => {
     >
       <PlusOutlined className="text-4xl text-black-100 mix-blend-lighten" />
 
-      <span className="absolute left-1/2 -translate-x-1/2 bottom-4 mt-auto self-start text-xs font-medium text-white/40">
+      <span className="absolute left-1/2 bottom-4 mt-auto -translate-x-1/2 self-start text-xs font-medium text-white/40">
         ⌘K Add a film
       </span>
     </div>

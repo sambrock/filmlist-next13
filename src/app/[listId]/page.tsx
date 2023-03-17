@@ -23,6 +23,7 @@ const StaticListPage = async ({ params }: StaticListPageProps) => {
         />
         <ListMoviesStatic
           listId={params.listId}
+          listCount={listCount}
           initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
         />
       </div>

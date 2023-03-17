@@ -8,24 +8,27 @@ import { ListMoviesGrid } from './ListMoviesGrid';
 import { Observable } from '@/components/common/Observable';
 import { useGetListMoviesInfinite } from '@/hooks/api/useGetListMoviesInfinite';
 
-export const ListMoviesStatic = ({ listId, initialMovies }: { listId: string; initialMovies: string }) => {
+type ListMovieStaticProps = {
+  listId: string;
+  initialMovies: string;
+  listCount: number;
+};
+
+export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovieStaticProps) => {
   const { isServer } = useSsr();
 
-  const { data, size, setSize } = useGetListMoviesInfinite(listId);
+  const { data, size, setSize } = useGetListMoviesInfinite(listId, listCount - JSON.parse(initialMovies).length);
 
-  const movies: Movie[] = JSON.parse(initialMovies)
-    .concat(data?.flat().map((m) => m?.movie))
-    .filter(Boolean);
-
-    // FIX:
-    // SHouldn't load same page more than once
-    // Stop loading if no more results
-    // Show loading indicator (calculate expected results and show skeleton)
-    // Can i use suspense?
+  // isServer prevents hydration mismatch
+  const movies: Movie[] = isServer
+    ? (JSON.parse(initialMovies) as Movie[])
+    : JSON.parse(initialMovies)
+        .concat(data?.flat().map((m) => m?.movie))
+        .filter(Boolean);
 
   return (
     <ListMoviesGrid>
-      {(isServer ? (JSON.parse(initialMovies) as Movie[]) : movies).map((movie, index) => (
+      {movies.map((movie, index) => (
         <MovieItem key={movie.id} movie={movie} index={index} />
       ))}
       <Observable onObserve={() => setSize(size + 1)} />
