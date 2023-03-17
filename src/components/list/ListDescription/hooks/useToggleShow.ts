@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useAtomValue } from 'jotai';
 
-import { MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/utils/constants';
+import { MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/constants';
 import { isListDescriptionShowMoreAtom } from '../ListDescriptionStatic';
 
 export const useToggleShow = (text: string, maxLength = MAX_DESCRIPTION_PREVIEW_LENGTH) => {

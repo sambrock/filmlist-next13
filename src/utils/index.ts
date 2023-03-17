@@ -1,7 +1,7 @@
 import { customAlphabet } from 'nanoid';
 import { createRegExp, exactly } from 'magic-regexp';
 
-import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from './constants';
+import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from '../constants';
 
 export const generateNanoId = customAlphabet(NANO_ID_ALPHABET, NANO_ID_LENGTH);
 

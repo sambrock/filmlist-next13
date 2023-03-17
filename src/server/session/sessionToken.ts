@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import type { Session } from '@prisma/client';
 
-import { SESSION_TOKEN_NAME } from '@/utils/constants';
+import { SESSION_TOKEN_NAME } from '@/constants';
 
 export const createSessionToken = (session: Omit<Session, 'createdAt' | 'updatedAt'>) => {
   const sessionToken = jwt.sign(session, process.env.JWT_SECRET as string);

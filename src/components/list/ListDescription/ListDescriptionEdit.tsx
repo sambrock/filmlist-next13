@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
 import { Shortcut } from '@/components/common/Shortcut';
-import { MAX_DESCRIPTION_LENGTH, MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/utils/constants';
+import { MAX_DESCRIPTION_LENGTH, MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/constants';
 import { isListDescriptionShowMoreAtom, ListDescriptionStatic } from './ListDescriptionStatic';
 
 export const isEditingListDescriptionAtom = atom(false);

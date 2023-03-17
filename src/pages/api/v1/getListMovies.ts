@@ -3,7 +3,7 @@ import type { Prisma } from '@prisma/client';
 
 import { handler } from '@/server/handler';
 import { prisma } from '@/server/prisma';
-import { MAX_LIST_MOVIES } from '@/utils/constants';
+import { MAX_LIST_MOVIES } from '@/constants';
 import type { Api } from '@/api/api.types';
 
 export type ListMoviesWithMovie = Prisma.ListMoviesGetPayload<{

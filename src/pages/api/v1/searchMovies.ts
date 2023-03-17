@@ -4,7 +4,7 @@ import type { Movie } from '@prisma/client';
 import { TMDbApi, type TMDbMovieResponse } from '@/services/tmdb';
 import { handler } from '@/server/handler';
 import { parseSearchQuery } from '@/utils';
-import { MAX_SEARCH_RESULTS } from '@/utils/constants';
+import { MAX_SEARCH_RESULTS } from '@/constants';
 import type { Api } from '@/api/api.types';
 
 export type GET_SearchMovies = Api.GetRoute<{

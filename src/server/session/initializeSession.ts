@@ -1,6 +1,6 @@
 import { prisma } from '../prisma';
 import { generateNanoId } from '@/utils';
-import { SESSION_ID_LENGTH } from '@/utils/constants';
+import { SESSION_ID_LENGTH } from '@/constants';
 
 export const initializeSession = async (userId?: string, listId?: string) => {
   const sessionId = generateNanoId(SESSION_ID_LENGTH);

@@ -6,7 +6,7 @@ import useSwr from 'swr';
 
 import { api } from '@/api/api';
 import { useListStore } from '@/store/list/useListStore';
-import { MAX_LIST_MOVIES } from '@/utils/constants';
+import { MAX_LIST_MOVIES } from '@/constants';
 
 const dispatch = useListStore.getState().dispatch;
 

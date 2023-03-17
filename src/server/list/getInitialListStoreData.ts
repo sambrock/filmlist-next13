@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 
 import { prisma } from '../prisma';
-import { MAX_LIST_MOVIES } from '@/utils/constants';
+import { MAX_LIST_MOVIES } from '@/constants';
 
 export type InitialListStoreData = Prisma.ListGetPayload<{
   where: { id: number };

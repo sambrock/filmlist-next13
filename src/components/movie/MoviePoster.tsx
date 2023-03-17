@@ -3,7 +3,7 @@
 import { clsx } from 'clsx';
 
 import { useImageOnLoad } from '@/hooks/useImageOnLoad';
-import { MOVIE_IMAGE_URL } from '@/utils/constants';
+import { MOVIE_IMAGE_URL } from '@/constants';
 
 export const MoviePoster = ({ posterPath, ...props }: React.ComponentProps<'img'> & { posterPath: string }) => {
   const { handleOnLoad, imgClassName } = useImageOnLoad();

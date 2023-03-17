@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { cookies } from 'next/headers';
 
 import { verifySessionToken } from '@/server/session/sessionToken';
-import { SESSION_TOKEN_NAME } from '@/utils/constants';
+import { SESSION_TOKEN_NAME } from '@/constants';
 import EditListPage from './[listId]/edit/page';
 import { InitSession } from './InitSession';
 
