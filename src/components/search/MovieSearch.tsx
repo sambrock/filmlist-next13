@@ -39,6 +39,14 @@ export const MovieSearch = () => {
     searchContainerRef
   );
 
+  useEventListener('keydown', (e) => {
+    if (e.key === 'k' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      setSearchIsActive(true);
+      inputRef.current?.focus();
+    }
+  });
+
   useOnClickOutside(
     searchContainerRef,
     () => {
@@ -48,16 +56,22 @@ export const MovieSearch = () => {
     'mouseup'
   );
 
-  if (!searchIsActive) return null;
   return (
     <div
       ref={searchContainerRef}
       tabIndex={0}
-      className={clsx('rounded-md bg-black-700 shadow-lg shadow-black/60 outline-none')}
+      className={clsx('relative bg-black-700 outline-none', {
+        'rounded-md': !searchIsActive,
+        'rounded-t-md shadow-lg shadow-black/60': searchIsActive,
+      })}
     >
-      <MovieSearchInput ref={inputRef} />
-      <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
-      <MovieSearchHelper searchContainerRef={searchContainerRef} />
+      <MovieSearchInput ref={inputRef} onFocus={() => setSearchIsActive(true)} />
+      {searchIsActive && (
+        <div className="absolute w-full rounded-b-md bg-black-700 shadow-lg shadow-black/60">
+          <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
+          <MovieSearchHelper searchContainerRef={searchContainerRef} />
+        </div>
+      )}
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useIsClient } from 'usehooks-ts';
 
 import { useListStore } from '@/store/list/useListStore';
-import { api } from '@/api/api';
+import { api } from '@/api';
 
 export const InitSession = ({ isSession }: { isSession: boolean }) => {
   const isInit = useRef(false);

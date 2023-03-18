@@ -12,6 +12,7 @@ export const api = {
   ): Promise<Api.ApiRouteData<T>> => {
     return fetch(`${BASE_URL}${url}${buildQueryString(params || {})}`, {
       ...config,
+      method: 'GET',
       headers: { 'Content-Type': 'application/json', ...config.headers },
     }).then((res) => res.json());
   },
@@ -23,6 +24,7 @@ export const api = {
   ): Promise<Api.ApiRouteData<T>> => {
     return fetch(BASE_URL + url, {
       ...config,
+      method: 'POST',
       headers: { 'Content-Type': 'application/json', ...config.headers },
       body: JSON.stringify(data),
     }).then((res) => res.json());

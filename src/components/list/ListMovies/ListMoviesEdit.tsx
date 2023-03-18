@@ -5,7 +5,6 @@ import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItem } from '@/components/movie/MovieItem';
-import { MovieAdd } from '@/components/movie/MovieAdd';
 import { ListMoviesGrid } from './ListMoviesGrid';
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
@@ -16,13 +15,12 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
     shallow
   );
 
-  if (!keys || !keys.length) {
+  if (!keys.length) {
     return (
       <ListMoviesGrid>
         {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
           <MovieItem key={movie.id} movie={movie} index={index} />
         ))}
-        <MovieAdd />
       </ListMoviesGrid>
     );
   }
@@ -40,7 +38,6 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
           />
         );
       })}
-      <MovieAdd />
     </ListMoviesGrid>
   );
 };

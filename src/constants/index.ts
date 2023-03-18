@@ -6,6 +6,10 @@ export const MAX_SEARCH_RESULTS = 4;
 export const MAX_LIST_MOVIES = 28;
 export const SESSION_ID_LENGTH = 24;
 export const SESSION_TOKEN_NAME = 'session_token';
+export const MAX_DESCRIPTION_LENGTH = 3000;
+export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;
+export const MAX_TITLE_LENGTH = 200;
+
 export const MOVIE_IMAGE_URL = {
   poster: {
     w92: 'https://image.tmdb.org/t/p/w92',
@@ -23,5 +27,3 @@ export const MOVIE_IMAGE_URL = {
     },
   },
 } as const;
-export const MAX_DESCRIPTION_LENGTH = 3000;
-export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;

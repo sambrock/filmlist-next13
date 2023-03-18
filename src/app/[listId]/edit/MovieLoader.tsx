@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useIntersectionObserver } from 'usehooks-ts';
 import useSwr from 'swr';
 
-import { api } from '@/api/api';
+import { api } from '@/api';
 import { useListStore } from '@/store/list/useListStore';
 import { MAX_LIST_MOVIES } from '@/constants';
 

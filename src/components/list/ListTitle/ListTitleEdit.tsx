@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { clsx } from 'clsx';
 
 import { useListStore } from '@/store/list/useListStore';
@@ -9,30 +9,37 @@ import { listTitleStyles } from './ListTitleStatic';
 const dispatch = useListStore.getState().dispatch;
 
 export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
-  const title = useListStore((state) => state.data.list?.title || '');
+  const [title, setTitle] = useState(initialTitle);
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
     const value = (e.target as HTMLDivElement).innerText;
 
+    setTitle(value);
+
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       dispatch({ type: 'SET_TITLE', payload: value });
-    }, 500);
+    }, 250);
   };
 
   return (
     <div
       className={clsx(listTitleStyles, 'focus:outline-none', {
-        'text-white/30 after:content-["Untitled"]': !initialTitle && !title,
-        'text-white-text': initialTitle || title,
+        'text-black-300 after:content-["Untitled"]': !title,
+        'text-white-text': title,
       })}
       onInput={handleInput}
       contentEditable={true}
+      onPaste={(e) => {
+        // Remove formatting when pasting
+        e.preventDefault();
+        const text = e.clipboardData?.getData('text/plain');
+        document.execCommand('insertHTML', false, text);
+      }}
       spellCheck={false}
       suppressContentEditableWarning={true}
-      suppressHydrationWarning={true}
     >
       {initialTitle}
     </div>

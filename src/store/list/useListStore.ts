@@ -3,7 +3,7 @@ import { applyPatches, enableMapSet, enablePatches } from 'immer';
 
 import type { ListStore } from './store.types';
 import { listReducer } from './listReducer';
-import { api } from '@/api/api';
+import { api } from '@/api';
 
 enablePatches();
 enableMapSet();

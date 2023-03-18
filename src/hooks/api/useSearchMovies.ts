@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import useSWRImmutable from 'swr/immutable';
 
-import { api } from '@/api/api';
+import { api } from '@/api';
 import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
 // Might be a better way to do this, but this works for now

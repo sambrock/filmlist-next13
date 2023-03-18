@@ -1,5 +1,5 @@
-import { clsx } from 'clsx';
 import { Plus_Jakarta_Sans } from '@next/font/google';
+import { clsx } from 'clsx';
 
 const logoFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -8,7 +8,7 @@ const logoFont = Plus_Jakarta_Sans({
 });
 
 type HeaderProps = {
-  search?: JSX.Element;
+  search?: React.ReactNode;
 };
 
 export const Header = ({ search }: HeaderProps) => {

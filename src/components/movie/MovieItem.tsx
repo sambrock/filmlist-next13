@@ -3,6 +3,7 @@ import Image from 'next/image';
 import type { Movie } from '@prisma/client';
 
 import { MOVIE_IMAGE_URL } from '@/constants';
+import { MovieItemDelete } from './MovieItemDelete';
 
 type MovieItemProps = {
   movie: Movie;
@@ -21,6 +22,7 @@ export const MovieItem = memo(({ movie, posterSrc = 'default', index }: MovieIte
         alt={movie.title}
         priority={index < 20}
       />
+      {/* <MovieItemDelete id={movie.id} /> */}
     </li>
   );
 });

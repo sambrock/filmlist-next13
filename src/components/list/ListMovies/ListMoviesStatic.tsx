@@ -1,7 +1,6 @@
 'use client';
 
 import type { Movie } from '@prisma/client';
-import { useSsr } from 'usehooks-ts';
 
 import { MovieItem } from '@/components/movie/MovieItem';
 import { ListMoviesGrid } from './ListMoviesGrid';
@@ -15,16 +14,11 @@ type ListMovieStaticProps = {
 };
 
 export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovieStaticProps) => {
-  const { isServer } = useSsr();
-
   const { data, size, setSize } = useGetListMoviesInfinite(listId, listCount - JSON.parse(initialMovies).length);
 
-  // isServer prevents hydration mismatch
-  const movies: Movie[] = isServer
-    ? (JSON.parse(initialMovies) as Movie[])
-    : JSON.parse(initialMovies)
-        .concat(data?.flat().map((m) => m?.movie))
-        .filter(Boolean);
+  const movies: Movie[] = JSON.parse(initialMovies)
+    .concat(data?.flat().map((m) => m?.movie))
+    .filter(Boolean);
 
   return (
     <ListMoviesGrid>
