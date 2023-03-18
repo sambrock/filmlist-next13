@@ -14,7 +14,10 @@ type ListMovieStaticProps = {
 };
 
 export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovieStaticProps) => {
-  const { data, size, setSize } = useGetListMoviesInfinite(listId, listCount - JSON.parse(initialMovies).length);
+  const { data, size, setSize, hasMore } = useGetListMoviesInfinite(
+    listId,
+    listCount - JSON.parse(initialMovies).length
+  );
 
   const movies: Movie[] = JSON.parse(initialMovies)
     .concat(data?.flat().map((m) => m?.movie))
@@ -25,7 +28,12 @@ export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovie
       {movies.map((movie, index) => (
         <MovieItem key={movie.id} movie={movie} index={index} />
       ))}
-      <Observable onObserve={() => setSize(size + 1)} />
+      <Observable
+        onObserve={() => {
+          if (!hasMore) return;
+          setSize(size + 1);
+        }}
+      />
     </ListMoviesGrid>
   );
 };

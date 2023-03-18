@@ -23,5 +23,5 @@ export const useGetListMoviesInfinite = (listId: string, listTotal: number) => {
     }
   );
 
-  return swr;
+  return { ...swr, hasMore: hasMoreRef.current };
 };

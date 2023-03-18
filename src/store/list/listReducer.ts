@@ -15,6 +15,7 @@ const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
   const listId = draft.data.list.id;
   const order =
     draft.data.movies.size > 0 ? Math.max(...Array.from(draft.data.movies.values()).map((m) => m.order)) + 1 : 1;
+
   draft.data.movies.set(payload.id.toString(), {
     listId,
     movieId: payload.id,

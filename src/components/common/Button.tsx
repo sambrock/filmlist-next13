@@ -15,7 +15,7 @@ declare module 'react' {
 export type ButtonTextProps<C extends React.ElementType> = PolymorphicComponentProps<
   C,
   {
-    tone?: 'neutral' | 'critical' | 'custom';
+    tone?: 'neutral' | 'critical' | 'primary' | 'custom';
     variant?: 'solid' | 'transparent';
     size?: 'standard' | 'small';
     icon?: React.ReactNode;
@@ -50,9 +50,10 @@ const _Button = <C extends React.ElementType = 'button'>(
         variant === 'solid' && {
           'bg-black-700 text-white/40 hover:bg-black-700': tone === 'neutral',
           'bg-black-700 text-red-500 hover:bg-black-700': tone === 'critical',
+          'bg-white/80 text-black-700 hover:bg-white/90': tone === 'primary',
         },
         variant === 'transparent' && {
-          'bg-transparent text-white/40 hover:bg-black-700': tone === 'neutral',
+          'bg-transparent text-white/40 hover:bg-black-700': tone === 'neutral' || tone === 'primary',
           'bg-transparent text-red-500 hover:bg-black-700': tone === 'critical',
         },
         { 'flex items-center': 1 === 1 },

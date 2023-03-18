@@ -6,6 +6,7 @@ import { ListTitleStatic } from '@/components/list/ListTitle/ListTitleStatic';
 import { ListDescriptionStatic } from '@/components/list/ListDescription/ListDescriptionStatic';
 import { ListMoviesStatic } from '@/components/list/ListMovies/ListMoviesStatic';
 import { Header } from '@/components/layout/Header';
+import { ListActionsStatic } from '@/components/list/ListActions/ListActionsStatic';
 
 type StaticListPageProps = {
   params: {
@@ -22,7 +23,7 @@ const StaticListPage = async ({ params }: StaticListPageProps) => {
       <main>
         <div className="grid gap-4">
           <ListHeader
-            actions={null}
+            actions={<ListActionsStatic />}
             title={<ListTitleStatic title={initialData?.title || ''} />}
             description={<ListDescriptionStatic description={initialData?.description || ''} />}
           />

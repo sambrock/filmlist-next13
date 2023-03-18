@@ -1,9 +1,9 @@
 'use client';
 
 import { useLayoutEffect, useRef } from 'react';
-import { atom, useAtom, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
-import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
 import { Shortcut } from '@/components/common/Shortcut';
@@ -11,6 +11,7 @@ import { MAX_DESCRIPTION_LENGTH, MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/consta
 import { isListDescriptionShowMoreAtom, ListDescriptionStatic } from './ListDescriptionStatic';
 
 export const isEditingListDescriptionAtom = atom(false);
+export const descriptionAtom = atom('');
 
 const dispatch = useListStore.getState().dispatch;
 
@@ -39,31 +40,25 @@ export const ListDescriptionEdit = ({ initialDescription }: { initialDescription
   return (
     <div ref={containerRef}>
       {!isEditingListDescription && <ListDescriptionEditStatic initialDescription={initialDescription} />}
-      {isEditingListDescription && <ListDescriptionEditing initialDescription={initialDescription} />}
+      {isEditingListDescription && <ListDescriptionEditing />}
     </div>
   );
 };
 
 const ListDescriptionEditStatic = ({ initialDescription }: { initialDescription: string }) => {
-  const description = useListStore((state) => state.data.list.description, shallow);
+  useHydrateAtoms([[descriptionAtom, initialDescription || '']]);
+  const description = useAtomValue(descriptionAtom);
 
   const setIsEditingListDescription = useSetAtom(isEditingListDescriptionAtom);
 
-  return (
-    <ListDescriptionStatic
-      onClick={() => setIsEditingListDescription(true)}
-      description={description || initialDescription}
-    />
-  );
+  return <ListDescriptionStatic onClick={() => setIsEditingListDescription(true)} description={description} />;
 };
 
-const ListDescriptionEditing = ({ initialDescription }: { initialDescription: string }) => {
-  const description = useListStore((state) => state.data.list.description, shallow);
+const ListDescriptionEditing = () => {
+  const [description, setDescription] = useAtom(descriptionAtom);
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const valueRef = useRef(description ? description : initialDescription);
 
   const handleTextAreaSize = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = 'auto';
@@ -84,9 +79,10 @@ const ListDescriptionEditing = ({ initialDescription }: { initialDescription: st
         ref={textAreaRef}
         className="w-full resize-none rounded bg-transparent py-3 px-2 text-base text-white/60 outline-none"
         autoFocus={true}
-        defaultValue={valueRef.current}
+        value={description || ''}
         spellCheck={false}
         onChange={(e) => {
+          setDescription(e.target.value);
           handleTextAreaSize(e);
 
           if (timeoutRef.current) {

@@ -13,8 +13,10 @@ type HeaderProps = {
 
 export const Header = ({ search }: HeaderProps) => {
   return (
-    <header className="fade-black-gradient-180 sticky top-0 grid w-full grid-cols-7 items-center py-4">
-      <h1 className={clsx(logoFont.variable, 'font-logo text-3xl font-black')}>filmq</h1>
+    <header className="fade-black-gradient-180 sticky top-0 grid min-h-[70px] w-full grid-cols-7 items-center py-4">
+      <div className="flex items-center">
+        <h1 className={clsx(logoFont.variable, 'font-logo text-3xl font-black')}>filmq</h1>
+      </div>
       <div className="col-span-3 col-start-3 mx-4">{search ? search : null}</div>
     </header>
   );

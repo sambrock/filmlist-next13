@@ -1,8 +1,8 @@
 'use client';
 
+import { forwardRef, Fragment } from 'react';
 import type { Movie } from '@prisma/client';
 import { clsx } from 'clsx';
-import { forwardRef, Fragment } from 'react';
 
 import { MoviePoster } from '../movie/MoviePoster';
 

@@ -7,11 +7,10 @@ import { MovieItemDelete } from './MovieItemDelete';
 
 type MovieItemProps = {
   movie: Movie;
-  index: number;
   posterSrc?: 'tmdb' | 'default';
 };
 
-export const MovieItem = memo(({ movie, posterSrc = 'default', index }: MovieItemProps) => {
+export const MovieItem = memo(({ movie, posterSrc = 'default' }: MovieItemProps) => {
   return (
     <li className="cursor-pointer rounded-sm" suppressHydrationWarning={true}>
       <Image
@@ -20,7 +19,6 @@ export const MovieItem = memo(({ movie, posterSrc = 'default', index }: MovieIte
         width={342}
         height={513}
         alt={movie.title}
-        priority={index < 20}
       />
       {/* <MovieItemDelete id={movie.id} /> */}
     </li>

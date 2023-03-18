@@ -81,6 +81,9 @@ export const useListKeyboardNavigate = ({
 
   return {
     focusedIndex: state.focusedIndex,
-    setFocusedIndex: (index: number) => dispatch({ type: 'SET_INDEX', payload: index }),
+    setFocusedIndex: (index: number) => {
+      if (index < 0 || index > length - 1 || state.focusedIndex === index) return;
+      dispatch({ type: 'SET_INDEX', payload: index });
+    },
   };
 };
