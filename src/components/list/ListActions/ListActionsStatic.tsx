@@ -2,14 +2,7 @@
 
 import { useSetAtom } from 'jotai';
 
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ExportOutlined,
-  FormOutlined,
-  PictureOutlined,
-  ShareAltOutlined,
-} from '@ant-design/icons';
+import { FormOutlined } from '@ant-design/icons';
 import { isEditingListDescriptionAtom } from '../ListDescription/ListDescriptionEdit';
 import { Button } from '@/components/common/Button';
 
@@ -26,17 +19,6 @@ export const ListActionsStatic = () => {
           icon={<FormOutlined />}
         >
           Hide description
-        </Button>
-      </div>
-      <div className="flex items-center">
-        <Button size="small" variant="transparent" icon={<ShareAltOutlined />}>
-          Share
-        </Button>
-        <Button size="small" variant="transparent" icon={<ExportOutlined />}>
-          Export
-        </Button>
-        <Button size="small" variant="transparent" icon={<EditOutlined />}>
-          Edit
         </Button>
       </div>
     </div>

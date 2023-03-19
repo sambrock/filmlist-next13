@@ -26,7 +26,7 @@ export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovie
   return (
     <ListMoviesGrid>
       {movies.map((movie, index) => (
-        <MovieItem key={movie.id} movie={movie} index={index} />
+        <MovieItem key={movie.id} movie={movie} />
       ))}
       <Observable
         onObserve={() => {

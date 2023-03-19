@@ -16,7 +16,7 @@ export const ListDescriptionStatic = ({
   return (
     <div {...props}>
       <div
-        className="inline whitespace-pre-wrap font-serif text-white/60 [&>ol]:ml-4 [&>ol]:list-decimal [&>ol]:pl-4 [&>ul]:ml-4 [&>ul]:list-disc [&>ul]:pl-4"
+        className="inline whitespace-pre-wrap text-white/60 [&>ol]:ml-4 [&>ol]:list-decimal [&>ol]:pl-4 [&>ul]:ml-4 [&>ul]:list-disc [&>ul]:pl-4"
         dangerouslySetInnerHTML={{ __html: parseMarkdown(text) || text }}
       />
       {enableToggleShow() && <ListDescriptionToggleShow />}
@@ -36,7 +36,7 @@ const ListDescriptionToggleShow = () => {
           setIsShowMore(!isShowMore);
         }}
       >
-        {isShowMore ? 'Show less' : 'Show more'}
+        {isShowMore ? 'less' : 'more'}
       </button>
     </span>
   );

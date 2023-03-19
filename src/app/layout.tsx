@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head />
       <body
-        className={clsx(sans.variable, serif.variable, 'container mx-auto bg-black-900 px-4 font-sans text-white-text')}
+        className={clsx(sans.variable, serif.variable, 'mx-auto bg-black-900 px-4 font-sans text-white-text')}
       >
         {children}
       </body>

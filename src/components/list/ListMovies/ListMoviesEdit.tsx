@@ -6,7 +6,6 @@ import { shallow } from 'zustand/shallow';
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItem } from '@/components/movie/MovieItem';
 import { ListMoviesGrid } from './ListMoviesGrid';
-import { MoviePlaceholder } from '@/components/movie/MoviePlaceholder';
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
@@ -23,13 +22,6 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
     shallow
   );
 
-  if (keys.length === 0 && (JSON.parse(initialMovies) as Movie[]).length === 0) {
-    return (
-      <ListMoviesGrid>
-        <MoviePlaceholder />
-      </ListMoviesGrid>
-    );
-  }
   if (keys.length === 0 || !keys) {
     return (
       <ListMoviesGrid>

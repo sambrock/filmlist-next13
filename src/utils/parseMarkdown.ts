@@ -4,7 +4,7 @@
 // dropdown.js
 // https://github.com/adamvleggett/drawdown
 
-export function parseMarkdown(src) {
+export function parseMarkdown(src: string) {
   // let rx_lt = /</g;
   // let rx_gt = />/g;
   let rx_space = /\t|\r|\uf8ff/g;

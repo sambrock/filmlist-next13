@@ -24,12 +24,14 @@ const EditListPage = async ({ params }: EditListPageProps) => {
   return (
     <Fragment>
       <Header search={<MovieSearch />} />
-      <main>
+      <main className="container mx-auto">
         <div className="grid gap-4">
           <ListHeader
             actions={<ListActionsEdit />}
             title={<ListTitleEdit initialTitle={initialData?.title || ''} />}
-            description={<ListDescriptionEdit initialDescription={parseMarkdown(initialData?.description) || ''} />}
+            description={
+              <ListDescriptionEdit initialDescription={parseMarkdown(initialData?.description || '') || ''} />
+            }
           />
           <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
         </div>

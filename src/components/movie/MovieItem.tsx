@@ -3,7 +3,6 @@ import Image from 'next/image';
 import type { Movie } from '@prisma/client';
 
 import { MOVIE_IMAGE_URL } from '@/constants';
-import { MovieItemDelete } from './MovieItemDelete';
 
 type MovieItemProps = {
   movie: Movie;
@@ -20,7 +19,6 @@ export const MovieItem = memo(({ movie, posterSrc = 'default' }: MovieItemProps)
         height={513}
         alt={movie.title}
       />
-      {/* <MovieItemDelete id={movie.id} /> */}
     </li>
   );
 });

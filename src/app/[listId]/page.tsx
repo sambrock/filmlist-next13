@@ -20,7 +20,7 @@ const StaticListPage = async ({ params }: StaticListPageProps) => {
   return (
     <Fragment>
       <Header />
-      <main>
+      <main className="container mx-auto">
         <div className="grid gap-4">
           <ListHeader
             actions={<ListActionsStatic />}

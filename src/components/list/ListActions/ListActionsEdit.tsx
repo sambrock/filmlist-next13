@@ -24,7 +24,7 @@ export const ListActionsEdit = () => {
           Add cover
         </Button>
       </div>
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <Button size="small" variant="transparent" icon={<ShareAltOutlined />}>
           Share
         </Button>
@@ -40,7 +40,7 @@ export const ListActionsEdit = () => {
         >
           Delete
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };
