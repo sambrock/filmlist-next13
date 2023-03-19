@@ -67,7 +67,7 @@ export const MovieSearch = () => {
     >
       <MovieSearchInput ref={inputRef} onFocus={() => setSearchIsActive(true)} />
       {searchIsActive && (
-        <div className="absolute w-full rounded-b-md bg-black-700 shadow-lg shadow-black/60">
+        <div className="absolute z-20 w-full rounded-b-md bg-black-700 shadow-lg shadow-black/60">
           <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
           <MovieSearchHelper searchContainerRef={searchContainerRef} />
         </div>
