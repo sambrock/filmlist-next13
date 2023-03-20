@@ -4,7 +4,7 @@ import type { Movie } from '@prisma/client';
 import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
-import { MovieItem } from '@/components/movie/MovieItem';
+import { MovieItemEdit } from '@/components/movie/MovieItemEdit/MovieItemEdit';
 import { ListMoviesGrid } from './ListMoviesGrid';
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
@@ -26,7 +26,7 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
     return (
       <ListMoviesGrid>
         {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
-          <MovieItem key={movie.id} movie={movie} />
+          <MovieItemEdit key={movie.id} movie={movie} />
         ))}
       </ListMoviesGrid>
     );
@@ -37,7 +37,11 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
         const data = getMovie(key);
         if (!data) return null;
         return (
-          <MovieItem key={data.movieId} movie={data.movie} posterSrc={data._isFromInitialData ? 'default' : 'tmdb'} />
+          <MovieItemEdit
+            key={data.movieId}
+            movie={data.movie}
+            posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
+          />
         );
       })}
     </ListMoviesGrid>

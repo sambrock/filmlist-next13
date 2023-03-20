@@ -1,51 +1,33 @@
-import { useRef, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
+import { useRef } from 'react';
+import useSWRInfinite from 'swr/infinite';
 
 import { api } from '@/api';
-import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
-// Might be a better way to do this, but this works for now
+export const useSearchMovies = (q: string) => {
+  const hasMoreRef = useRef(true);
 
-export const useSearchMovies = (
-  params: GET_SearchMovies['params'],
-  onHasMoreChange?: (hasMore: boolean) => void,
-  onSuccess?: () => void
-) => {
-  const [prevData, setPrevData] = useState<GET_SearchMovies['data']>([]);
-
-  const prevKey = useRef<string[]>([]);
-
-  const swr = useSWRImmutable(
-    params.q ? ['search', params.q, params.page] : null,
-    () => api.get('/api/v1/searchMovies', { params }),
+  const swr = useSWRInfinite(
+    (index) => ['searchMovies', q, index + 1],
+    (key) =>
+      hasMoreRef.current && q
+        ? api.get('/api/v1/searchMovies', { params: { q: key[1], page: key[2].toString() } })
+        : null,
     {
       keepPreviousData: true,
-      compare: () => {
-        // Don't rerender, updating state is fine
-        return true;
-      },
-      onSuccess(data, key) {
-        onSuccess?.();
-
-        if (prevKey.current[1] !== key.split(',')[1]) {
-          setPrevData([...data]);
+      revalidateOnReconnect: false,
+      revalidateFirstPage: false,
+      revalidateOnFocus: false,
+      revalidateOnMount: false,
+      onSuccess: (data) => {
+        const reversed = [...data].reverse();
+        if (reversed[0]?.length === 0) {
+          hasMoreRef.current = false;
         } else {
-          setPrevData([...prevData, ...data]);
+          hasMoreRef.current = true;
         }
-
-        if (data.length === 0) {
-          onHasMoreChange?.(false);
-        } else {
-          onHasMoreChange?.(true);
-        }
-
-        prevKey.current = key.split(',');
       },
     }
   );
 
-  return {
-    ...swr,
-    data: prevData,
-  };
+  return { ...swr, hasMore: hasMoreRef.current };
 };

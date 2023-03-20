@@ -11,8 +11,9 @@ import { MovieSearchInput } from './MovieSearchInput';
 import { useListStore } from '@/store/list/useListStore';
 import { MovieSearchResultsList, MovieSearchResultsListItem } from './MovieSearchResultsList';
 import { Badge } from '../common/Badge';
-import { disableLoadMoreAtom, MovieSearchHelper } from './MovieSearchHelper';
+import { MovieSearchHelper } from './MovieSearchHelper';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
+import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
 export const searchIsActiveAtom = atom(false);
 export const searchQueryAtom = atom('', (get, set, value: string) => {
@@ -86,15 +87,27 @@ const MovieSearchResults = ({
   const movieIds = useListStore((state) => state._listMovieIds, shallow);
 
   const q = useAtomValue(searchQueryAtom);
-  const page = useAtomValue(searchPageAtom);
-  const setDisableLoadMore = useSetAtom(disableLoadMoreAtom);
 
-  const { data } = useSearchMovies({ q, page: page.toString() }, (hasMore) => setDisableLoadMore(!hasMore));
+  const { data, hasMore, setSize, size } = useSearchMovies(q);
+
+  const movies = (data?.flat().filter(Boolean) as GET_SearchMovies['data']) || [];
+
+  useEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'l' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        if (!hasMore) return;
+        setSize(size + 1);
+      }
+    },
+    searchContainerRef
+  );
 
   const handleSelect = (index: number) => {
-    if (!data || data.length === 0) return;
-    if (movieIds.includes(data?.[index]?.id)) return;
-    const payload = data?.[index];
+    if (!movies || movies.length === 0) return;
+    if (movieIds.includes(movies?.[index]?.id)) return;
+    const payload = movies?.[index];
     dispatch({
       type: 'ADD_MOVIE',
       payload: {
@@ -117,9 +130,9 @@ const MovieSearchResults = ({
   const { focusedIndex, setFocusedIndex } = useListKeyboardNavigate({
     listenerRef: searchContainerRef,
     listRef: listRef,
-    length: data?.length ?? 0,
+    length: movies.length ?? 0,
     onSelect: (index) => {
-      if (!data || data.length === 0) return;
+      if (!movies || movies.length === 0) return;
       handleSelect(index);
       setFocusedIndex(-1);
     },
@@ -127,10 +140,10 @@ const MovieSearchResults = ({
 
   useEffect(() => setFocusedIndex(0), [q]);
 
-  if (!data || data.length === 0 || !q) return null;
+  if (!movies || movies.length === 0 || !q) return null;
   return (
     <MovieSearchResultsList ref={listRef}>
-      {data.map((movie, index) => (
+      {movies.map((movie, index) => (
         <MovieSearchResultsListItem
           key={movie.id}
           movie={movie}

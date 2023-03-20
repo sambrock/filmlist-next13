@@ -13,3 +13,7 @@
 .fade-black-gradient-0 {
   background: linear-gradient(0deg, rgba(13, 13, 13, 1) 0%, rgba(13, 13, 13, 0) 100%);
 }
+
+.fade-black-800-gradient-180 {
+  background: linear-gradient(0deg, rgba(18, 18, 18, 1) 0%, rgba(13, 13, 13, 0) 100%);
+}
