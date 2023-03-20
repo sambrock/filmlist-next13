@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:seed": "node prisma/seed.js",
-    "vercel-build": "prisma generate && next build"
+    "postinstall": "npx prisma generate",
+    "vercel-build": "npx prisma generate && next build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
