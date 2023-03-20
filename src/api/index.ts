@@ -2,8 +2,8 @@ import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 
 import { buildQueryString } from '@/utils';
 import type { Api } from './api.types';
+import { BASE_URL } from '@/constants';
 
-const BASE_URL = 'http://localhost:3000';
 
 export const api = {
   get: async <T extends Api.ApiGetRouteUrls>(
