@@ -30,7 +30,7 @@ export const useListStore = create<ListStore>((set) => ({
 }));
 
 useListStore.subscribe(async (state) => {
-  console.log(state);
+  // console.log(state);
   if (state.patches.length === 0) return;
   useListStore.setState({ patches: [] });
 

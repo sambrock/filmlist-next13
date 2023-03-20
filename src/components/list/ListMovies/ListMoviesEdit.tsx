@@ -1,15 +1,26 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import type { Movie } from '@prisma/client';
 import { shallow } from 'zustand/shallow';
+import useSWR from 'swr';
 
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItemEdit } from '@/components/movie/MovieItemEdit/MovieItemEdit';
 import { ListMoviesGrid } from './ListMoviesGrid';
+import { Observable } from '@/components/common/Observable';
+import { api } from '@/api';
+import { MAX_LIST_MOVIES } from '@/constants';
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
-export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => {
+export const ListMoviesEdit = ({
+  initialMovies,
+  observerLoader,
+}: {
+  initialMovies: string;
+  observerLoader?: React.ReactNode;
+}) => {
   const keys = useListStore(
     (state) =>
       [...state.data.movies.values()]
@@ -28,6 +39,7 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
         {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
           <MovieItemEdit key={movie.id} movie={movie} />
         ))}
+        {observerLoader && observerLoader}
       </ListMoviesGrid>
     );
   }
@@ -44,6 +56,41 @@ export const ListMoviesEdit = ({ initialMovies }: { initialMovies: string }) => 
           />
         );
       })}
+      {observerLoader && observerLoader}
     </ListMoviesGrid>
+  );
+};
+
+const dispatch = useListStore.getState().dispatch;
+
+export const ListMoviesEditObservable = ({ listId, isActive }: { listId: string; isActive: boolean }) => {
+  const [page, setPage] = useState(2);
+
+  const isLoadingRef = useRef(false);
+  const hasMoreRef = useRef(true);
+
+  const { isLoading } = useSWR(
+    [listId, page],
+    hasMoreRef.current ? () => api.get('/api/v1/getListMovies', { params: { listId, page: page.toString() } }) : null,
+    {
+      onSuccess: (data) => {
+        dispatch({ type: 'ADD_MOVIES', payload: data });
+        if (data.length < MAX_LIST_MOVIES) {
+          hasMoreRef.current = false;
+        }
+      },
+    }
+  );
+
+  if (!isActive) return null;
+  return (
+    <Observable
+      onObserve={() => {
+        if (!isLoading) {
+          setPage((page) => page + 1);
+          isLoadingRef.current = true;
+        }
+      }}
+    />
   );
 };

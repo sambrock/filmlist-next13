@@ -2,10 +2,10 @@
 
 import type { Movie } from '@prisma/client';
 
-import { MovieItemEdit } from '@/components/movie/MovieItemEdit/MovieItemEdit';
 import { ListMoviesGrid } from './ListMoviesGrid';
 import { Observable } from '@/components/common/Observable';
 import { useGetListMoviesInfinite } from '@/hooks/api/useGetListMoviesInfinite';
+import { MovieItemStatic } from '@/components/movie/MovieItemStatic/MovieItemStatic';
 
 type ListMovieStaticProps = {
   listId: string;
@@ -26,7 +26,7 @@ export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovie
   return (
     <ListMoviesGrid>
       {movies.map((movie, index) => (
-        <MovieItemEdit key={movie.id} movie={movie} />
+        <MovieItemStatic key={movie.id} movie={movie} />
       ))}
       <Observable
         onObserve={() => {

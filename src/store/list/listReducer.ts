@@ -45,7 +45,7 @@ const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'
 });
 
 export const listReducer = (state: ListStore, action: Action): ListStore => {
-  console.log(action);
+  // console.log(action);
   switch (action.type) {
     case 'SET_TITLE': {
       const [newState, patches, inversePatches] = setTitle(state, action.payload);

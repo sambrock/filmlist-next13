@@ -2,15 +2,15 @@ import { Fragment } from 'react';
 
 import { getInitialListStoreData } from '@/server/list/getInitialListStoreData';
 import { ListTitleEdit } from '@/components/list/ListTitle/ListTitleEdit';
-import { ListMoviesEdit } from '@/components/list/ListMovies/ListMoviesEdit';
+import { ListMoviesEdit, ListMoviesEditObservable } from '@/components/list/ListMovies/ListMoviesEdit';
 import { InitListStore } from '@/app/InitListStore';
-import { MovieLoader } from './MovieLoader';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListActionsEdit } from '@/components/list/ListActions/ListActionsEdit';
 import { ListHeader } from '@/components/list/ListHeader';
 import { ListDescriptionEdit } from '@/components/list/ListDescription/ListDescriptionEdit';
 import { parseMarkdown } from '@/utils/parseMarkdown';
 import { Header } from '@/components/layout/Header';
+import { MAX_LIST_MOVIES } from '@/constants';
 
 type EditListPageProps = {
   params: {
@@ -24,7 +24,7 @@ const EditListPage = async ({ params }: EditListPageProps) => {
   return (
     <Fragment>
       <Header search={<MovieSearch />} />
-      <main className="container mx-auto">
+      <main>
         <div className="grid gap-4">
           <ListHeader
             actions={<ListActionsEdit />}
@@ -33,10 +33,12 @@ const EditListPage = async ({ params }: EditListPageProps) => {
               <ListDescriptionEdit initialDescription={parseMarkdown(initialData?.description || '') || ''} />
             }
           />
-          <ListMoviesEdit initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])} />
+          <ListMoviesEdit
+            initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
+            observerLoader={<ListMoviesEditObservable listId={params.listId} isActive={listCount > MAX_LIST_MOVIES} />}
+          />
         </div>
 
-        <MovieLoader listId={params.listId} count={listCount} />
         <InitListStore initialListData={JSON.stringify(initialData)} initialListMovieIds={listMovieIds || []} />
       </main>
     </Fragment>

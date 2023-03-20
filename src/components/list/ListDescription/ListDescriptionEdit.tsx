@@ -97,7 +97,7 @@ const ListDescriptionEditing = () => {
       />
       <div className="flex items-center gap-4 border-t border-black-500 px-2 py-1">
         <button className="flex cursor-pointer">
-          <Shortcut>⏎ Save</Shortcut>
+          <Shortcut>⌘⏎ Save</Shortcut>
         </button>
         <Shortcut>HTML + Markdown supported</Shortcut>
       </div>
