@@ -1,5 +1,5 @@
-export const BASE_URL = process.env.BASE_URL;
-export const API_VERSION = process.env.API_VERSION;
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+export const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 export const NANO_ID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 export const NANO_ID_LENGTH = 12;
 export const MAX_SEARCH_RESULTS = 4;
