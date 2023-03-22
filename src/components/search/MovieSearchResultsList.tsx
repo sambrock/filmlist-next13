@@ -38,10 +38,13 @@ export const MovieSearchResultsListItem = ({
       <div className="flex w-full flex-col gap-1 rounded py-[4.5px] px-2">
         <div className="flex items-center space-x-1">
           <div
-            className={clsx('max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-medium', {
-              'text-white-text': isHighlighted,
-              'text-white/70': !isHighlighted,
-            })}
+            className={clsx(
+              'max-w-[240px] overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-medium md:max-w-xs',
+              {
+                'text-white-text': isHighlighted,
+                'text-white/70': !isHighlighted,
+              }
+            )}
           >
             {movie.title}
           </div>

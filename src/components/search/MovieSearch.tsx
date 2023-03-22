@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue } from 'jotai';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
@@ -12,8 +12,8 @@ import { useListStore } from '@/store/list/useListStore';
 import { MovieSearchResultsList, MovieSearchResultsListItem } from './MovieSearchResultsList';
 import { Badge } from '../common/Badge';
 import { MovieSearchHelper } from './MovieSearchHelper';
+import { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
-import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
 export const searchIsActiveAtom = atom(false);
 export const searchQueryAtom = atom('', (get, set, value: string) => {
@@ -29,6 +29,24 @@ export const MovieSearch = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [searchIsActive, setSearchIsActive] = useAtom(searchIsActiveAtom);
+
+  const q = useAtomValue(searchQueryAtom);
+
+  const { data, hasMore, setSize, size } = useSearchMovies(q);
+
+  const movies = (data?.flat().filter(Boolean) as GET_SearchMovies['data']) || [];
+
+  useEventListener(
+    'keydown',
+    (e) => {
+      if (e.key === 'l' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        if (!hasMore) return;
+        setSize(size + 1);
+      }
+    },
+    searchContainerRef
+  );
 
   useEventListener(
     'keydown',
@@ -69,7 +87,7 @@ export const MovieSearch = () => {
       <MovieSearchInput ref={inputRef} onFocus={() => setSearchIsActive(true)} />
       {searchIsActive && (
         <div className="absolute z-20 w-full rounded-b-md bg-black-700 shadow-lg shadow-black/60">
-          <MovieSearchResults searchContainerRef={searchContainerRef} inputRef={inputRef} />
+          <MovieSearchResults movies={movies} searchContainerRef={searchContainerRef} inputRef={inputRef} />
           <MovieSearchHelper searchContainerRef={searchContainerRef} />
         </div>
       )}
@@ -78,31 +96,15 @@ export const MovieSearch = () => {
 };
 
 const MovieSearchResults = ({
+  movies,
   searchContainerRef,
   inputRef,
 }: {
+  movies: GET_SearchMovies['data'];
   searchContainerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
 }) => {
   const movieIds = useListStore((state) => state._listMovieIds, shallow);
-
-  const q = useAtomValue(searchQueryAtom);
-
-  const { data, hasMore, setSize, size } = useSearchMovies(q);
-
-  const movies = (data?.flat().filter(Boolean) as GET_SearchMovies['data']) || [];
-
-  useEventListener(
-    'keydown',
-    (e) => {
-      if (e.key === 'l' && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        if (!hasMore) return;
-        setSize(size + 1);
-      }
-    },
-    searchContainerRef
-  );
 
   const handleSelect = (index: number) => {
     if (!movies || movies.length === 0) return;
@@ -138,6 +140,8 @@ const MovieSearchResults = ({
     },
   });
 
+  const q = useAtomValue(searchQueryAtom);
+
   useEffect(() => setFocusedIndex(0), [q]);
 
   if (!movies || movies.length === 0 || !q) return null;
@@ -158,7 +162,7 @@ const MovieSearchResults = ({
             movieIds.includes(movie.id) ? (
               <Badge>Added</Badge>
             ) : focusedIndex === index ? (
-              <span className="text-xs text-white/40">⏎</span>
+              <span className="hidden text-xs text-white/40 md:inline-block">⏎</span>
             ) : null
           }
         />

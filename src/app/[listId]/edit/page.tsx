@@ -11,6 +11,7 @@ import { ListDescriptionEdit } from '@/components/list/ListDescription/ListDescr
 import { parseMarkdown } from '@/utils/parseMarkdown';
 import { Header } from '@/components/layout/Header';
 import { MAX_LIST_MOVIES } from '@/constants';
+import { HeaderActionButtonsEdit } from '@/components/layout/HeaderActionButtonsEdit';
 
 type EditListPageProps = {
   params: {
@@ -23,7 +24,7 @@ const EditListPage = async ({ params }: EditListPageProps) => {
 
   return (
     <Fragment>
-      <Header search={<MovieSearch />} />
+      <Header search={<MovieSearch />} buttons={<HeaderActionButtonsEdit listId={params.listId} />} />
       <main>
         <div className="grid gap-4">
           <ListHeader

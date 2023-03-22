@@ -20,7 +20,7 @@ export const MovieSearchInput = forwardRef<HTMLInputElement, React.ComponentProp
         {...props}
         ref={ref}
         type="text"
-        className="mt-0.5 w-full bg-transparent py-2 text-sm text-white-text placeholder:text-white/60 focus:outline-none"
+        className="mt-0.5 w-full bg-transparent py-2 text-sm text-white-text placeholder:text-white/40 focus:outline-none"
         placeholder="Add a film"
         spellCheck={false}
         onChange={(e) => {

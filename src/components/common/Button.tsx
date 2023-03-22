@@ -1,5 +1,3 @@
-// 'use client';
-
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
@@ -42,21 +40,20 @@ const _Button = <C extends React.ElementType = 'button'>(
       {...props}
       ref={ref}
       className={clsx(
-        'group cursor-pointer whitespace-nowrap',
+        'group flex cursor-pointer items-center whitespace-nowrap',
         {
-          'rounded px-4 py-2 text-sm': size === 'standard',
+          'rounded-md px-2 py-1 text-sm': size === 'standard',
           'rounded px-1.5 py-[1px] text-sm': size === 'small',
         },
         variant === 'solid' && {
-          'bg-black-700 text-white/40 hover:bg-black-700': tone === 'neutral',
-          'bg-black-700 text-red-500 hover:bg-black-700': tone === 'critical',
-          'bg-white/80 text-black-700 hover:bg-white/90': tone === 'primary',
+          'bg-black-700 text-white/40 hover:bg-black-600': tone === 'neutral',
+          'bg-black-700 text-red-500 hover:bg-black-600': tone === 'critical',
+          'bg-[#fccc03] text-black-700 hover:bg-white/90': tone === 'primary',
         },
         variant === 'transparent' && {
           'bg-transparent text-white/40 hover:bg-black-700': tone === 'neutral' || tone === 'primary',
           'bg-transparent text-red-500 hover:bg-black-700': tone === 'critical',
         },
-        { 'flex items-center': 1 === 1 },
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className
       )}
@@ -78,13 +75,7 @@ const _Button = <C extends React.ElementType = 'button'>(
           {icon}
         </div>
       )}
-      <span
-        className={clsx({
-          'mt-[3px] inline-block': size === 'small',
-        })}
-      >
-        {props.children}
-      </span>
+      <span className={clsx('mt-[3px] inline-block')}>{props.children}</span>
     </Component>
   );
 };
