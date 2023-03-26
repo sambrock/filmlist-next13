@@ -12,23 +12,8 @@ model Session {
   id        String   @id @db.VarChar(24)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
   listId    String?
   list      List?    @relation(fields: [listId], references: [id])
-}
-
-model User {
-  id        String    @id @db.VarChar(12)
-  username  String    @unique
-  firstname String?
-  lastname  String?
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  List      List[]
-  Session   Session[]
 }
 
 model List {
@@ -37,7 +22,7 @@ model List {
   description String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  user        User?        @relation(fields: [userId], references: [id])
+  token       String       @unique @db.VarChar(20)
   userId      String?
   movies      ListMovies[]
   Session     Session[]

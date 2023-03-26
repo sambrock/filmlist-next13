@@ -79,14 +79,14 @@ export const MovieSearch = () => {
     <div
       ref={searchContainerRef}
       tabIndex={0}
-      className={clsx('relative bg-black-700 outline-none', {
+      className={clsx('relative bg-black-700 shadow-lg shadow-black-900 outline-none', {
         'rounded-md': !searchIsActive,
-        'rounded-t-md shadow-lg shadow-black/60': searchIsActive,
+        'rounded-t-md': searchIsActive,
       })}
     >
       <MovieSearchInput ref={inputRef} onFocus={() => setSearchIsActive(true)} />
       {searchIsActive && (
-        <div className="absolute z-20 w-full rounded-b-md bg-black-700 shadow-lg shadow-black/60">
+        <div className="absolute z-20 w-full rounded-b-md bg-black-700 shadow-lg shadow-black-900">
           <MovieSearchResults movies={movies} searchContainerRef={searchContainerRef} inputRef={inputRef} />
           <MovieSearchHelper searchContainerRef={searchContainerRef} />
         </div>

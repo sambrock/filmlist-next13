@@ -7,11 +7,15 @@ const listMovies = require('./seed-data/listMovies.json');
 const sessions = require('./seed-data/session.json');
 
 async function main() {
-  const listsCreated = await prisma.list.createMany({
-    data: list.map((l) => ({ ...l, createdAt: new Date(l.createdAt), updatedAt: new Date(l.updatedAt) })),
-    skipDuplicates: true,
-  });
-  console.log(`Created ${listsCreated.count} lists`);
+  // const listsCreated = await prisma.list.createMany({
+  //   data: list.map((l, i) => ({
+  //     ...l,
+  //     createdAt: new Date(l.createdAt),
+  //     updatedAt: new Date(l.updatedAt),
+  //     token: 'rhunht19hbrwzgk8o2' + i,
+  //   })),
+  // });
+  // console.log(`Created ${listsCreated.count} lists`);
 
   const moviesCreated = await prisma.movie.createMany({
     data: movies.map((m) => ({ ...m, releaseDate: new Date(m.releaseDate) })),
