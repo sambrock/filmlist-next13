@@ -6,6 +6,7 @@ import { atom, useSetAtom } from 'jotai';
 
 import { Button } from '../common/Button';
 import { ButtonIcon } from '../common/ButtonIcon';
+import { useListStore } from '@/store/list/useListStore';
 
 export const isShareMenuOpenAtom = atom(false);
 
@@ -36,7 +37,9 @@ export const ShareMenuButton = () => {
   );
 };
 
-export const ShareMenu = forwardRef<HTMLDivElement, { listId: string }>(({ listId }, ref) => {
+export const ShareMenu = forwardRef<HTMLDivElement>((props, ref) => {
+  const [listId, token] = useListStore((state) => [state.data.list.id, state.data.list.token]);
+
   return (
     <div ref={ref} className="min-w-[340px] max-w-md space-y-6 rounded-md bg-black-700 p-4 shadow-md shadow-black-900">
       <div className="space-y-1">
@@ -79,7 +82,9 @@ export const ShareMenu = forwardRef<HTMLDivElement, { listId: string }>(({ listI
               selection?.addRange(range);
             }}
           >
-            <span className="">https://filmq.co/e/{listId}?t=p4z5ptdkh89l9mtu9rik3r</span>
+            <span className="">
+              https://filmq.co/e/{listId}?t={token}
+            </span>
           </div>
           <Button icon={<LinkOutlined className="text-base" />} tone="neutral-light">
             Copy

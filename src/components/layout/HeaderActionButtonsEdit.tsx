@@ -8,7 +8,7 @@ import { Menu } from '../common/Menu';
 import { isMovieSearchMobileActiveAtom, MovieSearchMobile, MovieSearchMobileButton } from '../search/MovieSearchMobile';
 import { isShareMenuOpenAtom, ShareMenu, ShareMenuButton } from '../share/ShareMenu';
 
-export const HeaderActionButtonsEdit = ({ listId }: { listId: string }) => {
+export const HeaderActionButtonsEdit = ({ listId, editToken }: { listId: string; editToken: string }) => {
   const [isMovieSearchMobileActive, setIsMovieSearchMobileActive] = useAtom(isMovieSearchMobileActiveAtom);
   const [isShareMenuOpen, setIsShareMenuOpen] = useAtom(isShareMenuOpenAtom);
 
@@ -32,7 +32,7 @@ export const HeaderActionButtonsEdit = ({ listId }: { listId: string }) => {
         relative={false}
         menu={(ref) => (
           <div ref={ref} className="absolute right-0">
-            <ShareMenu listId={listId} />
+            <ShareMenu listId={listId} editToken={editToken} />
           </div>
         )}
       />

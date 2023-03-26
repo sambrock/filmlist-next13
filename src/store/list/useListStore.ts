@@ -15,6 +15,7 @@ export const useListStore = create<ListStore>((set) => ({
       userId: '',
       title: '',
       description: '',
+      token: '',
       createdAt: new Date(),
       updatedAt: new Date(),
     },

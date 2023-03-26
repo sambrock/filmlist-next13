@@ -15,6 +15,7 @@ export const createList = async () => {
     data: {
       id: listId,
       title: '',
+      token: generateNanoId(20),
     },
   });
 

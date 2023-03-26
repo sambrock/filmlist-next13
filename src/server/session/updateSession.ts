@@ -1,10 +1,9 @@
-import type { Session } from '@prisma/client';
 import { prisma } from '../prisma';
 
-export const updateSession = async (sessionId: string, session: Partial<Session>) => {
+export const updateSessionListId = async (sessionId: string, listId: string) => {
   const data = await prisma.session.update({
     where: { id: sessionId },
-    data: session,
+    data: { listId },
   });
 
   return data;

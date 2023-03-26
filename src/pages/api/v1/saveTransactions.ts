@@ -5,6 +5,7 @@ import { convertToPrismaTransactions, transactionSchema } from '@/server/transac
 import { prisma } from '@/server/prisma';
 import { saveTransactionMedia } from '@/server/transactions/saveTransactionMedia';
 import type { Api } from '@/api/api.types';
+import { authListRequest } from '@/server/list/authListRequest';
 
 export type POST_SaveTransactions = Api.PostRoute<{
   url: '/api/v1/saveTransactions';
@@ -19,6 +20,9 @@ const saveTransactionsSchema = z.object({
 
 export default handler({
   async post(req, res) {
+    const isAuthorized = authListRequest(req.body?.listId, req.cookies.session_token, req.cookies.list_token);
+    if (!isAuthorized) throw new HandlerError(401, 'Unauthorized');
+
     const parsedBody = saveTransactionsSchema.safeParse(req.body);
     if (!parsedBody.success) throw new HandlerError(400, parsedBody.error.message);
 

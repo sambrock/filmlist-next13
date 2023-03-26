@@ -1,8 +1,8 @@
 import { Api } from '@/api/api.types';
+import { createSessionToken, setSessionTokenCookie, verifySessionToken } from '@/server/cookies/session';
 import { handler, HandlerError } from '@/server/handler';
 import { createList } from '@/server/list/createList';
-import { createSessionToken, verifySessionToken, setSessionTokenCookie } from '@/server/session/sessionToken';
-import { updateSession } from '@/server/session/updateSession';
+import { updateSessionListId } from '@/server/session/updateSession';
 
 export type POST_CreateList = Api.PostRoute<{
   url: '/api/v1/createList';
@@ -17,7 +17,7 @@ export default handler({
 
     const list = await createList();
 
-    const updatedSession = await updateSession(session.id, { listId: list.id });
+    const updatedSession = await updateSessionListId(session.id, list.id);
 
     return res
       .status(201)
