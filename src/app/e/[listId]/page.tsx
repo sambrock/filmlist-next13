@@ -27,7 +27,7 @@ const Index = async ({ params, searchParams }: EditListPageProps) => {
     return <div>no match</div>;
   }
 
-  const listTokenCookie = setListTokenCookie(createListToken(params.listId));
+  const listTokenCookie = setListTokenCookie(createListToken(params.listId, initialData?.token || ''));
 
   return (
     <Fragment>

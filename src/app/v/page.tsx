@@ -1,5 +1,7 @@
+import { redirect } from 'next/navigation';
+
 const Index = () => {
-  return null;
+  return redirect('/');
 };
 
 export default Index;
