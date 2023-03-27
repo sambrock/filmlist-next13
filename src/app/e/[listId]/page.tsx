@@ -19,7 +19,10 @@ type EditListPageProps = {
 // https://beta.nextjs.org/docs/api-reference/file-conventions/page#searchparams-optional
 export const dynamic = 'force-dynamic';
 
-const Index = async ({ params, searchParams }: EditListPageProps) => {
+const Index = async (props: any) => {
+  // Broken type here, doesn't pass next build type checking
+  // TODO: need to fix this
+  const { params, searchParams } = props as EditListPageProps;
   const { initialData, listCount, listMovieIds } = await getInitialListStoreData(params.listId);
 
   const isTokenValid = searchParams.t === initialData?.token;
