@@ -15,6 +15,10 @@ type EditListPageProps = {
   };
 };
 
+// Required to access the search params
+// https://beta.nextjs.org/docs/api-reference/file-conventions/page#searchparams-optional
+export const dynamic = 'force-dynamic';
+
 const Index = async ({ params, searchParams }: EditListPageProps) => {
   const { initialData, listCount, listMovieIds } = await getInitialListStoreData(params.listId);
 
