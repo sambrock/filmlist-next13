@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
 export type ButtonIconProps = {
-  tone?: 'neutral' | 'critical' | 'primary' | 'custom';
+  tone?: 'neutral' | 'critical' | 'primary' | 'custom' | 'neutral-blur';
   variant?: 'solid' | 'transparent';
   size?: 'standard' | 'small';
   icon?: React.ReactNode;
@@ -28,16 +28,16 @@ const _ButtonIcon = (
         'group flex cursor-pointer items-center',
         {
           'rounded p-1.5 text-lg': size === 'standard',
-          'rounded p-1.5 text-sm': size === 'small',
+          'rounded p-1 text-sm': size === 'small',
         },
         variant === 'solid' && {
-          'bg-black-700 text-white/40 hover:bg-black-600': tone === 'neutral',
-          'bg-black-700 text-red-500 hover:bg-black-600': tone === 'critical',
-          'bg-[#fccc03] text-black-700 hover:bg-white/90': tone === 'primary',
+          'bg-neutral-700 text-white/40 hover:bg-neutral-600': tone === 'neutral',
+          'bg-neutral-800-blur text-white/40 hover:bg-neutral-600 hover:text-red-500': tone === 'critical',
+          // 'bg-neutral-800-blur text-red-500 hover:bg-neutral-600': tone === 'neutral-blur',
         },
         variant === 'transparent' && {
-          'bg-transparent text-white/40 hover:bg-black-700': tone === 'neutral' || tone === 'primary',
-          'bg-transparent text-red-500 hover:bg-black-700': tone === 'critical',
+          'bg-transparent text-white/40 hover:bg-neutral-700': tone === 'neutral' || tone === 'primary',
+          'bg-transparent text-red-500 hover:bg-neutral-700': tone === 'critical',
         },
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className

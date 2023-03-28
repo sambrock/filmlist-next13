@@ -39,7 +39,7 @@ export const MovieSearchInput = forwardRef<
           }, 350);
         }}
       />
-      <KeyboardShortcut keys={['⌘K']} />
+      <KeyboardShortcut keys={['⌘', 'K']} />
     </div>
   );
 });
