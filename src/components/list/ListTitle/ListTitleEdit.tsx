@@ -27,8 +27,8 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
   return (
     <div
       className={clsx(listTitleStyles, 'focus:outline-none', {
-        'text-black-300 after:content-["Untitled"]': !title,
-        'text-white-text': title,
+        'text-neutral-300 after:content-["Untitled"]': !title,
+        'text-off-white': title,
       })}
       onInput={handleInput}
       contentEditable={true}

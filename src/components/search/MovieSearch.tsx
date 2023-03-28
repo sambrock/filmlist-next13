@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { atom, useAtom, useAtomValue } from 'jotai';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
-import { useEventListener, useOnClickOutside } from 'usehooks-ts';
+import { useEventListener, useHover, useOnClickOutside } from 'usehooks-ts';
 
 import { useListKeyboardNavigate } from '@/hooks/useListKeyboardNavigate';
 import { MovieSearchInput } from './MovieSearchInput';
@@ -14,6 +14,7 @@ import { Badge } from '../common/Badge';
 import { MovieSearchHelper } from './MovieSearchHelper';
 import { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
+import { KeyboardShortcut } from '../common/KeyboardShortcut';
 
 export const searchIsActiveAtom = atom(false);
 export const searchQueryAtom = atom('', (get, set, value: string) => {
@@ -75,18 +76,29 @@ export const MovieSearch = () => {
     'mouseup'
   );
 
+  const isHover = useHover(searchContainerRef);
+
   return (
     <div
       ref={searchContainerRef}
       tabIndex={0}
-      className={clsx('relative bg-black-700 shadow-lg shadow-black-900 outline-none', {
-        'rounded-md': !searchIsActive,
-        'rounded-t-md': searchIsActive,
+      className={clsx('relative', {
+        'bg-neutral-800-blur rounded-md transition-colors hover:bg-neutral-700': !searchIsActive,
+        'rounded-t-md bg-neutral-700 ': searchIsActive,
       })}
     >
-      <MovieSearchInput ref={inputRef} onFocus={() => setSearchIsActive(true)} />
+      <MovieSearchInput
+        ref={inputRef}
+        isHover={isHover}
+        isSearchActive={searchIsActive}
+        onFocus={() => setSearchIsActive(true)}
+      />
       {searchIsActive && (
-        <div className="absolute z-20 w-full rounded-b-md bg-black-700 shadow-lg shadow-black-900">
+        <div
+          className={clsx('absolute z-20 w-full rounded-b-md bg-neutral-700 shadow-lg shadow-neutral-900', {
+            'border-x border-b border-neutral-600': searchIsActive,
+          })}
+        >
           <MovieSearchResults movies={movies} searchContainerRef={searchContainerRef} inputRef={inputRef} />
           <MovieSearchHelper searchContainerRef={searchContainerRef} />
         </div>
@@ -162,7 +174,7 @@ const MovieSearchResults = ({
             movieIds.includes(movie.id) ? (
               <Badge>Added</Badge>
             ) : focusedIndex === index ? (
-              <span className="hidden text-xs text-white/40 md:inline-block">⏎</span>
+              <KeyboardShortcut keys={['⏎']} />
             ) : null
           }
         />

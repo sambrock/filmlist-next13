@@ -6,9 +6,9 @@ import { useHydrateAtoms } from 'jotai/utils';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 
 import { useListStore } from '@/store/list/useListStore';
-import { Shortcut } from '@/components/common/Shortcut';
 import { MAX_DESCRIPTION_LENGTH, MAX_DESCRIPTION_PREVIEW_LENGTH } from '@/constants';
 import { isListDescriptionShowMoreAtom, ListDescriptionStatic } from './ListDescriptionStatic';
+import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 
 export const isEditingListDescriptionAtom = atom(false);
 export const descriptionAtom = atom('');
@@ -74,7 +74,7 @@ const ListDescriptionEditing = () => {
   const setIsShowMore = useSetAtom(isListDescriptionShowMoreAtom);
 
   return (
-    <div className="rounded bg-black-700">
+    <div className="rounded-md border border-neutral-600 bg-neutral-700">
       <textarea
         ref={textAreaRef}
         className="w-full resize-none rounded bg-transparent py-3 px-2 text-base text-white/60 outline-none"
@@ -95,11 +95,11 @@ const ListDescriptionEditing = () => {
         }}
         maxLength={MAX_DESCRIPTION_LENGTH}
       />
-      <div className="flex items-center gap-4 border-t border-black-500 px-2 py-1">
+      <div className="flex items-center gap-4 border-t border-neutral-600 px-2 py-1">
         <button className="flex cursor-pointer">
-          <Shortcut>⌘⏎ Save</Shortcut>
+          <KeyboardShortcut keys={['⌘⏎']} label="Save" />
         </button>
-        <Shortcut>HTML + Markdown supported</Shortcut>
+        <span className="text-xs font-medium text-white/40">HTML + Markdown supported</span>
       </div>
     </div>
   );

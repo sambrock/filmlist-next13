@@ -3,21 +3,31 @@
 import { forwardRef, Fragment } from 'react';
 import { LinkOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { atom, useSetAtom } from 'jotai';
+import { useEventListener } from 'usehooks-ts';
 
 import { Button } from '../common/Button';
 import { ButtonIcon } from '../common/ButtonIcon';
 import { useListStore } from '@/store/list/useListStore';
+import { InputCopy } from '../common/InputCopy';
 
 export const isShareMenuOpenAtom = atom(false);
 
 export const ShareMenuButton = () => {
   const setShareMenuOpen = useSetAtom(isShareMenuOpenAtom);
 
+  useEventListener('keydown', (e) => {
+    if (e.key === 'i' && e.shiftKey && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      setShareMenuOpen(true);
+    }
+  });
+
   return (
     <Fragment>
       <Button
         className="hidden md:flex"
-        variant="transparent"
+        tone="primary"
+        variant="solid"
         icon={<ShareAltOutlined />}
         onClick={() => {
           setShareMenuOpen(true);
@@ -41,29 +51,16 @@ export const ShareMenu = forwardRef<HTMLDivElement>((props, ref) => {
   const [listId, token] = useListStore((state) => [state.data.list.id, state.data.list.token]);
 
   return (
-    <div ref={ref} className="min-w-[340px] max-w-md space-y-6 rounded-md bg-black-700 p-4 shadow-md shadow-black-900">
+    <div
+      ref={ref}
+      className="shadow-black-900 min-w-[340px] max-w-md space-y-4 rounded-lg border border-neutral-700 bg-neutral-800 p-4 shadow-md"
+    >
       <div className="space-y-1">
         <div className="flex justify-between">
           <div className="text-xs font-medium text-white/60">Share link</div>
           <div className="mb-1 text-xs text-white/40">Anyone with the link can view</div>
         </div>
-        <div className="flex items-center gap-2">
-          <div
-            className="flex w-full rounded-md border-black-500 bg-black-500 px-2 py-1 text-sm text-white/60"
-            onClick={(e) => {
-              const range = document.createRange();
-              range.selectNodeContents(e.currentTarget);
-              const selection = window.getSelection();
-              selection?.removeAllRanges();
-              selection?.addRange(range);
-            }}
-          >
-            <span className="mt-[3px]">https://filmq.co/v/{listId}</span>
-          </div>
-          <Button icon={<LinkOutlined className="text-base" />} tone="neutral-light">
-            Copy
-          </Button>
-        </div>
+        <InputCopy value={`https://fimlq.co/v/${listId}`} />
       </div>
 
       <div className="space-y-1">
@@ -71,25 +68,7 @@ export const ShareMenu = forwardRef<HTMLDivElement>((props, ref) => {
           <div className="text-xs font-medium text-white/60">Edit link</div>
           <div className="mb-1 text-xs text-white/40">Anyone with the link can edit</div>
         </div>
-        <div className="flex items-center gap-2">
-          <div
-            className="w-full overflow-clip overflow-ellipsis whitespace-nowrap rounded-md border-black-500 bg-black-500 px-2 py-1 pt-[7px] text-sm text-white/60"
-            onClick={(e) => {
-              const range = document.createRange();
-              range.selectNodeContents(e.currentTarget);
-              const selection = window.getSelection();
-              selection?.removeAllRanges();
-              selection?.addRange(range);
-            }}
-          >
-            <span className="">
-              https://filmq.co/e/{listId}?t={token}
-            </span>
-          </div>
-          <Button icon={<LinkOutlined className="text-base" />} tone="neutral-light">
-            Copy
-          </Button>
-        </div>
+        <InputCopy value={`https://fimlq.co/e/${listId}?t=${token}`} />
       </div>
     </div>
   );

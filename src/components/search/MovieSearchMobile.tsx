@@ -18,7 +18,7 @@ export const MovieSearchMobileButton = () => {
 
   return (
     <button
-      className="flex w-full items-center gap-2 rounded-md bg-black-700 px-2 py-1 text-sm text-white/40 text-white-text placeholder:text-white/40 focus:outline-none"
+      className="flex w-full items-center gap-2 rounded-md bg-black-700 px-2 py-1 text-sm text-white/40 text-off-white placeholder:text-white/40 focus:outline-none"
       onClick={() => setIsMovieSearchMobileActive(true)}
     >
       <PlusOutlined className="text-lg" />
@@ -45,7 +45,7 @@ export const MovieSearchMobile = () => {
         <ButtonIcon icon={<ArrowLeftOutlined />} onClick={() => setIsMovieSearchMobileActive(false)} />
         <input
           type="text"
-          className="mt-0.5 w-full bg-transparent text-sm text-white-text placeholder:text-white/40 focus:outline-none"
+          className="mt-0.5 w-full bg-transparent text-sm text-off-white placeholder:text-white/40 focus:outline-none"
           placeholder="Add a film"
           spellCheck={false}
           onChange={(e) => {

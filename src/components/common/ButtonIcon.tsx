@@ -28,7 +28,7 @@ const _ButtonIcon = (
         'group flex cursor-pointer items-center',
         {
           'rounded p-1.5 text-lg': size === 'standard',
-          'rounded p-1.5 text-base': size === 'small',
+          'rounded p-1.5 text-sm': size === 'small',
         },
         variant === 'solid' && {
           'bg-black-700 text-white/40 hover:bg-black-600': tone === 'neutral',

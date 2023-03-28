@@ -7,6 +7,12 @@ body {
   font-optical-sizing: auto;
   text-align: start;
   line-height: initial;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+  text-size-adjust: none;
+  overflow-x: hidden;
 }
 
 .debug {
@@ -23,4 +29,8 @@ body {
 
 .fade-black-800-gradient-180 {
   background: linear-gradient(0deg, rgba(18, 18, 18, 1) 0%, rgba(13, 13, 13, 0) 100%);
+}
+
+.bg-neutral-800-blur {
+  @apply bg-[rgba(255,255,255,.065)] backdrop-blur-md backdrop-brightness-[0.3];
 }

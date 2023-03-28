@@ -40,21 +40,22 @@ const _Button = <C extends React.ElementType = 'button'>(
       {...props}
       ref={ref}
       className={clsx(
-        'group flex cursor-pointer items-center whitespace-nowrap',
+        'group flex cursor-pointer select-none items-center whitespace-nowrap font-medium',
         {
           'rounded-md px-2 py-1 text-sm': size === 'standard',
           'rounded px-1.5 py-[1px] text-sm': size === 'small',
         },
         variant === 'solid' && {
-          'bg-black-700 text-white/40 hover:bg-black-600': tone === 'neutral',
-          'bg-black-600 text-white/40 hover:bg-black-500': tone === 'neutral-light',
-          'bg-black-700 text-red-500 hover:bg-black-600': tone === 'critical',
-          'bg-[#fccc03] text-black-700 hover:bg-white/90': tone === 'primary',
+          'bg-neutral-700 text-white/40 hover:bg-neutral-600': tone === 'neutral',
+          'bg-neutral-600 text-white/40 hover:bg-neutral-500': tone === 'neutral-light',
+          'bg-neutral-700 text-red-500 hover:bg-neutral-600': tone === 'critical',
+          'bg-neutral-800-blur border border-neutral-700 text-white/40 hover:border-neutral-600 hover:bg-neutral-700':
+            tone === 'primary',
         },
         variant === 'transparent' && {
-          'bg-transparent text-white/40 hover:bg-black-700':
+          'bg-transparent text-white/40 hover:bg-neutral-700':
             tone === 'neutral' || tone === 'primary' || tone === 'neutral-light',
-          'bg-transparent text-red-500 hover:bg-black-700': tone === 'critical',
+          'bg-transparent text-red-500 hover:bg-neutral-700': tone === 'critical',
         },
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className
