@@ -10,7 +10,7 @@ export const InputCopy = ({ value, ...props }: InputCopyProps) => {
   return (
     <div
       {...props}
-      className="flex items-center justify-between rounded border border-neutral-600 bg-neutral-700 px-2 py-0.5 text-sm "
+      className="flex items-center justify-between rounded border border-neutral-500 bg-neutral-600 px-2 py-0.5 text-sm "
     >
       <div
         className="inline-flex w-4/5 items-center gap-2"
@@ -23,7 +23,9 @@ export const InputCopy = ({ value, ...props }: InputCopyProps) => {
         }}
       >
         <LinkOutlined className="text-white/40" />
-        <span className="overflow-clip overflow-ellipsis whitespace-nowrap font-medium text-white/60 mt-[3px]">{value}</span>
+        <span className="mt-[3px] overflow-clip overflow-ellipsis whitespace-nowrap font-medium text-white/60">
+          {value}
+        </span>
       </div>
       <ButtonIcon size="small" icon={<CopyOutlined />} />
     </div>

@@ -18,6 +18,8 @@ export const Header = ({ buttons, search }: HeaderProps) => (
       <h1 className={clsx(logoFont.variable, 'font-logo text-3xl font-black')}>filmq</h1>
     </div>
     <div className="col-span-3 col-start-3 mx-4 hidden md:block">{search && search}</div>
-    <div className="col-span-2 col-start-6 flex w-full items-center justify-end md:items-center h-full">{buttons && buttons}</div>
+    <div className="col-span-2 col-start-6 flex h-full w-full items-center justify-end md:items-center">
+      {buttons && buttons}
+    </div>
   </header>
 );

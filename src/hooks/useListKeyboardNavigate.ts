@@ -44,11 +44,10 @@ export const useListKeyboardNavigate = ({
     focusedIndex: 0,
   });
 
-  // const listRef = useRef<HTMLUListElement>(null);
-
   useEventListener(
     'keydown',
     (e: KeyboardEvent) => {
+      console.log('KEYBOARD');
       if (!listRef.current) return;
 
       switch (e.key) {

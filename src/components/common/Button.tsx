@@ -13,8 +13,7 @@ declare module 'react' {
 export type ButtonTextProps<C extends React.ElementType> = PolymorphicComponentProps<
   C,
   {
-    tone?: 'neutral' | 'critical' | 'primary' | 'neutral-light';
-    variant?: 'solid' | 'transparent';
+    tone?: 'neutral' | 'critical' | 'neutral-blur';
     size?: 'standard' | 'small';
     icon?: React.ReactNode;
     isDisabled?: boolean;
@@ -22,15 +21,7 @@ export type ButtonTextProps<C extends React.ElementType> = PolymorphicComponentP
 >;
 
 const _Button = <C extends React.ElementType = 'button'>(
-  {
-    as,
-    size = 'standard',
-    tone = 'neutral',
-    variant = 'solid',
-    isDisabled = false,
-    icon,
-    ...props
-  }: ButtonTextProps<C>,
+  { as, size = 'standard', tone = 'neutral', isDisabled = false, icon, ...props }: ButtonTextProps<C>,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
   const Component = as || 'button';
@@ -40,26 +31,24 @@ const _Button = <C extends React.ElementType = 'button'>(
       {...props}
       ref={ref}
       className={clsx(
-        'group flex cursor-pointer select-none items-center whitespace-nowrap font-medium',
+        'default-focus-shadow group flex cursor-pointer select-none items-center whitespace-nowrap font-medium outline-none',
         {
           'rounded-md px-2 py-1 text-sm': size === 'standard',
           'rounded px-1.5 py-[1px] text-sm': size === 'small',
         },
-        variant === 'solid' && {
-          'bg-neutral-700 text-white/40 hover:bg-neutral-600': tone === 'neutral',
-          'bg-neutral-600 text-white/40 hover:bg-neutral-500': tone === 'neutral-light',
-          'bg-neutral-700 text-red-500 hover:bg-neutral-600': tone === 'critical',
-          'bg-neutral-800-blur border border-neutral-700 text-white/40 hover:border-neutral-600 hover:bg-neutral-700':
-            tone === 'primary',
-        },
-        variant === 'transparent' && {
-          'bg-transparent text-white/40 hover:bg-neutral-700':
-            tone === 'neutral' || tone === 'primary' || tone === 'neutral-light',
+        {
+          'bg-transparent text-white/40 hover:bg-neutral-700': tone === 'neutral',
           'bg-transparent text-red-500 hover:bg-neutral-700': tone === 'critical',
+          'bg-neutral-800-blur hover-bg-neutral-700-blur text-white/40': tone === 'neutral-blur',
         },
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className
       )}
+      onMouseDown={(e) => {
+        // Prevent focus ring from showing up on click
+        e.preventDefault();
+        props?.onMouseDown?.(e);
+      }}
     >
       {icon && (
         <div

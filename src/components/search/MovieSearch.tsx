@@ -82,10 +82,13 @@ export const MovieSearch = () => {
     <div
       ref={searchContainerRef}
       tabIndex={0}
-      className={clsx('relative', {
+      className={clsx('relative outline-none', {
         'bg-neutral-800-blur rounded-md transition-colors hover:bg-neutral-700': !searchIsActive,
         'rounded-t-md bg-neutral-700 ': searchIsActive,
       })}
+      onFocus={() => {
+        setSearchIsActive(true);
+      }}
     >
       <MovieSearchInput
         ref={inputRef}
@@ -94,11 +97,7 @@ export const MovieSearch = () => {
         onFocus={() => setSearchIsActive(true)}
       />
       {searchIsActive && (
-        <div
-          className={clsx('absolute z-20 w-full rounded-b-md bg-neutral-700 shadow-lg shadow-neutral-900', {
-            'border-x border-b border-neutral-600': searchIsActive,
-          })}
-        >
+        <div className={clsx('absolute z-20 w-full rounded-b-md bg-neutral-700 shadow-lg shadow-neutral-900')}>
           <MovieSearchResults movies={movies} searchContainerRef={searchContainerRef} inputRef={inputRef} />
           <MovieSearchHelper searchContainerRef={searchContainerRef} />
         </div>
