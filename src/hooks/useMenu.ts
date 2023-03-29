@@ -23,7 +23,13 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
-export const useMenu = ({ containerRef }: { containerRef: React.RefObject<HTMLElement> }) => {
+export const useMenu = ({
+  containerRef,
+  onOpen,
+}: {
+  containerRef: React.RefObject<HTMLElement>;
+  onOpen?: () => void;
+}) => {
   const [state, dispatch] = useReducer(reducer, { isOpen: false });
 
   // const containerRef = useRef(null);
@@ -39,6 +45,7 @@ export const useMenu = ({ containerRef }: { containerRef: React.RefObject<HTMLEl
     return {
       ...props,
       onClick: (e) => {
+        if (!state.isOpen) onOpen?.();
         dispatch({ type: 'TOGGLE' });
         props?.onClick?.(e);
       },

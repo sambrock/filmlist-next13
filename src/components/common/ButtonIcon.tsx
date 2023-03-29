@@ -6,16 +6,10 @@ export type ButtonIconProps = {
   size?: 'standard' | 'small';
   icon?: React.ReactNode;
   isDisabled?: boolean;
-};
+} & React.ComponentProps<'button'>;
 
 const _ButtonIcon = (
-  {
-    size = 'standard',
-    tone = 'neutral',
-    isDisabled = false,
-    icon,
-    ...props
-  }: React.PropsWithChildren<ButtonIconProps & React.ComponentProps<'button'>>,
+  { size = 'standard', tone = 'neutral', isDisabled = false, icon, ...props }: React.PropsWithChildren<ButtonIconProps>,
   ref: React.ForwardedRef<HTMLButtonElement>
 ) => {
   return (
@@ -23,7 +17,7 @@ const _ButtonIcon = (
       {...props}
       ref={ref}
       className={clsx(
-        'default-focus-shadow group flex cursor-pointer items-center',
+        'default-focus-shadow group flex cursor-pointer items-center justify-center',
         {
           'rounded p-1.5 text-lg': size === 'standard',
           'rounded p-1 text-sm': size === 'small',
@@ -36,11 +30,6 @@ const _ButtonIcon = (
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className
       )}
-      // onMouseDown={(e) => {
-      //   Prevent focus ring from showing up on click
-      //   e.preventDefault();
-      //   props?.onMouseDown?.(e);
-      // }}
     >
       {icon}
     </button>

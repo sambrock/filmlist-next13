@@ -31,7 +31,7 @@ const _Button = <C extends React.ElementType = 'button'>(
       {...props}
       ref={ref}
       className={clsx(
-        'default-focus-shadow group flex cursor-pointer select-none items-center whitespace-nowrap font-medium outline-none',
+        'default-focus-shadow group flex cursor-pointer select-none items-center whitespace-nowrap font-medium',
         {
           'rounded-md px-2 py-1 text-sm': size === 'standard',
           'rounded px-1.5 py-[1px] text-sm': size === 'small',
@@ -44,11 +44,6 @@ const _Button = <C extends React.ElementType = 'button'>(
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className
       )}
-      onMouseDown={(e) => {
-        // Prevent focus ring from showing up on click
-        e.preventDefault();
-        props?.onMouseDown?.(e);
-      }}
     >
       {icon && (
         <div

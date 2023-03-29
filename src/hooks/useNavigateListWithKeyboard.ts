@@ -103,6 +103,7 @@ export const useNavigateListWithKeyboard = ({
 
   return {
     highlightedIndex: state.highlightedIndex,
+    reset: () => dispatch({ type: 'RESET' }),
     getContainerProps,
     getListItemProps,
     // getListProps,
