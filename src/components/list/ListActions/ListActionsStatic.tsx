@@ -15,7 +15,6 @@ export const ListActionsStatic = () => {
         <Button
           onClick={() => setIsEditingDescription(true)}
           size="small"
-          variant="transparent"
           icon={<FormOutlined />}
         >
           Hide description

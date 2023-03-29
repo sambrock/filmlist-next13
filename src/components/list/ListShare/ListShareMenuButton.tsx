@@ -10,6 +10,7 @@ import { ButtonIcon } from '@/components/common/ButtonIcon';
 export const ListShareMenuButton = forwardRef<HTMLButtonElement, React.ComponentProps<'button'>>((props, ref) => {
   return (
     <Fragment>
+      {/* @ts-ignore */}
       <Button
         {...props}
         className={clsx('hidden md:flex', props.className)}
@@ -18,6 +19,7 @@ export const ListShareMenuButton = forwardRef<HTMLButtonElement, React.Component
       >
         Share
       </Button>
+      {/* @ts-ignore */}
       <ButtonIcon
         {...props}
         className={clsx('flex md:hidden', props.className)}
