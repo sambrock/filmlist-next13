@@ -5,7 +5,7 @@ import { convertToPrismaTransactions, transactionSchema } from '@/server/transac
 import { prisma } from '@/server/prisma';
 import { saveTransactionMedia } from '@/server/transactions/saveTransactionMedia';
 import type { Api } from '@/api/api.types';
-import { authListRequest } from '@/server/list/authListRequest';
+import { authListRequest } from '@/server/auth/authListRequest';
 
 export type POST_SaveTransactions = Api.PostRoute<{
   url: '/api/v1/saveTransactions';
