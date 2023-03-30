@@ -47,7 +47,7 @@ export const handler = (handlers: Handlers) => {
 };
 
 export class HandlerError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(public status: number, message?: string) {
     super(message);
   }
 }

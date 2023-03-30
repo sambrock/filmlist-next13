@@ -1,5 +1,5 @@
 import { SESSION_TOKEN_NAME } from '@/constants';
-import { signToken, verifyToken } from '@/utils/token';
+import { signToken, verifyToken } from '@/utils/jwt';
 import { Session } from '../session/initializeSession';
 
 export const setSessionTokenCookie = (token: string) =>

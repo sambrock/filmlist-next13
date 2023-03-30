@@ -32,7 +32,7 @@ const reducer = (state: State, action: Action) => {
     case 'SET_HIGHLIGHTED_INDEX':
       return { highlightedIndex: action.payload };
     case 'RESET':
-      return { highlightedIndex: 0 };
+      return { highlightedIndex: -1 };
     default:
       return state;
   }
@@ -45,7 +45,7 @@ export const useNavigateListWithKeyboard = ({
   containerRef: React.RefObject<HTMLElement>;
   listRef: React.RefObject<HTMLElement>;
 }) => {
-  const [state, dispatch] = useReducer(reducer, { highlightedIndex: 0 });
+  const [state, dispatch] = useReducer(reducer, { highlightedIndex: -1 });
 
   useEventListener(
     'keydown',

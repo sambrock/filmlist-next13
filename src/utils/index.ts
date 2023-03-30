@@ -82,3 +82,5 @@ export const buildQueryString = (params: QueryParams): string => {
     .join('&');
   return query ? `?${query}` : '';
 };
+
+export const awaitTimeout = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
