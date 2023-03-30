@@ -19,7 +19,6 @@ export type EditListPageProps = {
 };
 
 export const EditListPage = async ({ initialData, listCount }: EditListPageProps) => {
-  console.log(initialData.title, initialData.description);
   if (!initialData) return null;
   return (
     <Fragment>
