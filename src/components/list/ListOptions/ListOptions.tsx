@@ -20,6 +20,7 @@ import { SelectItem } from '@/components/layout/Select/SelectItem';
 import { useCreateList } from '@/hooks/api/useCreateList';
 import { BASE_URL } from '@/constants';
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
+import { useTriggerSearch } from '@/components/layout/SaveIndicator';
 
 export const ListOptions = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -109,8 +110,15 @@ const ListOptionsUndo = (props: React.ComponentProps<'li'> & { isHighlighted?: b
 };
 
 const ListOptionsSave = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
+  const { triggerSearch } = useTriggerSearch();
+
   return (
-    <SelectItem {...props} leading={<SaveOutlined />} trailing={<KeyboardShortcut keys={['⌘', 'S']} />}>
+    <SelectItem
+      {...props}
+      leading={<SaveOutlined />}
+      trailing={<KeyboardShortcut keys={['⌘', 'S']} />}
+      onClick={triggerSearch}
+    >
       Save
     </SelectItem>
   );

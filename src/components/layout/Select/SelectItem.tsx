@@ -1,3 +1,4 @@
+import { Spinner } from '@/components/common/Spinner';
 import { LoadingOutlined } from '@ant-design/icons';
 import { clsx } from 'clsx';
 
@@ -33,7 +34,7 @@ export const SelectItem = ({
     >
       {isLoading ? (
         <div className="flex items-center text-white/60">
-          <LoadingOutlined />
+          <Spinner />
         </div>
       ) : leading ? (
         <div className="flex items-center text-white/60">{leading}</div>

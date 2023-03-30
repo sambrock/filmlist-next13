@@ -12,6 +12,7 @@ import { Header } from '@/components/layout/Header';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListShare } from '@/components/list/ListShare/ListShare';
 import { ListOptions } from '@/components/list/ListOptions/ListOptions';
+import { SaveIndicator } from '@/components/layout/SaveIndicator';
 
 export type EditListPageProps = {
   initialData: InitialListStoreData;
@@ -23,6 +24,7 @@ export const EditListPage = async ({ initialData, listCount }: EditListPageProps
   return (
     <Fragment>
       <Header
+        saveIndicator={<SaveIndicator />}
         search={<MovieSearch />}
         buttons={
           <div className="flex items-center gap-2">
