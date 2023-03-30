@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { useHydrateAtoms } from 'jotai/utils';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
@@ -11,11 +11,11 @@ import { isListDescriptionShowMoreAtom, ListDescriptionStatic } from './ListDesc
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 
 export const isEditingListDescriptionAtom = atom(false);
-export const descriptionAtom = atom('');
 
 const dispatch = useListStore.getState().dispatch;
 
 export const ListDescriptionEdit = ({ initialDescription }: { initialDescription: string }) => {
+  const [description, setDescription] = useState(initialDescription);
   const [isEditingListDescription, setIsEditingListDescription] = useAtom(isEditingListDescriptionAtom);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,6 +28,7 @@ export const ListDescriptionEdit = ({ initialDescription }: { initialDescription
     },
     'mouseup'
   );
+
   useEventListener(
     'keydown',
     (e: KeyboardEvent) => {
@@ -39,24 +40,25 @@ export const ListDescriptionEdit = ({ initialDescription }: { initialDescription
 
   return (
     <div ref={containerRef}>
-      {!isEditingListDescription && <ListDescriptionEditStatic initialDescription={initialDescription} />}
-      {isEditingListDescription && <ListDescriptionEditing />}
+      {!isEditingListDescription && <ListDescriptionEditStatic description={description} />}
+      {isEditingListDescription && <ListDescriptionEditing description={description} setDescription={setDescription} />}
     </div>
   );
 };
 
-const ListDescriptionEditStatic = ({ initialDescription }: { initialDescription: string }) => {
-  useHydrateAtoms([[descriptionAtom, initialDescription || '']]);
-  const description = useAtomValue(descriptionAtom);
-
+const ListDescriptionEditStatic = ({ description }: { description: string }) => {
   const setIsEditingListDescription = useSetAtom(isEditingListDescriptionAtom);
 
   return <ListDescriptionStatic onClick={() => setIsEditingListDescription(true)} description={description} />;
 };
 
-const ListDescriptionEditing = () => {
-  const [description, setDescription] = useAtom(descriptionAtom);
-
+const ListDescriptionEditing = ({
+  description,
+  setDescription,
+}: {
+  description: string;
+  setDescription: (description: string) => void;
+}) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -74,7 +76,7 @@ const ListDescriptionEditing = () => {
   const setIsShowMore = useSetAtom(isListDescriptionShowMoreAtom);
 
   return (
-    <div className="rounded-md border border-neutral-600 bg-neutral-700">
+    <div className="rounded-md bg-neutral-700">
       <textarea
         ref={textAreaRef}
         className="w-full resize-none rounded bg-transparent py-3 px-2 text-base text-white/60 outline-none"
