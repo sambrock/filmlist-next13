@@ -26,7 +26,7 @@ export const InitializeStore = ({
           parsed?.movies.map((movie) => [movie.movieId.toString(), { ...movie, _isFromInitialData: true }])
         ),
       },
-      _listMovieIds: initialListMovieIds,
+      _listMovieIds: new Set(initialListMovieIds),
     });
 
     isInit.current = true;

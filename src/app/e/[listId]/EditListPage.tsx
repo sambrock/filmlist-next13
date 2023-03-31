@@ -12,6 +12,8 @@ import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListShare } from '@/components/list/ListShare/ListShare';
 import { ListOptions } from '@/components/list/ListOptions/ListOptions';
 import { SaveIndicator } from '@/components/layout/SaveIndicator';
+import { Modal } from '@/components/common/Modal';
+import { ClientKeyboardShortcuts } from './ClientKeyboardShortcuts';
 
 export type EditListPageProps = {
   initialData: InitialListStoreData;
@@ -47,6 +49,7 @@ export const EditListPage = async ({ initialData, listCount }: EditListPageProps
           />
         </div>
       </main>
+      <ClientKeyboardShortcuts />
     </Fragment>
   );
 };

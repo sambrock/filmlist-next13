@@ -2,7 +2,7 @@ import { MoreOutlined } from '@ant-design/icons';
 
 export const MovieItemEditMoreOptions = () => {
   return (
-    <button className="flex h-5 w-5 items-center justify-center rounded-sm bg-black/50 p-2 leading-none hover:bg-black-700">
+    <button className="flex h-5 w-5 items-center justify-center rounded-sm bg-black/50 p-2 leading-none hover:bg-neutral-700">
       <MoreOutlined className="text-sm leading-none" />
     </button>
   );

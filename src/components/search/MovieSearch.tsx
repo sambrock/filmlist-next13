@@ -115,7 +115,7 @@ const MovieSearchResults = ({
   searchContainerRef: React.RefObject<HTMLDivElement>;
   inputRef: React.RefObject<HTMLInputElement>;
 }) => {
-  const movieIds = useListStore((state) => state._listMovieIds, shallow);
+  const movieIds = useListStore((state) => [...state._listMovieIds.values()], shallow);
 
   const handleSelect = (index: number) => {
     if (!movies || movies.length === 0) return;

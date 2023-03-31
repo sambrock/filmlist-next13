@@ -14,10 +14,12 @@ export type ListStore = {
     >;
   };
 
-  _listMovieIds: number[];
+  _listMovieIds: Set<number>;
 
   dispatch: (action: Action) => void;
 
-  patches: Patch[][];
-  inversePatches: Patch[][];
+  _latestPatch: Patch[];
+
+  _undoStack: { patches: Patch[]; inversePatches: Patch[] }[];
+  _undoPointer: number;
 };

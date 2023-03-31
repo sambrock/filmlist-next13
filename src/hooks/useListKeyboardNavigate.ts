@@ -47,7 +47,6 @@ export const useListKeyboardNavigate = ({
   useEventListener(
     'keydown',
     (e: KeyboardEvent) => {
-      console.log('KEYBOARD');
       if (!listRef.current) return;
 
       switch (e.key) {

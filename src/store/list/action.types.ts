@@ -1,6 +1,14 @@
 import type { ListMovies, Movie } from '@prisma/client';
+import type { Patch } from 'immer';
 
-export type ActionType = 'INITIALIZE' | 'SET_TITLE' | 'ADD_MOVIE' | 'REMOVE_MOVIE' | 'ADD_MOVIES' | 'SET_DESCRIPTION';
+export type ActionType =
+  | 'INITIALIZE'
+  | 'SET_TITLE'
+  | 'ADD_MOVIE'
+  | 'REMOVE_MOVIE'
+  | 'ADD_MOVIES'
+  | 'SET_DESCRIPTION'
+  | 'APPLY_PATCHES';
 
 interface BaseAction<T extends ActionType> {
   type: T;
@@ -27,6 +35,16 @@ export interface SetDescription extends BaseAction<'SET_DESCRIPTION'> {
   payload: string;
 }
 
-export type Action = SetTitleAction | AddMovieAction | DeleteMovieAction | AddListMovies | SetDescription;
+export interface ApplyPatches extends BaseAction<'APPLY_PATCHES'> {
+  payload: Patch[];
+}
+
+export type Action =
+  | SetTitleAction
+  | AddMovieAction
+  | DeleteMovieAction
+  | AddListMovies
+  | SetDescription
+  | ApplyPatches;
 
 export type ActionPayload<T extends ActionType> = Extract<Action, { type: T }>['payload'];

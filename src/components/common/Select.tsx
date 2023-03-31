@@ -1,44 +1,61 @@
-'use client';
-
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
-export const Select = forwardRef<HTMLUListElement, React.PropsWithChildren<React.ComponentProps<'ul'>>>(
+import { Spinner } from '@/components/common/Spinner';
+
+export const SelectList = forwardRef<HTMLUListElement, React.PropsWithChildren<React.ComponentProps<'ul'>>>(
   (props, ref) => {
-    return <ul ref={ref} className="min-w-[200px] max-w-md rounded-md bg-neutral-700 py-1 outline-none" {...props} />;
+    return (
+      <ul
+        {...props}
+        ref={ref}
+        className={clsx('min-w-[200px] rounded-md bg-neutral-700 py-1 shadow-md shadow-neutral-900', props.className)}
+      >
+        {props.children}
+      </ul>
+    );
   }
 );
 
 type SelectItemProps = React.ComponentProps<'li'> & {
-  label: string;
-  subLabel?: string;
-  isHighlighted?: boolean;
-  leading?: React.ReactNode;
   trailing?: React.ReactNode;
+  leading?: React.ReactNode;
+  isHighlighted?: boolean;
+  isLoading?: boolean;
 };
 
 export const SelectItem = ({
-  label,
-  subLabel,
   leading,
   trailing,
   isHighlighted,
+  isLoading,
   ...props
 }: React.PropsWithChildren<SelectItemProps>) => {
   return (
     <li
       {...props}
-      className={clsx('mx-1 grid cursor-pointer grid-cols-[26px,1fr,auto] rounded px-2 py-1 text-sm', props.className, {
-        'text-white/60 hover:bg-neutral-600 hover:text-white/60': !isHighlighted,
-        'bg-neutral-600 text-white/60': isHighlighted,
-      })}
+      role="button"
+      className={clsx(
+        'mx-1 flex cursor-pointer items-center gap-2 rounded-md px-2 py-1',
+        {
+          'bg-transparent': !isHighlighted,
+          'bg-neutral-500': isHighlighted,
+        },
+        {
+          'pointer-events-none opacity-50': isLoading,
+        },
+        props.className
+      )}
     >
-      {leading && <div className="flex items-center">{leading}</div>}
-      <span className="mt-[3px] flex items-center font-medium">{label}</span>
-      {trailing && <div className="mt-[3px] flex items-center">{trailing}</div>}
-      {subLabel && <div className="col-start-2 row-start-2 text-xs font-medium text-white/40">{subLabel}</div>}
+      {isLoading ? (
+        <div className="flex items-center text-white/60">
+          <Spinner />
+        </div>
+      ) : leading ? (
+        <div className="flex items-center text-white/60">{leading}</div>
+      ) : null}
+      <span className="mt-[3px] text-sm text-white/60">{props.children}</span>
+      {trailing && <div className="ml-auto">{trailing}</div>}
     </li>
   );
 };
-
-export const SelectDivider = () => <li className="my-1 h-px bg-neutral-500" />;

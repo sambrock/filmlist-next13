@@ -38,6 +38,9 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
         const text = e.clipboardData?.getData('text/plain');
         document.execCommand('insertHTML', false, text);
       }}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+      }}
       spellCheck={false}
       suppressContentEditableWarning={true}
     >

@@ -1,4 +1,4 @@
-import { Draft, produce, produceWithPatches } from 'immer';
+import { Draft, produce, produceWithPatches, applyPatches as immerApplyPatches } from 'immer';
 
 import type { ListStore } from './store.types';
 import type { Action, ActionPayload } from './action.types';
@@ -26,12 +26,12 @@ const addMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPay
     _isFromInitialData: false,
   });
 
-  draft._listMovieIds.push(payload.id);
+  draft._listMovieIds.add(payload.id);
 });
 
 const removeMovie = produceWithPatches((draft: Draft<ListStore>, payload: ActionPayload<'REMOVE_MOVIE'>) => {
   draft.data.movies.delete(payload);
-  draft._listMovieIds = draft._listMovieIds.filter((id) => id.toString() !== payload);
+  draft._listMovieIds.delete(Number(payload));
 });
 
 const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'ADD_MOVIES'>) => {
@@ -44,6 +44,10 @@ const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'
   );
 });
 
+const applyPatches = produce((draft: Draft<ListStore>, payload: ActionPayload<'APPLY_PATCHES'>) => {
+  immerApplyPatches(draft, payload);
+});
+
 export const listReducer = (state: ListStore, action: Action): ListStore => {
   // console.log(action);
   switch (action.type) {
@@ -51,36 +55,44 @@ export const listReducer = (state: ListStore, action: Action): ListStore => {
       const [newState, patches, inversePatches] = setTitle(state, action.payload);
       return {
         ...newState,
-        patches: [patches, ...state.patches],
-        inversePatches: [inversePatches, ...state.inversePatches],
+        _latestPatch: patches,
+        _undoPointer: state._undoPointer + 1,
+        _undoStack: state._undoStack.slice(0, state._undoPointer + 1).concat({ patches, inversePatches }),
       };
     }
     case 'SET_DESCRIPTION': {
       const [newState, patches, inversePatches] = setDescription(state, action.payload);
       return {
         ...newState,
-        patches: [patches, ...state.patches],
-        inversePatches: [inversePatches, ...state.inversePatches],
+        _latestPatch: patches,
+        _undoPointer: state._undoPointer + 1,
+        _undoStack: state._undoStack.slice(0, state._undoPointer + 1).concat({ patches, inversePatches }),
       };
     }
     case 'ADD_MOVIE': {
       const [newState, patches, inversePatches] = addMovie(state, action.payload);
       return {
         ...newState,
-        patches: [patches, ...state.patches],
-        inversePatches: [inversePatches, ...state.inversePatches],
+        _latestPatch: patches,
+        _undoPointer: state._undoPointer + 1,
+        _undoStack: state._undoStack.slice(0, state._undoPointer + 1).concat({ patches, inversePatches }),
       };
     }
     case 'REMOVE_MOVIE': {
       const [newState, patches, inversePatches] = removeMovie(state, action.payload);
       return {
         ...newState,
-        patches: [patches, ...state.patches],
-        inversePatches: [inversePatches, ...state.inversePatches],
+        _latestPatch: patches,
+        _undoPointer: state._undoPointer + 1,
+        _undoStack: state._undoStack.slice(0, state._undoPointer + 1).concat({ patches, inversePatches }),
       };
     }
     case 'ADD_MOVIES': {
       const newState = addListMovies(state, action.payload);
+      return newState;
+    }
+    case 'APPLY_PATCHES': {
+      const newState = applyPatches(state, action.payload);
       return newState;
     }
     default: {

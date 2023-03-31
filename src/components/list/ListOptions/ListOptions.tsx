@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import {
   CopyOutlined,
   DeleteOutlined,
@@ -15,12 +15,14 @@ import { ListOptionsButton } from './ListOptionsButton';
 import { useNavigateListWithKeyboard } from '@/hooks/useNavigateListWithKeyboard';
 import { useListStore } from '@/store/list/useListStore';
 import { useDuplicateList } from '@/hooks/api/useDuplicateList';
-import { SelectList } from '@/components/layout/Select/SelectList';
-import { SelectItem } from '@/components/layout/Select/SelectItem';
 import { useCreateList } from '@/hooks/api/useCreateList';
 import { BASE_URL } from '@/constants';
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 import { useTriggerSearch } from '@/components/layout/SaveIndicator';
+import { SelectItem, SelectList } from '@/components/common/Select';
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '@/components/common/Modal';
+import { Button } from '@/components/common/Button';
 
 export const ListOptions = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -93,13 +95,46 @@ const ListOptionsDuplicateList = (props: React.ComponentProps<'li'> & { isHighli
   );
 };
 
-const ListOptionsDeleteList = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  return (
-    <SelectItem {...props} leading={<DeleteOutlined />}>
-      Delete list
-    </SelectItem>
-  );
-};
+// const ListOptionsDeleteList = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
+//   const deleteListModal = useModal();
+
+//   return (
+//     <Fragment>
+//       <SelectItem
+//         {...props}
+//         leading={<DeleteOutlined />}
+//         onClick={() => {
+//           // confirm with alert
+//           if (window.confirm('Are you sure you want to delete this list? This action cannot be undone.')) {
+//             // delete list
+//             //
+//           }
+//         }}
+//       >
+//         Delete list
+//       </SelectItem>
+//       <Modal
+//         {...deleteListModal}
+//         body={
+//           <div className="flex max-w-sm flex-col gap-2 p-4">
+//             <div className="flex items-center">
+//               <div className="text-lg font-medium">Delete list</div>
+//             </div>
+//             <p className="text-sm text-white/40">
+//               Are you sure you want to delete this list? This action cannot be undone.
+//             </p>
+//             <div className="flex items-center justify-end gap-2">
+//               <Button onClick={deleteListModal.close}>Cancel</Button>
+//               <Button tone="critical" icon={<DeleteOutlined />} onClick={deleteListModal.close}>
+//                 Delete
+//               </Button>
+//             </div>
+//           </div>
+//         }
+//       />
+//     </Fragment>
+//   );
+// };
 
 const ListOptionsUndo = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
   return (
@@ -135,7 +170,7 @@ const ListOptionsExport = (props: React.ComponentProps<'li'> & { isHighlighted?:
 const listOptions = [
   [ListOptionsNewList],
   [ListOptionsDuplicateList],
-  [ListOptionsDeleteList],
+  // [ListOptionsDeleteList],
   null,
   [ListOptionsUndo],
   null,
