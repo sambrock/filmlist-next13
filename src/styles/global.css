@@ -46,3 +46,7 @@ body {
 .default-focus-shadow {
   @apply transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900;
 }
+
+.default-shadow {
+  @apply transition-shadow outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-neutral-900;
+}

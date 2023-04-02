@@ -1,11 +1,11 @@
 'use client';
 
-import { Fragment, useRef } from 'react';
+import { useRef } from 'react';
 import {
   CopyOutlined,
-  DeleteOutlined,
   ExportOutlined,
   PlusOutlined,
+  RedoOutlined,
   SaveOutlined,
   UndoOutlined,
 } from '@ant-design/icons';
@@ -13,16 +13,13 @@ import {
 import { useMenu } from '@/hooks/useMenu';
 import { ListOptionsButton } from './ListOptionsButton';
 import { useNavigateListWithKeyboard } from '@/hooks/useNavigateListWithKeyboard';
-import { useListStore } from '@/store/list/useListStore';
+import { handleRedo, handleUndo, useListStore } from '@/store/list/useListStore';
 import { useDuplicateList } from '@/hooks/api/useDuplicateList';
 import { useCreateList } from '@/hooks/api/useCreateList';
 import { BASE_URL } from '@/constants';
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 import { useTriggerSearch } from '@/components/layout/SaveIndicator';
 import { SelectItem, SelectList } from '@/components/common/Select';
-import { useModal } from '@/hooks/useModal';
-import { Modal } from '@/components/common/Modal';
-import { Button } from '@/components/common/Button';
 
 export const ListOptions = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -138,8 +135,26 @@ const ListOptionsDuplicateList = (props: React.ComponentProps<'li'> & { isHighli
 
 const ListOptionsUndo = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
   return (
-    <SelectItem {...props} leading={<UndoOutlined />} trailing={<KeyboardShortcut keys={['⌘', 'Z']} />}>
+    <SelectItem
+      {...props}
+      leading={<UndoOutlined />}
+      trailing={<KeyboardShortcut keys={['⌘', 'Z']} />}
+      onClick={handleUndo}
+    >
       Undo
+    </SelectItem>
+  );
+};
+
+const ListOptionsRedo = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
+  return (
+    <SelectItem
+      {...props}
+      leading={<RedoOutlined />}
+      trailing={<KeyboardShortcut keys={['⇧', '⌘', 'Z']} />}
+      onClick={handleRedo}
+    >
+      Redo
     </SelectItem>
   );
 };
@@ -173,6 +188,7 @@ const listOptions = [
   // [ListOptionsDeleteList],
   null,
   [ListOptionsUndo],
+  [ListOptionsRedo],
   null,
   [ListOptionsSave],
   [ListOptionsExport],

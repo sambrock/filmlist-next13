@@ -44,6 +44,18 @@ const addListMovies = produce((draft: Draft<ListStore>, payload: ActionPayload<'
   );
 });
 
+const deleteMoviesByIndex = produceWithPatches(
+  (draft: Draft<ListStore>, payload: ActionPayload<'DELETE_MOVIES_BY_INDEX'>) => {
+    const indexes = payload;
+    const movieIds = Array.from(draft.data.movies.keys());
+    const movieIdsToDelete = indexes.map((index) => movieIds[index]);
+    movieIdsToDelete.forEach((id) => {
+      draft.data.movies.delete(id);
+      draft._listMovieIds.delete(Number(id));
+    });
+  }
+);
+
 const applyPatches = produce((draft: Draft<ListStore>, payload: ActionPayload<'APPLY_PATCHES'>) => {
   immerApplyPatches(draft, payload);
 });
@@ -94,6 +106,15 @@ export const listReducer = (state: ListStore, action: Action): ListStore => {
     case 'APPLY_PATCHES': {
       const newState = applyPatches(state, action.payload);
       return newState;
+    }
+    case 'DELETE_MOVIES_BY_INDEX': {
+      const [newState, patches, inversePatches] = deleteMoviesByIndex(state, action.payload);
+      return {
+        ...newState,
+        _latestPatch: patches,
+        _undoPointer: state._undoPointer + 1,
+        _undoStack: state._undoStack.slice(0, state._undoPointer + 1).concat({ patches, inversePatches }),
+      };
     }
     default: {
       return state;

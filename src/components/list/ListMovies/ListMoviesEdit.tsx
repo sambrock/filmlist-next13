@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import type { Movie } from '@prisma/client';
 import { shallow } from 'zustand/shallow';
 import useSWR from 'swr';
+import { atom, createStore, Provider } from 'jotai';
 
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItemEdit } from '@/components/movie/MovieItemEdit/MovieItemEdit';
@@ -11,6 +12,26 @@ import { ListMoviesGrid } from './ListMoviesGrid';
 import { Observable } from '@/components/common/Observable';
 import { api } from '@/api';
 import { MAX_LIST_MOVIES } from '@/constants';
+
+export const movieListStore = createStore();
+export const selectedMovieItemsAtom = atom<number[]>([]);
+export const selectMovieItemAtom = atom(null, (get, set, index: number) => {
+  // if shift click is pressed, take the first selected item and select all items between the first selected item and the current item
+  const selectedMovieItems = get(selectedMovieItemsAtom);
+  if (selectedMovieItems.length > 0) {
+    const firstSelectedMovieItem = selectedMovieItems[0];
+    const newSelectedMovieItems = [];
+    for (let i = Math.min(firstSelectedMovieItem, index); i <= Math.max(firstSelectedMovieItem, index); i++) {
+      newSelectedMovieItems.push(i);
+    }
+    set(selectedMovieItemsAtom, newSelectedMovieItems);
+    return;
+  } else {
+    set(selectedMovieItemsAtom, [index]);
+  }
+});
+
+movieListStore.set(selectedMovieItemsAtom, [])
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
@@ -21,6 +42,7 @@ export const ListMoviesEdit = ({
   initialMovies: string;
   observerLoader?: React.ReactNode;
 }) => {
+
   const keys = useListStore(
     (state) =>
       [...state.data.movies.values()]
@@ -37,27 +59,30 @@ export const ListMoviesEdit = ({
     return (
       <ListMoviesGrid>
         {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
-          <MovieItemEdit key={movie.id} movie={movie} />
+          <MovieItemEdit key={movie.id} index={index} movie={movie} />
         ))}
         {observerLoader && observerLoader}
       </ListMoviesGrid>
     );
   }
   return (
-    <ListMoviesGrid>
-      {keys.map((key) => {
-        const data = getMovie(key);
-        if (!data) return null;
-        return (
-          <MovieItemEdit
-            key={data.movieId}
-            movie={data.movie}
-            posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
-          />
-        );
-      })}
-      {observerLoader && observerLoader}
-    </ListMoviesGrid>
+    <Provider store={movieListStore}>
+      <ListMoviesGrid>
+        {keys.map((key, index) => {
+          const data = getMovie(key);
+          if (!data) return null;
+          return (
+            <MovieItemEdit
+              key={data.movieId}
+              index={index}
+              movie={data.movie}
+              posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
+            />
+          );
+        })}
+        {observerLoader && observerLoader}
+      </ListMoviesGrid>
+    </Provider>
   );
 };
 

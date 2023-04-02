@@ -5,23 +5,31 @@ import { MinusOutlined } from '@ant-design/icons';
 import { useListStore } from '@/store/list/useListStore';
 import { useMovieItemContext } from './MovieItemEdit';
 import { ButtonIcon } from '@/components/common/ButtonIcon';
+import { movieListStore, selectedMovieItemsAtom } from '@/components/list/ListMovies/ListMoviesEdit';
 
 const dispatch = useListStore.getState().dispatch;
 
-export const MovieItemEditDeleteButton = () => {
+export const MovieItemEditDeleteButton = ({ isSelected }: { isSelected: boolean }) => {
   const { id } = useMovieItemContext();
 
   return (
     <ButtonIcon
       size="small"
       tone="critical"
-      // className="flex h-5 w-5 items-center justify-center rounded-sm bg-black/50 p-2 leading-none hover:bg-black-700 hover:text-red-500"
-      onClick={() =>
-        dispatch({
-          type: 'REMOVE_MOVIE',
-          payload: id.toString(),
-        })
-      }
+      onClick={() => {
+        if (!isSelected) {
+          dispatch({
+            type: 'REMOVE_MOVIE',
+            payload: id.toString(),
+          });
+        } else {
+          dispatch({
+            type: 'DELETE_MOVIES_BY_INDEX',
+            payload: movieListStore.get(selectedMovieItemsAtom),
+          });
+          movieListStore.set(selectedMovieItemsAtom, []);
+        }
+      }}
       icon={<MinusOutlined />}
     ></ButtonIcon>
   );

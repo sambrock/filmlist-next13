@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { clsx } from 'clsx';
+import { shallow } from 'zustand/shallow';
 
 import { useListStore } from '@/store/list/useListStore';
 import { listTitleStyles } from './ListTitleStatic';
@@ -10,6 +11,14 @@ const dispatch = useListStore.getState().dispatch;
 
 export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
   const [title, setTitle] = useState(initialTitle);
+
+  const titleRef = useRef<HTMLDivElement>(null);
+
+  const storeTitle = useListStore((state) => state.data.list.title, shallow);
+  useEffect(() => {
+    setTitle(storeTitle);
+    if (titleRef.current && document.activeElement !== titleRef.current) titleRef.current.innerText = storeTitle;
+  }, [storeTitle]);
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -26,12 +35,12 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
 
   return (
     <div
+      ref={titleRef}
       className={clsx(listTitleStyles, 'focus:outline-none', {
         'text-neutral-300 after:content-["Untitled"]': !title,
         'text-off-white': title,
       })}
       onInput={handleInput}
-      contentEditable={true}
       onPaste={(e) => {
         // Remove formatting when pasting
         e.preventDefault();
@@ -42,6 +51,7 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
         e.stopPropagation();
       }}
       spellCheck={false}
+      contentEditable={true}
       suppressContentEditableWarning={true}
     >
       {initialTitle}
