@@ -10,6 +10,7 @@ import { MovieItemEditDeleteButton } from './MovieItemEditDeleteButton';
 import { movieItemStyles } from '../MovieItemStatic/MovieItemStatic';
 import { selectMovieItemAtom } from '@/components/list/ListMovies/ListMoviesEdit';
 import { useIsSelected } from './hooks/useIsSelected';
+import { useMovieDetails } from '../MovieDetails/MovieDetailsStatic';
 
 export const movieItemStore = createStore();
 export const movieItemAtom = atom<Movie>({} as Movie);
@@ -25,6 +26,8 @@ type MovieItemProps = {
   index: number;
   movie: Movie;
   posterSrc?: 'tmdb' | 'default';
+  prevMovieId?: number;
+  nextMovieId?: number;
 };
 
 export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: MovieItemProps) => {
@@ -46,9 +49,17 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
 
   const { isSelected } = useIsSelected(index);
 
+  const movieDetails = useMovieDetails();
+
   return (
     <Provider store={movieItemStore}>
-      <li ref={itemRef} className={clsx(movieItemStyles, isSelected && 'default-shadow scale-95 brightness-75')}>
+      <li
+        ref={itemRef}
+        className={clsx(movieItemStyles, isSelected && 'default-shadow scale-95 brightness-75')}
+        onClick={() => {
+          movieDetails.toggle(movie.id);
+        }}
+      >
         <MovieItemStaticPoster posterPath={movie.posterPath} posterSrc={posterSrc} title={movie.title} />
         <div className="invisible absolute top-1 right-1 group-hover:visible">
           <MovieItemEditDeleteButton isSelected={isSelected} />

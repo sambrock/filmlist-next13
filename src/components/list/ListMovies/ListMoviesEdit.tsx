@@ -12,6 +12,7 @@ import { ListMoviesGrid } from './ListMoviesGrid';
 import { Observable } from '@/components/common/Observable';
 import { api } from '@/api';
 import { MAX_LIST_MOVIES } from '@/constants';
+import { MovieDetailsEdit } from '@/components/movie/MovieDetails/MovieDetailsEdit';
 
 export const movieListStore = createStore();
 export const selectedMovieItemsAtom = atom<number[]>([]);
@@ -31,7 +32,7 @@ export const selectMovieItemAtom = atom(null, (get, set, index: number) => {
   }
 });
 
-movieListStore.set(selectedMovieItemsAtom, [])
+movieListStore.set(selectedMovieItemsAtom, []);
 
 const getMovie = (key: string) => useListStore.getState().data.movies.get(key);
 
@@ -42,7 +43,6 @@ export const ListMoviesEdit = ({
   initialMovies: string;
   observerLoader?: React.ReactNode;
 }) => {
-
   const keys = useListStore(
     (state) =>
       [...state.data.movies.values()]
@@ -77,11 +77,15 @@ export const ListMoviesEdit = ({
               index={index}
               movie={data.movie}
               posterSrc={data._isFromInitialData ? 'default' : 'tmdb'}
+              prevMovieId={getMovie(keys[index - 1] ? keys[index - 1] : keys[keys.length - 1])?.movieId}
+              nextMovieId={getMovie(keys[index + 1] ? keys[index + 1] : keys[0])?.movieId}
             />
           );
         })}
         {observerLoader && observerLoader}
       </ListMoviesGrid>
+
+      <MovieDetailsEdit />
     </Provider>
   );
 };

@@ -2,19 +2,23 @@ import { z } from 'zod';
 
 import { handler } from '@/server/handler';
 import type { Api } from '@/api/api.types';
-import { searchMovies } from '@/server/movie/searchMovies';
+import { TMDbApi } from '@/services/tmdb';
 
-export type GET_SearchMovies = Api.GetRoute<{
-  url: '/api/v1/searchMovies';
+export type GET_GetMovieDetails = Api.GetRoute<{
+  url: '/api/v1/getMovieDetails';
   params: z.input<typeof queryParamsSchema>;
-  data: Awaited<ReturnType<typeof searchMovies>>;
+  data: Awaited<ReturnType<typeof getMovieDetails>>;
 }>;
 
+export const getMovieDetails = async (movieId: number) => {
+  const details = await TMDbApi.getMovieById(movieId);
+  return details;
+};
+
 const queryParamsSchema = z.object({
-  q: z.string().default(''),
-  page: z
+  movieId: z
     .string()
-    .default('1')
+    .default('')
     .transform((v) => +v),
 });
 
@@ -23,7 +27,7 @@ export default handler({
     const parsedQueryParams = queryParamsSchema.safeParse(req.query);
     if (!parsedQueryParams.success) return res.send([]);
 
-    const data = await searchMovies(parsedQueryParams.data.q, parsedQueryParams.data.page);
+    const data = await getMovieDetails(parsedQueryParams.data.movieId);
 
     return res.send(data);
   },

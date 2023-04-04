@@ -1,10 +1,17 @@
 import { POST_CreateList } from '@/pages/api/v1/createList';
 import { POST_DuplicateList } from '@/pages/api/v1/duplicateList';
 import { GET_GetListMovies } from '@/pages/api/v1/getListMovies';
+import { GET_GetMovieDetails } from '@/pages/api/v1/getMovieDetails';
 import { POST_SaveTransactions } from '@/pages/api/v1/saveTransactions';
 import { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 
-type ApiRoutes = GET_SearchMovies | GET_GetListMovies | POST_CreateList | POST_SaveTransactions | POST_DuplicateList;
+type ApiRoutes =
+  | GET_SearchMovies
+  | GET_GetListMovies
+  | GET_GetMovieDetails
+  | POST_CreateList
+  | POST_SaveTransactions
+  | POST_DuplicateList;
 
 export namespace Api {
   export interface GetRoute<T extends Required<{ url: string; data: unknown; params?: Record<string, string> }>> {

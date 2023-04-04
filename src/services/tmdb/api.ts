@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import { buildQueryString } from '@/utils';
 import {
   TMDbMovieReleaseDatesResponse,
   TMDbMovieResponse,
@@ -17,14 +16,20 @@ export class TMDbApi {
   private static params?: Record<string, string>;
 
   private static async request<T>(): Promise<T> {
-    const response = await axios({
-      method: 'GET',
-      baseURL: this.base_url,
-      url: this.endpoint,
-      params: { api_key: API_KEY, ...this.params },
-    });
+    // const response = await axios({
+    //   method: 'GET',
+    //   baseURL: this.base_url,
+    //   url: this.endpoint,
+    //   params: { api_key: API_KEY, ...this.params },
+    // });
 
-    return await response.data;
+    const data = await fetch(
+      `${this.base_url}${this.endpoint}${buildQueryString({ api_key: API_KEY, ...this.params })}`
+    );
+
+    const response = await data.json();
+
+    return await response;
   }
 
   static async getSearchMovies(params: { query: string; year?: string }): Promise<TMDbSearchResponse[]> {
