@@ -1,7 +1,8 @@
 'use client';
 
-import { useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { shallow } from 'zustand/shallow';
+import { useEventListener } from 'usehooks-ts';
 
 import { useGetMovieDetails } from '@/hooks/api/useGetMovieDetails';
 import { activeMovieIdAtom, isMovieDetailsActiveAtom } from './MovieDetailsStatic';
@@ -11,8 +12,8 @@ import { MovieDetails } from './MovieDetails';
 export const MovieDetailsEdit = () => {
   const listMovieIds = useListStore((state) => [...state._listMovieIds], shallow);
 
-  const movieId = useAtomValue(activeMovieIdAtom);
-  const isMovieDetailsActive = useAtomValue(isMovieDetailsActiveAtom);
+  const [movieId, setMovieId] = useAtom(activeMovieIdAtom);
+  const [isMovieDetailsActive, setIsMovieDetailsActive] = useAtom(isMovieDetailsActiveAtom);
 
   const { data } = useGetMovieDetails(
     movieId,
@@ -20,6 +21,30 @@ export const MovieDetailsEdit = () => {
     listMovieIds[listMovieIds.indexOf(movieId) - 1],
     listMovieIds[listMovieIds.indexOf(movieId) + 1]
   );
+
+  useEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (!isMovieDetailsActive) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setIsMovieDetailsActive(false);
+      setMovieId(-1);
+    }
+
+    if (e.key === 'ArrowRight') {
+      if (!isMovieDetailsActive) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setMovieId(listMovieIds[listMovieIds.indexOf(movieId) + 1]);
+    }
+
+    if (e.key === 'ArrowLeft') {
+      if (!isMovieDetailsActive) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setMovieId(listMovieIds[listMovieIds.indexOf(movieId) - 1]);
+    }
+  });
 
   if (!isMovieDetailsActive) return null;
   if (!data) return <div>Loading...</div>;

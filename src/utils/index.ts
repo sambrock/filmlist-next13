@@ -84,3 +84,10 @@ export const buildQueryString = (params: QueryParams): string => {
 };
 
 export const awaitTimeout = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const googleFeelingLuckyLink = (query: string) => {
+  const url = new URL('https://www.google.com/search');
+  url.searchParams.set('q', query);
+  url.searchParams.set('btnI', '1');
+  return url.toString();
+};
