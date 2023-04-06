@@ -23,7 +23,7 @@ export const ListShareMenu = forwardRef<HTMLDivElement, React.ComponentProps<'di
           <div className="text-xs font-medium text-white/60">Share link</div>
           <div className="mb-1 text-xs text-white/40">Anyone with the link can view</div>
         </div>
-        <InputCopy value={`https://fimlq.co/v/${listId}`} />
+        <InputCopy value={`https://filmq.co/v/${listId}`} />
       </div>
 
       <div className="space-y-1">
@@ -31,7 +31,7 @@ export const ListShareMenu = forwardRef<HTMLDivElement, React.ComponentProps<'di
           <div className="text-xs font-medium text-white/60">Edit link</div>
           <div className="mb-1 text-xs text-white/40">Anyone with the link can edit</div>
         </div>
-        <InputCopy value={`https://fimlq.co/e/${listId}?t=${token}`} />
+        <InputCopy value={`https://filmq.co/e/${listId}?t=${token}`} />
       </div>
     </div>
   );

@@ -138,7 +138,7 @@ const ListOptionsUndo = (props: React.ComponentProps<'li'> & { isHighlighted?: b
     <SelectItem
       {...props}
       leading={<UndoOutlined />}
-      trailing={<KeyboardShortcut keys={['⌘', 'Z']} />}
+      trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'Z']} macosKeys={['⌘', 'Z']} />}
       onClick={handleUndo}
     >
       Undo
@@ -151,7 +151,7 @@ const ListOptionsRedo = (props: React.ComponentProps<'li'> & { isHighlighted?: b
     <SelectItem
       {...props}
       leading={<RedoOutlined />}
-      trailing={<KeyboardShortcut keys={['⇧', '⌘', 'Z']} />}
+      trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
       onClick={handleRedo}
     >
       Redo
@@ -166,7 +166,7 @@ const ListOptionsSave = (props: React.ComponentProps<'li'> & { isHighlighted?: b
     <SelectItem
       {...props}
       leading={<SaveOutlined />}
-      trailing={<KeyboardShortcut keys={['⌘', 'S']} />}
+      trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'S']} macosKeys={['⌘', 'S']} />}
       onClick={triggerSearch}
     >
       Save
@@ -176,7 +176,11 @@ const ListOptionsSave = (props: React.ComponentProps<'li'> & { isHighlighted?: b
 
 const ListOptionsExport = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
   return (
-    <SelectItem {...props} leading={<ExportOutlined />} trailing={<KeyboardShortcut keys={['⇧', '⌘', 'E']} />}>
+    <SelectItem
+      {...props}
+      leading={<ExportOutlined />}
+      trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
+    >
       Export
     </SelectItem>
   );

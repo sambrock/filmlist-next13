@@ -15,8 +15,10 @@ export const MovieItemEditDeleteButton = ({ isSelected }: { isSelected: boolean 
   return (
     <ButtonIcon
       size="small"
-      tone="critical"
-      onClick={() => {
+      tone="critical-blur"
+      onClick={(e) => {
+        e.stopPropagation();
+
         if (!isSelected) {
           dispatch({
             type: 'REMOVE_MOVIE',

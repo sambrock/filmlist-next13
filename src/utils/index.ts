@@ -5,19 +5,19 @@ import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from '../constants';
 
 export const generateNanoId = customAlphabet(NANO_ID_ALPHABET, NANO_ID_LENGTH);
 
-const minute = 60;
-const hour = minute * 60;
-const day = hour * 24;
-const week = day * 7;
-const month = day * 30;
-const year = day * 365;
-
 /**
  * Convert a date to a relative time string, such as
  * "a minute ago", "in 2 hours", "yesterday", "3 months ago", etc.
  * https://gist.github.com/steve8708/ada9bff2600228789fce2fcc95427e39
  */
 export function getRelativeTimeString(date: Date | number, lang = navigator.language): string {
+  const minute = 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  const week = day * 7;
+  const month = day * 30;
+  const year = day * 365;
+
   const time = date instanceof Date ? date.getTime() : date;
   const delta = Math.round((time - Date.now()) / 1000);
   const absoluteDelta = Math.abs(delta);
@@ -90,4 +90,24 @@ export const googleFeelingLuckyLink = (query: string) => {
   url.searchParams.set('q', query);
   url.searchParams.set('btnI', '1');
   return url.toString();
+};
+
+export const preloadImage = (src: string) => {
+  const img = new Image();
+  img.src = src;
+};
+
+export const userAgent = () => {
+  const ua = navigator.userAgent;
+
+  return {
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua),
+    isIOS: /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream,
+    isMac: /Macintosh/.test(ua),
+    isWindows: /Windows/.test(ua),
+    isLinux: /Linux/.test(ua),
+    isChrome: /Chrome/.test(ua) && /Google Inc/.test(navigator.vendor),
+    isFirefox: /Firefox/.test(ua),
+    isSafari: /Safari/.test(ua) && /Apple Computer/.test(navigator.vendor),
+  };
 };

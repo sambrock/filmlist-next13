@@ -173,7 +173,7 @@ const MovieSearchResults = ({
             movieIds.includes(movie.id) ? (
               <Badge>Added</Badge>
             ) : focusedIndex === index ? (
-              <KeyboardShortcut keys={['⏎']} />
+              <KeyboardShortcut defaultKeys={['⏎']} />
             ) : null
           }
         />

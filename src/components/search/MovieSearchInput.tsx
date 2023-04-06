@@ -42,7 +42,7 @@ export const MovieSearchInput = forwardRef<HTMLInputElement, MovieSearchInputPro
             }, 350);
           }}
         />
-        <KeyboardShortcut keys={['⌘', 'K']} />
+        <KeyboardShortcut defaultKeys={['Ctrl', 'K']} macosKeys={['⌘', 'K']} />
       </div>
     );
   }

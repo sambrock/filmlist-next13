@@ -99,7 +99,7 @@ const ListDescriptionEditing = ({
       />
       <div className="flex items-center gap-4 border-t border-neutral-600 px-2 py-1">
         <button className="flex cursor-pointer">
-          <KeyboardShortcut keys={['⌘', '⏎']} label="Save" />
+          <KeyboardShortcut defaultKeys={['Ctrl', '⏎']} macosKeys={['⌘', '⏎']} label="Save" />
         </button>
         <span className="text-xs font-medium text-white/40">HTML + Markdown supported</span>
       </div>

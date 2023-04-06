@@ -42,7 +42,10 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
   useEventListener(
     'click',
     (e) => {
-      if (e.shiftKey) setSelectedMovie(index);
+      if (e.shiftKey) {
+        e.stopPropagation();
+        setSelectedMovie(index);
+      }
     },
     itemRef
   );
@@ -56,7 +59,7 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
       <li
         ref={itemRef}
         className={clsx(movieItemStyles, isSelected && 'default-shadow scale-95 brightness-75')}
-        onClick={() => {
+        onClick={(e) => {
           movieDetails.toggle(movie.id);
         }}
       >

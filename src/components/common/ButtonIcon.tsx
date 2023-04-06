@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
 export type ButtonIconProps = {
-  tone?: 'neutral' | 'critical' | 'neutral-blur';
+  tone?: 'neutral' | 'critical' | 'neutral-blur' | 'critical-blur';
   size?: 'standard' | 'small';
   icon?: React.ReactNode;
   isDisabled?: boolean;
@@ -24,8 +24,9 @@ const _ButtonIcon = (
         },
         {
           'bg-transparent text-white/40 hover:bg-neutral-700': tone === 'neutral',
-          'bg-transparent text-red-500 hover:bg-neutral-700': tone === 'critical',
+          'bg-transparent text-white/40 hover:bg-neutral-700 hover:text-red-500': tone === 'critical',
           'hover-bg-neutral-700-blur bg-neutral-800-blur text-white/40': tone === 'neutral-blur',
+          'hover-bg-neutral-700-blur bg-neutral-800-blur text-white/40 hover:text-red-500': tone === 'critical-blur',
         },
         { 'pointer-events-none opacity-50': isDisabled || props.disabled },
         props.className

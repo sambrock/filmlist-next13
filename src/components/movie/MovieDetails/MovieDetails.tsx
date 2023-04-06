@@ -58,7 +58,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
         </div>
         <div className="grid grid-cols-3 gap-6 px-6 pb-6">
           <div className="col-span-2 space-y-8">
-            <p className=" leading-6 text-white/60">{movie.overview}</p>
+            <p className="leading-6 text-white/60">{movie.overview}</p>
 
             <div>
               <h2 className="mb-2 font-bold text-white/60">Crew</h2>
@@ -76,7 +76,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
                   <ModalDetailsCredit key={c.id} name={c.name} role={c.character} />
                 ))}
               </div>
-              <Button className="mx-auto mt-2" onClick={showMoreCast.toggle}>
+              <Button className="mx-auto mt-2" size="small" onClick={showMoreCast.toggle}>
                 {showMoreCast.isOpen ? 'Show less' : 'Show more'}
               </Button>
             </div>
@@ -89,6 +89,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
                   {movie.watchProviders?.map((s) => (
                     <a
                       key={s.provider_id}
+                      className="group"
                       href={googleFeelingLuckyLink(
                         `${movie.title} ${new Date(movie.release_date).getFullYear()} ${s.provider_name}`
                       )}
@@ -97,7 +98,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
                     >
                       <div
                         className={clsx(
-                          'flex cursor-pointer items-center gap-2 overflow-hidden overflow-ellipsis whitespace-nowrap border-b border-b-neutral-600 bg-neutral-800 px-4 py-2 last:border-b-0 hover:bg-neutral-700',
+                          'flex cursor-pointer items-center gap-2 overflow-hidden overflow-ellipsis whitespace-nowrap border-b border-b-neutral-600 bg-neutral-800 px-4 py-2 hover:bg-neutral-700 group-last:border-b-0',
                           `border-l-2 border-l-neutral-600 hover:border-l-neutral-300`
                         )}
                       >
@@ -126,9 +127,9 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
           </div>
         </div>
         <div className="flex gap-4 border-t border-neutral-700 px-4 py-1">
-          <KeyboardShortcut keys={['esc']} label="Close" />
-          <KeyboardShortcut keys={['←']} label="Prev film" />
-          <KeyboardShortcut keys={['→']} label="Next film" />
+          <KeyboardShortcut defaultKeys={['esc']} label="Close" />
+          <KeyboardShortcut defaultKeys={['←']} label="Prev film" />
+          <KeyboardShortcut defaultKeys={['→']} label="Next film" />
         </div>
       </div>
     </div>
