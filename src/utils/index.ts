@@ -1,6 +1,5 @@
 import { customAlphabet } from 'nanoid';
 import { createRegExp, exactly } from 'magic-regexp';
-import { userAgent as serverUserAgent } from 'next/server';
 
 import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from '../constants';
 

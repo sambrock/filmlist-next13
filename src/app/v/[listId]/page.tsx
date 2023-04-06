@@ -6,6 +6,7 @@ import { ListTitleStatic } from '@/components/list/ListTitle/ListTitleStatic';
 import { ListDescriptionStatic } from '@/components/list/ListDescription/ListDescriptionStatic';
 import { ListMoviesStatic } from '@/components/list/ListMovies/ListMoviesStatic';
 import { Header } from '@/components/layout/Header';
+import { MovieDetailsStatic } from '@/components/movie/MovieDetails/MovieDetailsStatic';
 
 type StaticListPageProps = {
   params: {
@@ -14,7 +15,7 @@ type StaticListPageProps = {
 };
 
 const StaticListPage = async ({ params }: StaticListPageProps) => {
-  const { initialData, listCount } = await getInitialListData(params.listId);
+  const { initialData, listCount, listMovieIds  } = await getInitialListData(params.listId);
 
   return (
     <Fragment>
@@ -31,6 +32,7 @@ const StaticListPage = async ({ params }: StaticListPageProps) => {
             listCount={listCount}
             initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
           />
+          <MovieDetailsStatic listMovieIds={listMovieIds} />
         </div>
       </main>
     </Fragment>

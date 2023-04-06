@@ -27,15 +27,12 @@ export const getInitialListStoreData = async (listId: string) => {
       where: { listId },
     }),
 
-    await prisma.list.findUnique({
-      where: { id: listId },
-      include: {
-        movies: {
-          select: { movieId: true },
-        },
-      },
+    await prisma.listMovies.findMany({
+      where: { listId },
+      select: { movieId: true },
+      orderBy: { order: 'asc' },
     }),
   ]);
 
-  return { initialData, listCount, listMovieIds: listMovieIds?.movies.map((movie) => movie.movieId) };
+  return { initialData, listCount, listMovieIds: listMovieIds.map((movie) => movie.movieId) };
 };

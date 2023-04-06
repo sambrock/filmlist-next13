@@ -1,8 +1,7 @@
 'use client';
 
 import { useLayoutEffect, useRef, useState } from 'react';
-import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useHydrateAtoms } from 'jotai/utils';
+import { atom, useAtom, useSetAtom } from 'jotai';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 
 import { useListStore } from '@/store/list/useListStore';
@@ -49,7 +48,20 @@ export const ListDescriptionEdit = ({ initialDescription }: { initialDescription
 const ListDescriptionEditStatic = ({ description }: { description: string }) => {
   const setIsEditingListDescription = useSetAtom(isEditingListDescriptionAtom);
 
-  return <ListDescriptionStatic onClick={() => setIsEditingListDescription(true)} description={description} />;
+  return (
+    <ListDescriptionStatic
+      className="default-focus-shadow rounded"
+      tabIndex={description ? 0 : -1}
+      onClick={() => setIsEditingListDescription(true)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          setIsEditingListDescription(true);
+        }
+      }}
+      description={description}
+    />
+  );
 };
 
 const ListDescriptionEditing = ({
@@ -94,6 +106,11 @@ const ListDescriptionEditing = ({
             dispatch({ type: 'SET_DESCRIPTION', payload: e.target.value });
             if (e.target.value.length < MAX_DESCRIPTION_PREVIEW_LENGTH) setIsShowMore(false);
           }, 500);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+            e.stopPropagation();
+          }
         }}
         maxLength={MAX_DESCRIPTION_LENGTH}
       />

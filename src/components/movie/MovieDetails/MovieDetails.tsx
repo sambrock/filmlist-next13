@@ -27,13 +27,15 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
       onClick={close}
     >
       <div
-        className="relative mt-20 mb-20 w-full max-w-3xl overflow-hidden rounded-md bg-neutral-900 shadow-lg shadow-black"
+        className="relative mt-20 mb-20 w-full max-w-3xl overflow-hidden rounded-xl bg-neutral-900 shadow-2xl shadow-neutral-900"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <div className="relative mb-10">
-          <img src={MOVIE_IMAGE_URL['backdrop']['w780'] + movie.backdrop_path} />
+          <div className="aspect-video bg-neutral-700">
+            <img src={MOVIE_IMAGE_URL['backdrop']['w780'] + movie.backdrop_path} />
+          </div>
           <div className="fade-black-gradient-0 absolute bottom-0 h-2/3 w-full" />
           <div className="absolute -bottom-4 px-6">
             <h1

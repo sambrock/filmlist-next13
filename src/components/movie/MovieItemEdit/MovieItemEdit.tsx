@@ -71,12 +71,7 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
         <div className="absolute top-1 right-1 opacity-0 focus-within:opacity-100 group-hover:opacity-100">
           <MovieItemEditDeleteButton isSelected={isSelected} />
         </div>
-        {/* <div className="invisible absolute top-1 left-1 group-hover:visible">
-          <MovieItemEditMoreOptions />
-        </div> */}
       </li>
     </Provider>
   );
 });
-
-// (prevProps, nextProps) => prevProps.movie.id === nextProps.movie.id
