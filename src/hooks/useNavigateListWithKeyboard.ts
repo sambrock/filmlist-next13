@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer, useRef } from 'react';
 import { clsx } from 'clsx';
 import { useEventListener } from 'usehooks-ts';
 
@@ -41,11 +41,15 @@ const reducer = (state: State, action: Action) => {
 export const useNavigateListWithKeyboard = ({
   containerRef,
   listRef,
+  listItemRefs,
 }: {
   containerRef: React.RefObject<HTMLElement>;
   listRef: React.RefObject<HTMLElement>;
+  listItemRefs: React.MutableRefObject<HTMLElement[]>;
 }) => {
   const [state, dispatch] = useReducer(reducer, { highlightedIndex: -1 });
+
+  // const listItemRefs = useRef<HTMLLIElement[]>([] as HTMLLIElement[]);
 
   useEventListener(
     'keydown',
@@ -72,7 +76,7 @@ export const useNavigateListWithKeyboard = ({
   const getContainerProps = useCallback(<T>(props?: React.HTMLAttributes<T>): React.HTMLAttributes<T> => {
     return {
       ...props,
-      className: clsx('relative', props?.className),
+      className: clsx('relative outline-none', props?.className),
       tabIndex: 1,
     };
   }, []);
@@ -86,9 +90,15 @@ export const useNavigateListWithKeyboard = ({
   // }, []);
 
   const getListItemProps = useCallback(
-    <T>(index: number, props?: React.HTMLAttributes<T>): React.HTMLAttributes<T> => {
+    <T>(
+      index: number,
+      props?: React.HTMLAttributes<T>
+    ): React.HTMLAttributes<T> & { ref: (el: HTMLLIElement) => void } => {
       return {
         ...props,
+        ref: (el) => {
+          listItemRefs.current[index] = el as HTMLElement;
+        },
         onMouseEnter: (e) => {
           dispatch({
             type: 'SET_HIGHLIGHTED_INDEX',

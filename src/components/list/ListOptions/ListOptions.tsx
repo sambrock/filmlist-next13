@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import {
   CopyOutlined,
   ExportOutlined,
@@ -9,6 +9,7 @@ import {
   SaveOutlined,
   UndoOutlined,
 } from '@ant-design/icons';
+import { useEventListener } from 'usehooks-ts';
 
 import { useMenu } from '@/hooks/useMenu';
 import { ListOptionsButton } from './ListOptionsButton';
@@ -24,15 +25,46 @@ import { SelectItem, SelectList } from '@/components/common/Select';
 export const ListOptions = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const listItemRefs = useRef<HTMLLIElement[]>([]);
 
-  const navigateList = useNavigateListWithKeyboard({ containerRef, listRef });
+  const navigateList = useNavigateListWithKeyboard({ containerRef, listRef, listItemRefs });
   const menu = useMenu({ containerRef, onOpen: navigateList.reset });
+
+  useEventListener('keydown', (e) => {
+    if (!menu.isOpen) return;
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const highlightedIndex = navigateList.highlightedIndex;
+      if (highlightedIndex !== -1) {
+        const item = listItemRefs.current[highlightedIndex];
+        if (item) {
+          item.click();
+        }
+      }
+    }
+  });
 
   return (
     <div ref={containerRef} {...menu.getContainerProps({ ...navigateList.getContainerProps() })}>
       <ListOptionsButton {...menu.getMenuButtonProps()} />
       {menu.isOpen && (
-        <SelectList ref={listRef} {...menu.getMenuProps()}>
+        <SelectList
+          ref={listRef}
+          {...menu.getMenuProps()}
+          onKeyDown={(e) => {
+            console.log(e);
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const highlightedIndex = navigateList.highlightedIndex;
+              if (highlightedIndex !== -1) {
+                const item = listItemRefs.current[highlightedIndex];
+                if (item) {
+                  item.click();
+                }
+              }
+            }
+          }}
+        >
           {listOptions.map((option, index) => {
             if (option === null) return <div key={index} className="my-1 h-px bg-neutral-500" />;
             const itemIndex = listOptions.filter((o) => o !== null).indexOf(option);
@@ -54,142 +86,123 @@ export const ListOptions = () => {
   );
 };
 
-const ListOptionsNewList = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  const { trigger, isMutating } = useCreateList({
-    onSuccess: (data) => {
-      const url = BASE_URL + `/e/${data.id}?t=${data.token}`;
-      window.open(url, '_blank');
-    },
-  });
+const ListOptionsNewList = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+  (props, ref) => {
+    const { trigger, isMutating } = useCreateList({
+      onSuccess: (data) => {
+        const url = BASE_URL + `/e/${data.id}?t=${data.token}`;
+        window.open(url, '_blank');
+      },
+    });
 
-  return (
-    <SelectItem
-      {...props}
-      isHighlighted={props.isHighlighted}
-      leading={<PlusOutlined />}
-      isLoading={isMutating}
-      onClick={!isMutating ? trigger : () => {}}
-    >
-      New list ↗
-    </SelectItem>
-  );
-};
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        isHighlighted={props.isHighlighted}
+        leading={<PlusOutlined />}
+        isLoading={isMutating}
+        onClick={!isMutating ? trigger : () => {}}
+      >
+        New list ↗
+      </SelectItem>
+    );
+  }
+);
 
-const ListOptionsDuplicateList = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  const listId = useListStore.getState().data.list.id;
+const ListOptionsDuplicateList = forwardRef<HTMLLIElement, React.ComponentProps<'li'>>(
+  (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }, ref) => {
+    const listId = useListStore.getState().data.list.id;
 
-  const { trigger, isMutating } = useDuplicateList(listId, {
-    onSuccess: (data) => {
-      const url = BASE_URL + `/e/${data.id}?t=${data.token}`;
-      window.open(url, '_blank');
-    },
-  });
+    const { trigger, isMutating } = useDuplicateList(listId, {
+      onSuccess: (data) => {
+        const url = BASE_URL + `/e/${data.id}?t=${data.token}`;
+        window.open(url, '_blank');
+      },
+    });
 
-  return (
-    <SelectItem {...props} leading={<CopyOutlined />} isLoading={isMutating} onClick={!isMutating ? trigger : () => {}}>
-      Duplicate list ↗
-    </SelectItem>
-  );
-};
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        leading={<CopyOutlined />}
+        isLoading={isMutating}
+        onClick={!isMutating ? trigger : () => {}}
+      >
+        Duplicate list ↗
+      </SelectItem>
+    );
+  }
+);
 
-// const ListOptionsDeleteList = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-//   const deleteListModal = useModal();
+const ListOptionsUndo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+  (props, ref) => {
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        leading={<UndoOutlined />}
+        trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'Z']} macosKeys={['⌘', 'Z']} />}
+        onClick={handleUndo}
+      >
+        Undo
+      </SelectItem>
+    );
+  }
+);
 
-//   return (
-//     <Fragment>
-//       <SelectItem
-//         {...props}
-//         leading={<DeleteOutlined />}
-//         onClick={() => {
-//           // confirm with alert
-//           if (window.confirm('Are you sure you want to delete this list? This action cannot be undone.')) {
-//             // delete list
-//             //
-//           }
-//         }}
-//       >
-//         Delete list
-//       </SelectItem>
-//       <Modal
-//         {...deleteListModal}
-//         body={
-//           <div className="flex max-w-sm flex-col gap-2 p-4">
-//             <div className="flex items-center">
-//               <div className="text-lg font-medium">Delete list</div>
-//             </div>
-//             <p className="text-sm text-white/40">
-//               Are you sure you want to delete this list? This action cannot be undone.
-//             </p>
-//             <div className="flex items-center justify-end gap-2">
-//               <Button onClick={deleteListModal.close}>Cancel</Button>
-//               <Button tone="critical" icon={<DeleteOutlined />} onClick={deleteListModal.close}>
-//                 Delete
-//               </Button>
-//             </div>
-//           </div>
-//         }
-//       />
-//     </Fragment>
-//   );
-// };
+const ListOptionsRedo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+  (props, ref) => {
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        leading={<RedoOutlined />}
+        trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
+        onClick={handleRedo}
+      >
+        Redo
+      </SelectItem>
+    );
+  }
+);
 
-const ListOptionsUndo = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  return (
-    <SelectItem
-      {...props}
-      leading={<UndoOutlined />}
-      trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'Z']} macosKeys={['⌘', 'Z']} />}
-      onClick={handleUndo}
-    >
-      Undo
-    </SelectItem>
-  );
-};
+const ListOptionsSave = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+  (props, ref) => {
+    const { triggerSearch } = useTriggerSearch();
 
-const ListOptionsRedo = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  return (
-    <SelectItem
-      {...props}
-      leading={<RedoOutlined />}
-      trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
-      onClick={handleRedo}
-    >
-      Redo
-    </SelectItem>
-  );
-};
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        leading={<SaveOutlined />}
+        trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'S']} macosKeys={['⌘', 'S']} />}
+        onClick={triggerSearch}
+      >
+        Save
+      </SelectItem>
+    );
+  }
+);
 
-const ListOptionsSave = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  const { triggerSearch } = useTriggerSearch();
-
-  return (
-    <SelectItem
-      {...props}
-      leading={<SaveOutlined />}
-      trailing={<KeyboardShortcut defaultKeys={['Ctrl', 'S']} macosKeys={['⌘', 'S']} />}
-      onClick={triggerSearch}
-    >
-      Save
-    </SelectItem>
-  );
-};
-
-const ListOptionsExport = (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }) => {
-  return (
-    <SelectItem
-      {...props}
-      leading={<ExportOutlined />}
-      trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
-    >
-      Export
-    </SelectItem>
-  );
-};
+const ListOptionsExport = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+  (props, ref) => {
+    return (
+      <SelectItem
+        {...props}
+        ref={ref}
+        leading={<ExportOutlined />}
+        trailing={<KeyboardShortcut defaultKeys={['Ctrl', '⇧', 'Z']} macosKeys={['⇧', '⌘', 'Z']} />}
+      >
+        Export
+      </SelectItem>
+    );
+  }
+);
 
 const listOptions = [
   [ListOptionsNewList],
   [ListOptionsDuplicateList],
-  // [ListOptionsDeleteList],
   null,
   [ListOptionsUndo],
   [ListOptionsRedo],

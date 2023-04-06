@@ -62,9 +62,13 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
         onClick={(e) => {
           movieDetails.toggle(movie.id);
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') movieDetails.toggle(movie.id);
+        }}
+        tabIndex={0}
       >
         <MovieItemStaticPoster posterPath={movie.posterPath} posterSrc={posterSrc} title={movie.title} />
-        <div className="invisible absolute top-1 right-1 group-hover:visible">
+        <div className="absolute top-1 right-1 opacity-0 focus-within:opacity-100 group-hover:opacity-100">
           <MovieItemEditDeleteButton isSelected={isSelected} />
         </div>
         {/* <div className="invisible absolute top-1 left-1 group-hover:visible">

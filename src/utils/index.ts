@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { createRegExp, exactly } from 'magic-regexp';
+import { userAgent as serverUserAgent } from 'next/server';
 
 import { NANO_ID_ALPHABET, NANO_ID_LENGTH } from '../constants';
 
@@ -98,16 +99,10 @@ export const preloadImage = (src: string) => {
 };
 
 export const userAgent = () => {
-  const ua = navigator.userAgent;
+  const ua = window.navigator.userAgent;
 
   return {
     isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua),
-    isIOS: /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream,
     isMac: /Macintosh/.test(ua),
-    isWindows: /Windows/.test(ua),
-    isLinux: /Linux/.test(ua),
-    isChrome: /Chrome/.test(ua) && /Google Inc/.test(navigator.vendor),
-    isFirefox: /Firefox/.test(ua),
-    isSafari: /Safari/.test(ua) && /Apple Computer/.test(navigator.vendor),
   };
 };

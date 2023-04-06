@@ -89,6 +89,9 @@ export const MovieSearch = () => {
       onFocus={() => {
         setSearchIsActive(true);
       }}
+      onBlur={() => {
+        setSearchIsActive(false);
+      }}
     >
       <MovieSearchInput
         ref={inputRef}
@@ -99,7 +102,7 @@ export const MovieSearch = () => {
       {searchIsActive && (
         <div className={clsx('absolute z-20 w-full rounded-b-md bg-neutral-700 shadow-lg shadow-neutral-900')}>
           <MovieSearchResults movies={movies} searchContainerRef={searchContainerRef} inputRef={inputRef} />
-          <MovieSearchHelper searchContainerRef={searchContainerRef} />
+          <MovieSearchHelper />
         </div>
       )}
     </div>

@@ -30,7 +30,7 @@ const ListDescriptionToggleShow = () => {
   return (
     <span className="ml-2">
       <button
-        className="text-sm font-medium text-white/60 hover:text-white/80"
+        className="default-focus-shadow rounded text-sm font-medium text-white/60 outline-none hover:text-white/80"
         onClick={(e) => {
           e.stopPropagation();
           setIsShowMore(!isShowMore);
