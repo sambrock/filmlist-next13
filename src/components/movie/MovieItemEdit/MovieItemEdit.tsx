@@ -11,6 +11,7 @@ import { movieItemStyles } from '../MovieItemStatic/MovieItemStatic';
 import { selectMovieItemAtom } from '@/components/list/ListMovies/ListMoviesEdit';
 import { useIsSelected } from './hooks/useIsSelected';
 import { useMovieDetails } from '../MovieDetails/MovieDetailsStatic';
+import { userAgent } from '@/utils';
 
 export const movieItemStore = createStore();
 export const movieItemAtom = atom<Movie>({} as Movie);
@@ -54,6 +55,8 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
 
   const movieDetails = useMovieDetails();
 
+  const { isMobile } = userAgent();
+
   return (
     <Provider store={movieItemStore}>
       <li
@@ -68,7 +71,12 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
         tabIndex={0}
       >
         <MovieItemStaticPoster posterPath={movie.posterPath} posterSrc={posterSrc} title={movie.title} />
-        <div className="absolute top-1 right-1 opacity-0 focus-within:opacity-100 group-hover:opacity-100">
+        <div
+          className={clsx('absolute top-1 right-1 ', {
+            'opacity-100': isMobile,
+            'opacity-0 focus-within:opacity-100 group-hover:opacity-100': !isMobile,
+          })}
+        >
           <MovieItemEditDeleteButton isSelected={isSelected} />
         </div>
       </li>

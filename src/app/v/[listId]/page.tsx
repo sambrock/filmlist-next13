@@ -7,6 +7,8 @@ import { ListDescriptionStatic } from '@/components/list/ListDescription/ListDes
 import { ListMoviesStatic } from '@/components/list/ListMovies/ListMoviesStatic';
 import { Header } from '@/components/layout/Header';
 import { MovieDetailsStatic } from '@/components/movie/MovieDetails/MovieDetailsStatic';
+import { NotFound } from '@/components/layout/NotFound';
+import { ListOptionsStatic } from '@/components/list/ListOptions/ListOptionsStatic';
 
 type StaticListPageProps = {
   params: {
@@ -15,13 +17,23 @@ type StaticListPageProps = {
 };
 
 const StaticListPage = async ({ params }: StaticListPageProps) => {
-  const { initialData, listCount, listMovieIds  } = await getInitialListData(params.listId);
+  const { initialData, listCount, listMovieIds } = await getInitialListData(params.listId);
+
+  if (!initialData) {
+    return <NotFound />;
+  }
 
   return (
     <Fragment>
-      <Header />
+      <Header
+        buttons={
+          <div className="flex items-center gap-2">
+            <ListOptionsStatic listId={params.listId} />
+          </div>
+        }
+      />
       <main>
-        <div className="grid gap-4">
+        <div className="mt-6 grid gap-4">
           <ListHeader
             actions={null}
             title={<ListTitleStatic title={initialData?.title || ''} />}

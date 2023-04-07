@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { atom, useAtom, useSetAtom } from 'jotai';
+import { useEventListener } from 'usehooks-ts';
 
 import { Spinner } from '../common/Spinner';
-import { useEventListener } from 'usehooks-ts';
 
 export const isSavingAtom = atom(false);
 
@@ -18,8 +18,6 @@ export const useTriggerSearch = () => {
 
 export const SaveIndicator = () => {
   const [isSaving, setIsSaving] = useAtom(isSavingAtom);
-
-  // const cooldownRef = useRef(false);
 
   useEffect(() => {
     if (!isSaving) return;

@@ -22,7 +22,7 @@ import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 import { useTriggerSearch } from '@/components/layout/SaveIndicator';
 import { SelectItem, SelectList } from '@/components/common/Select';
 
-export const ListOptions = () => {
+export const ListOptions = ({ listOptions }: { listOptions: ReturnType<typeof listStaticOptions> }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const listItemRefs = useRef<HTMLLIElement[]>([]);
@@ -52,7 +52,6 @@ export const ListOptions = () => {
           ref={listRef}
           {...menu.getMenuProps()}
           onKeyDown={(e) => {
-            console.log(e);
             if (e.key === 'Enter') {
               e.preventDefault();
               const highlightedIndex = navigateList.highlightedIndex;
@@ -68,11 +67,14 @@ export const ListOptions = () => {
           {listOptions.map((option, index) => {
             if (option === null) return <div key={index} className="my-1 h-px bg-neutral-500" />;
             const itemIndex = listOptions.filter((o) => o !== null).indexOf(option);
-            const ListItem = option[0];
-            if (!ListItem) return null;
+            const ListItemComponent = option[0];
+            const listItemProps = option[1];
+            if (!ListItemComponent) return null;
             return (
-              <ListItem
+              // @ts-ignore
+              <ListItemComponent
                 key={index}
+                {...listItemProps}
                 {...navigateList.getListItemProps(itemIndex)}
                 isHighlighted={
                   navigateList.highlightedIndex !== -1 ? navigateList.highlightedIndex === itemIndex : false
@@ -86,7 +88,7 @@ export const ListOptions = () => {
   );
 };
 
-const ListOptionsNewList = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+export const ListOptionsNewList = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
   (props, ref) => {
     const { trigger, isMutating } = useCreateList({
       onSuccess: (data) => {
@@ -110,9 +112,9 @@ const ListOptionsNewList = forwardRef<HTMLLIElement, React.ComponentProps<'li'> 
   }
 );
 
-const ListOptionsDuplicateList = forwardRef<HTMLLIElement, React.ComponentProps<'li'>>(
-  (props: React.ComponentProps<'li'> & { isHighlighted?: boolean }, ref) => {
-    const listId = useListStore.getState().data.list.id;
+export const ListOptionsDuplicateList = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { listId: string }>(
+  ({ listId, ...props }, ref) => {
+    // const listId = useListStore.getState().data.list.id;
 
     const { trigger, isMutating } = useDuplicateList(listId, {
       onSuccess: (data) => {
@@ -135,7 +137,7 @@ const ListOptionsDuplicateList = forwardRef<HTMLLIElement, React.ComponentProps<
   }
 );
 
-const ListOptionsUndo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+export const ListOptionsUndo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
   (props, ref) => {
     return (
       <SelectItem
@@ -151,7 +153,7 @@ const ListOptionsUndo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & {
   }
 );
 
-const ListOptionsRedo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+export const ListOptionsRedo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
   (props, ref) => {
     return (
       <SelectItem
@@ -167,7 +169,7 @@ const ListOptionsRedo = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & {
   }
 );
 
-const ListOptionsSave = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+export const ListOptionsSave = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
   (props, ref) => {
     const { triggerSearch } = useTriggerSearch();
 
@@ -185,7 +187,7 @@ const ListOptionsSave = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & {
   }
 );
 
-const ListOptionsExport = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
+export const ListOptionsExport = forwardRef<HTMLLIElement, React.ComponentProps<'li'> & { isHighlighted?: boolean }>(
   (props, ref) => {
     return (
       <SelectItem
@@ -200,9 +202,16 @@ const ListOptionsExport = forwardRef<HTMLLIElement, React.ComponentProps<'li'> &
   }
 );
 
-const listOptions = [
+export const listStaticOptions = (listId: string) => [
   [ListOptionsNewList],
-  [ListOptionsDuplicateList],
+  [ListOptionsDuplicateList, { listId }],
+  null,
+  [ListOptionsExport],
+];
+
+export const listEditOptions = (listId: string) => [
+  [ListOptionsNewList],
+  [ListOptionsDuplicateList, { listId }],
   null,
   [ListOptionsUndo],
   [ListOptionsRedo],

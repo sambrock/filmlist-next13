@@ -5,6 +5,7 @@ import { InitializeClient } from './InitializeClient';
 import { createListToken, setListTokenCookie } from '@/server/cookies/list';
 import { EditListPage } from './EditListPage';
 import { InitializeStore } from './InitializeStore';
+import { NotFound } from '@/components/layout/NotFound';
 
 type EditListPageProps = {
   params: {
@@ -25,9 +26,13 @@ const Index = async (props: any) => {
   const { params, searchParams } = props as EditListPageProps;
   const { initialData, listCount, listMovieIds } = await getInitialListStoreData(params.listId);
 
+  if (!initialData) {
+    return <NotFound />;
+  }
+
   const isTokenValid = searchParams.t === initialData?.token;
   if (!isTokenValid) {
-    return <div>no match</div>;
+    return <NotFound />;
   }
 
   const listTokenCookie = setListTokenCookie(createListToken(params.listId, initialData?.token || ''));

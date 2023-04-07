@@ -10,9 +10,9 @@ import { MAX_LIST_MOVIES } from '@/constants';
 import { Header } from '@/components/layout/Header';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListShare } from '@/components/list/ListShare/ListShare';
-import { ListOptions } from '@/components/list/ListOptions/ListOptions';
 import { SaveIndicator } from '@/components/layout/SaveIndicator';
 import { ClientKeyboardShortcuts } from './ClientKeyboardShortcuts';
+import { ListOptionsEdit } from '@/components/list/ListOptions/ListOptionsEdit';
 
 export type EditListPageProps = {
   initialData: InitialListStoreData;
@@ -29,7 +29,7 @@ export const EditListPage = async ({ initialData, listCount }: EditListPageProps
         buttons={
           <div className="flex items-center gap-2">
             <ListShare />
-            <ListOptions />
+            <ListOptionsEdit listId={initialData.id} />
           </div>
         }
       />
