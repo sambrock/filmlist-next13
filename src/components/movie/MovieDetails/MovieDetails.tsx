@@ -4,6 +4,7 @@ import { useLockedBody } from 'usehooks-ts';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import { clsx } from 'clsx';
+import { CloseOutlined } from '@ant-design/icons';
 
 import type { GET_GetMovieDetails } from '@/pages/api/v1/getMovieDetails';
 import { MOVIE_IMAGE_URL } from '@/constants';
@@ -13,6 +14,7 @@ import { ModalDetailsCredit } from './ModalDetailsCredit';
 import { Button } from '@/components/common/Button';
 import { useModal } from '@/hooks/useModal';
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
+import { ButtonIcon } from '@/components/common/ButtonIcon';
 
 export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) => {
   useLockedBody(true);
@@ -27,11 +29,22 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
       onClick={close}
     >
       <div
-        className="relative mt-20 mb-20 w-full max-w-3xl overflow-hidden rounded-xl bg-neutral-900 shadow-2xl shadow-neutral-900"
+        className="relative mx-2 mt-10 mb-20 w-full max-w-3xl overflow-hidden rounded-xl bg-neutral-900 shadow-2xl shadow-neutral-900 md:mx-auto md:mt-20"
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
+        <ButtonIcon
+          icon={<CloseOutlined />}
+          tone="neutral-blur"
+          size="small"
+          className="absolute top-2 right-2 z-50"
+          onClick={close}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') close();
+          }}
+        />
+
         <div className="relative mb-10">
           <div className="aspect-video bg-neutral-700">
             <img src={MOVIE_IMAGE_URL['backdrop']['w780'] + movie.backdrop_path} />
@@ -39,7 +52,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
           <div className="fade-black-gradient-0 absolute bottom-0 h-2/3 w-full" />
           <div className="absolute -bottom-4 px-6">
             <h1
-              className="font-serif text-5xl font-black italic text-off-white"
+              className="font-serif text-3xl font-black italic text-off-white md:text-5xl"
               style={{ textShadow: '1px 1px 2px #000' }}
             >
               {movie.title}
@@ -58,8 +71,8 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-6 px-6 pb-6">
-          <div className="col-span-2 space-y-8">
+        <div className="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
+          <div className="space-y-8 md:col-span-2">
             <p className="leading-7 text-white/60">{movie.overview}</p>
 
             <div>
@@ -135,7 +148,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
             )}
           </div>
         </div>
-        <div className="flex gap-4 border-t border-neutral-700 px-4 py-1">
+        <div className="hidden gap-4 border-t border-neutral-700 px-4 py-1 md:flex">
           <KeyboardShortcut defaultKeys={['esc']} label="Close" />
           <KeyboardShortcut defaultKeys={['←']} label="Prev film" />
           <KeyboardShortcut defaultKeys={['→']} label="Next film" />
