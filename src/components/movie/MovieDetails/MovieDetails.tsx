@@ -29,7 +29,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
       onClick={close}
     >
       <div
-        className="relative mx-2 mt-10 mb-20 w-full max-w-3xl overflow-hidden rounded-xl bg-neutral-900 shadow-2xl shadow-neutral-900 md:mx-auto md:mt-20"
+        className="relative mx-2 mt-10 mb-20 w-full max-w-3xl overflow-hidden rounded-xl bg-neutral-900 shadow-2xl shadow-neutral-900 md:mx-auto md:mt-16"
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -45,23 +45,24 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
           }}
         />
 
-        <div className="relative mb-10">
+        <div className="relative mb-8 md:mb-10">
           <div className="aspect-video bg-neutral-700">
             <img src={MOVIE_IMAGE_URL['backdrop']['w780'] + movie.backdrop_path} />
           </div>
           <div className="fade-black-gradient-0 absolute bottom-0 h-2/3 w-full" />
-          <div className="absolute -bottom-4 px-6">
+          <div className="absolute -bottom-4 px-4 md:px-6">
             <h1
-              className="font-serif text-3xl font-black italic text-off-white md:text-5xl"
+              className="font-serif text-4xl font-black italic text-off-white md:text-5xl"
               style={{ textShadow: '1px 1px 2px #000' }}
             >
               {movie.title}
             </h1>
-            <div className="items-enter mt-2 flex gap-4 text-sm font-medium text-white/40">
+            <div className="items-enter mt-1 flex gap-2 text-xs font-medium text-white/40 md:mt-2 md:gap-4 md:text-sm">
               <span>{new Date(movie.release_date).getFullYear()}</span>
               <span>{movie.runtime} mins</span>
               <span>
                 {movie.genres
+                  .slice(0, 3)
                   .map((g) => {
                     if (g.name === 'Science Fiction') return 'Sci-Fi';
                     return g.name;
@@ -71,9 +72,9 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 px-4 pb-4 md:grid-cols-3 md:px-6 md:pb-6">
           <div className="space-y-8 md:col-span-2">
-            <p className="leading-7 text-white/60">{movie.overview}</p>
+            <p className="text-sm text-white/60 md:text-base md:leading-7">{movie.overview}</p>
 
             <div>
               <h2 className="mb-2 font-bold text-white/60">Crew</h2>

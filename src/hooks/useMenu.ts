@@ -32,8 +32,6 @@ export const useMenu = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, { isOpen: false });
 
-  // const containerRef = useRef(null);
-
   const getContainerProps = useCallback(<T>(props?: React.HTMLAttributes<T>): React.HTMLAttributes<T> => {
     return {
       ...props,

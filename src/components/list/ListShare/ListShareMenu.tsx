@@ -14,8 +14,9 @@ export const ListShareMenu = forwardRef<HTMLDivElement, React.ComponentProps<'di
       {...props}
       ref={ref}
       className={clsx(
-        'min-w-[340px] max-w-md space-y-4 rounded-md bg-neutral-700 p-4 shadow-md shadow-neutral-900',
-        props.className
+        'w-full space-y-4 rounded-md bg-neutral-700 p-4 shadow-md shadow-neutral-900 sm:w-[448px]',
+        'absolute right-0 mt-2'
+        // props.className
       )}
     >
       <div className="space-y-1">

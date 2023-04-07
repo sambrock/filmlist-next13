@@ -19,7 +19,7 @@ export const ListShare = () => {
   });
 
   return (
-    <div ref={containerRef} {...menu.getContainerProps()} className="relative">
+    <div ref={containerRef} {...menu.getContainerProps()} className="block md:relative">
       <ListShareMenuButton {...menu.getMenuButtonProps<HTMLButtonElement>()} />
       <ListShareMenu {...menu.getMenuProps<HTMLDivElement>()} />
     </div>
