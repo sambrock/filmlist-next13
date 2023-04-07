@@ -16,7 +16,7 @@ export const MovieItemStatic = ({ movie }: { movie: Movie }) => {
   return (
     <li
       className={clsx(movieItemStyles)}
-      onClick={(e) => {
+      onClick={() => {
         movieDetails.toggle(movie.id);
       }}
       onKeyDown={(e) => {

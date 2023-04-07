@@ -36,6 +36,7 @@ export const MovieDetailsEdit = () => {
       e.preventDefault();
       e.stopPropagation();
       setMovieId(listMovieIds[listMovieIds.indexOf(movieId) + 1]);
+      // scroll to top
     }
 
     if (e.key === 'ArrowLeft') {

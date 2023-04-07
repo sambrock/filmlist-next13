@@ -89,9 +89,6 @@ export const MovieSearch = () => {
       onFocus={() => {
         setSearchIsActive(true);
       }}
-      onBlur={() => {
-        setSearchIsActive(false);
-      }}
     >
       <MovieSearchInput
         ref={inputRef}

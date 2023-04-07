@@ -58,6 +58,7 @@ export const getMovieDetails = async (movieId: number) => {
 
   const filteredWatchProviders = watchProviders?.flatrate?.filter((s) => {
     if (s.provider_name.toLowerCase().includes('channel')) return false;
+    if (s.provider_name.toLowerCase().includes('netflix ')) return false;
     return true;
   });
 

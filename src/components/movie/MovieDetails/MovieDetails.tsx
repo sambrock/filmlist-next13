@@ -60,7 +60,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
         </div>
         <div className="grid grid-cols-3 gap-6 px-6 pb-6">
           <div className="col-span-2 space-y-8">
-            <p className="leading-6 text-white/60">{movie.overview}</p>
+            <p className="leading-7 text-white/60">{movie.overview}</p>
 
             <div>
               <h2 className="mb-2 font-bold text-white/60">Crew</h2>
@@ -78,20 +78,22 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
                   <ModalDetailsCredit key={c.id} name={c.name} role={c.character} />
                 ))}
               </div>
-              <Button className="mx-auto mt-2" size="small" onClick={showMoreCast.toggle}>
-                {showMoreCast.isOpen ? 'Show less' : 'Show more'}
-              </Button>
+              {movie.credits.cast.length > 10 && (
+                <Button className="mx-auto mt-2" size="small" onClick={showMoreCast.toggle}>
+                  {showMoreCast.isOpen ? 'Show less' : 'Show more'}
+                </Button>
+              )}
             </div>
           </div>
 
           <div className="flex flex-col items-start">
-            <div className="w-full overflow-clip rounded-md border border-neutral-800">
+            <div className="w-full rounded-md border border-neutral-800">
               {movie.watchProviders.length > 0 ? (
                 <Fragment>
                   {movie.watchProviders?.map((s) => (
                     <a
                       key={s.provider_id}
-                      className="group"
+                      className="default-focus-shadow group relative z-10 block rounded-md outline-none ring-offset-2 focus:z-50"
                       href={googleFeelingLuckyLink(
                         `${movie.title} ${new Date(movie.release_date).getFullYear()} ${s.provider_name}`
                       )}
@@ -100,7 +102,7 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
                     >
                       <div
                         className={clsx(
-                          'flex cursor-pointer items-center gap-2 overflow-hidden overflow-ellipsis whitespace-nowrap border-b border-b-neutral-600 bg-neutral-800 px-4 py-2 hover:bg-neutral-700 group-last:border-b-0',
+                          'flex cursor-pointer items-center gap-2 overflow-hidden overflow-ellipsis whitespace-nowrap border-b border-b-neutral-600 bg-neutral-800 px-4 py-2 hover:bg-neutral-700 group-first:rounded-t-md group-last:rounded-b-md group-last:border-b-0',
                           `border-l-2 border-l-neutral-600 hover:border-l-neutral-300`
                         )}
                       >
@@ -116,13 +118,18 @@ export const MovieDetails = ({ movie }: { movie: GET_GetMovieDetails['data'] }) 
               )}
             </div>
             {movie.watchProviders.length > 0 && (
-              <a href="https://www.justwatch.com/" target="_blank" rel="noreferrer" className="ml-auto mr-2">
+              <a
+                href="https://www.justwatch.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="default-focus-shadow mt-2 ml-auto mr-2 block rounded outline-none ring-offset-2"
+              >
                 <Image
                   src="/logos/jw_logo.webp"
                   alt="JustWatch"
                   width="65"
                   height="100"
-                  className="mt-2 brightness-75 grayscale-[1] hover:brightness-100"
+                  className="brightness-75 grayscale-[1] hover:brightness-100"
                 />
               </a>
             )}

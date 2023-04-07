@@ -16,13 +16,6 @@ export class TMDbApi {
   private static params?: Record<string, string>;
 
   private static async request<T>(): Promise<T> {
-    // const response = await axios({
-    //   method: 'GET',
-    //   baseURL: this.base_url,
-    //   url: this.endpoint,
-    //   params: { api_key: API_KEY, ...this.params },
-    // });
-
     const data = await fetch(
       `${this.base_url}${this.endpoint}${buildQueryString({ api_key: API_KEY, ...this.params })}`
     );
@@ -74,7 +67,7 @@ export class TMDbApi {
 
     const data = await this.request<TMDbWatchProviderResponse>();
 
-    return data.results.US;
+    return data.results.GB;
   }
 
   static async getSearchPeople(params: { query: string }): Promise<TMDbSearchPeopleResponse['results']> {

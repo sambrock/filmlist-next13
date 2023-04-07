@@ -32,7 +32,7 @@ export const useListStore = create<ListStore>((set) => ({
   _undoPointer: -1,
 }));
 
-useListStore.subscribe(async (state) => {
+useListStore.subscribe((state) => {
   if (state._latestPatch.length === 0) return;
   useListStore.setState({ _latestPatch: [] });
 
