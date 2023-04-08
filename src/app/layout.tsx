@@ -1,4 +1,4 @@
-import { Heebo, Source_Serif_Pro } from '@next/font/google';
+import { Heebo, Source_Serif_Pro } from 'next/font/google';
 import { clsx } from 'clsx';
 
 import '@/styles/global.css';
