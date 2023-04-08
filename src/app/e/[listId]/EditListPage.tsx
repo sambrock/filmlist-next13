@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import Head from 'next/head';
 
 import type { InitialListStoreData } from '@/server/list/getInitialListStoreData';
 import { ListTitleEdit } from '@/components/list/ListTitle/ListTitleEdit';
@@ -6,7 +7,7 @@ import { ListMoviesEdit, ListMoviesEditObservable } from '@/components/list/List
 import { ListActionsEdit } from '@/components/list/ListActions/ListActionsEdit';
 import { ListHeader } from '@/components/list/ListHeader';
 import { ListDescriptionEdit } from '@/components/list/ListDescription/ListDescriptionEdit';
-import { MAX_LIST_MOVIES } from '@/constants';
+import { DEFAULT_TITLE, MAX_LIST_MOVIES } from '@/constants';
 import { Header } from '@/components/layout/Header';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListShare } from '@/components/list/ListShare/ListShare';
@@ -20,7 +21,6 @@ export type EditListPageProps = {
 };
 
 export const EditListPage = async ({ initialData, listCount }: EditListPageProps) => {
-  if (!initialData) return null;
   return (
     <Fragment>
       <Header

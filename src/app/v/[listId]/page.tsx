@@ -9,12 +9,26 @@ import { Header } from '@/components/layout/Header';
 import { MovieDetailsStatic } from '@/components/movie/MovieDetails/MovieDetailsStatic';
 import { NotFound } from '@/components/layout/NotFound';
 import { ListOptionsStatic } from '@/components/list/ListOptions/ListOptionsStatic';
+import { DEFAULT_TITLE } from '@/constants';
 
 type StaticListPageProps = {
   params: {
     listId: string;
   };
 };
+
+export async function generateMetadata({ params }: StaticListPageProps) {
+  const { initialData } = await getInitialListData(params.listId);
+
+  if (!initialData) {
+    return {
+      title: DEFAULT_TITLE('Not found'),
+    };
+  }
+  return {
+    title: DEFAULT_TITLE(initialData?.title || 'Untitled'),
+  };
+}
 
 const StaticListPage = async ({ params }: StaticListPageProps) => {
   const { initialData, listCount, listMovieIds } = await getInitialListData(params.listId);

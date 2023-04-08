@@ -1,6 +1,7 @@
-import Link from 'next/link';
 import { Fragment } from 'react';
+import Link from 'next/link';
 
+import { DEFAULT_TITLE } from '@/constants';
 import { Button } from '../common/Button';
 import { Header } from './Header';
 

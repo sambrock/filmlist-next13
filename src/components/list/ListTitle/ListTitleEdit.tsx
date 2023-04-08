@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { clsx } from 'clsx';
 import { shallow } from 'zustand/shallow';
+import { useDocumentTitle } from 'usehooks-ts';
 
+import { DEFAULT_TITLE } from '@/constants';
 import { useListStore } from '@/store/list/useListStore';
 import { listTitleStyles } from './ListTitleStatic';
 
@@ -19,6 +21,7 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
     setTitle(storeTitle);
     if (titleRef.current && document.activeElement !== titleRef.current) titleRef.current.innerText = storeTitle;
   }, [storeTitle]);
+  useDocumentTitle(DEFAULT_TITLE(storeTitle || 'Untitled'));
 
   const timeoutRef = useRef<NodeJS.Timeout>();
 
