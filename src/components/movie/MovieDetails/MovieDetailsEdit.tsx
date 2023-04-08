@@ -48,6 +48,5 @@ export const MovieDetailsEdit = () => {
   });
 
   if (!isMovieDetailsActive) return null;
-  if (!data) return <div>Loading...</div>;
   return <MovieDetails movie={data} />;
 };

@@ -60,6 +60,5 @@ export const MovieDetailsStatic = ({ listMovieIds }: { listMovieIds: number[] })
   });
 
   if (!isMovieDetailsActive) return null;
-  if (!data) return <div>Loading...</div>;
   return <MovieDetails movie={data} />;
 };

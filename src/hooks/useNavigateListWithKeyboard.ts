@@ -49,8 +49,6 @@ export const useNavigateListWithKeyboard = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, { highlightedIndex: -1 });
 
-  // const listItemRefs = useRef<HTMLLIElement[]>([] as HTMLLIElement[]);
-
   useEventListener(
     'keydown',
     (e) => {
@@ -81,14 +79,6 @@ export const useNavigateListWithKeyboard = ({
     };
   }, []);
 
-  // const getListProps = useCallback(<T>(props?: React.HTMLAttributes<T>): React.HTMLAttributes<T> => {
-  //   return {
-  //     ...props,
-  //     // className: clsx('outline-none', props?.className),
-  //     // tabIndex: 1,
-  //   };
-  // }, []);
-
   const getListItemProps = useCallback(
     <T>(
       index: number,
@@ -116,6 +106,5 @@ export const useNavigateListWithKeyboard = ({
     reset: () => dispatch({ type: 'RESET' }),
     getContainerProps,
     getListItemProps,
-    // getListProps,
   };
 };
