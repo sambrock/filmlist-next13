@@ -50,3 +50,8 @@ body {
 .default-shadow {
   @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-neutral-900 transition-shadow;
 }
+
+.default-animation-timing {
+  transition-timing-function: cubic-bezier(0.43, 0.13, 0.23, 0.96);
+  transition-duration: 200ms;
+}

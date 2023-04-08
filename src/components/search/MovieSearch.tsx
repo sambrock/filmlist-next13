@@ -71,6 +71,7 @@ export const MovieSearch = () => {
     searchContainerRef,
     () => {
       if (window.getSelection()?.toString()) return;
+      if (!searchIsActive) return;
       setSearchIsActive(false);
     },
     'mouseup'

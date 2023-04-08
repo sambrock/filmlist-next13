@@ -10,6 +10,7 @@ import {
   UndoOutlined,
 } from '@ant-design/icons';
 import { useEventListener } from 'usehooks-ts';
+import { Transition } from 'react-transition-group';
 
 import { useMenu } from '@/hooks/useMenu';
 import { ListOptionsButton } from './ListOptionsButton';
@@ -21,6 +22,7 @@ import { BASE_URL } from '@/constants';
 import { KeyboardShortcut } from '@/components/common/KeyboardShortcut';
 import { useTriggerSearch } from '@/components/layout/SaveIndicator';
 import { SelectItem, SelectList } from '@/components/common/Select';
+import { useAnimation } from '@/hooks/useAnimation';
 
 export const ListOptions = ({ listOptions }: { listOptions: ReturnType<typeof listStaticOptions> }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,46 +46,50 @@ export const ListOptions = ({ listOptions }: { listOptions: ReturnType<typeof li
     }
   });
 
+  const animation = useAnimation(menu.isOpen, { animation: 'pop' });
+
   return (
     <div ref={containerRef} {...menu.getContainerProps({ ...navigateList.getContainerProps() })}>
       <ListOptionsButton {...menu.getMenuButtonProps()} />
-      {menu.isOpen && (
-        <SelectList
-          ref={listRef}
-          {...menu.getMenuProps()}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              const highlightedIndex = navigateList.highlightedIndex;
-              if (highlightedIndex !== -1) {
-                const item = listItemRefs.current[highlightedIndex];
-                if (item) {
-                  item.click();
+      <Transition {...animation.getTransitionProps()}>
+        {(state) => (
+          <SelectList
+            ref={listRef}
+            {...menu.getMenuProps({ ...animation.getAnimationProps(state) })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                const highlightedIndex = navigateList.highlightedIndex;
+                if (highlightedIndex !== -1) {
+                  const item = listItemRefs.current[highlightedIndex];
+                  if (item) {
+                    item.click();
+                  }
                 }
               }
-            }
-          }}
-        >
-          {listOptions.map((option, index) => {
-            if (option === null) return <div key={index} className="my-1 h-px bg-neutral-500" />;
-            const itemIndex = listOptions.filter((o) => o !== null).indexOf(option);
-            const ListItemComponent = option[0];
-            const listItemProps = option[1];
-            if (!ListItemComponent) return null;
-            return (
-              // @ts-ignore
-              <ListItemComponent
-                key={index}
-                {...listItemProps}
-                {...navigateList.getListItemProps(itemIndex)}
-                isHighlighted={
-                  navigateList.highlightedIndex !== -1 ? navigateList.highlightedIndex === itemIndex : false
-                }
-              />
-            );
-          })}
-        </SelectList>
-      )}
+            }}
+          >
+            {listOptions.map((option, index) => {
+              if (option === null) return <div key={index} className="my-1 h-px bg-neutral-500" />;
+              const itemIndex = listOptions.filter((o) => o !== null).indexOf(option);
+              const ListItemComponent = option[0];
+              const listItemProps = option[1];
+              if (!ListItemComponent) return null;
+              return (
+                // @ts-ignore
+                <ListItemComponent
+                  key={index}
+                  {...listItemProps}
+                  {...navigateList.getListItemProps(itemIndex)}
+                  isHighlighted={
+                    navigateList.highlightedIndex !== -1 ? navigateList.highlightedIndex === itemIndex : false
+                  }
+                />
+              );
+            })}
+          </SelectList>
+        )}
+      </Transition>
     </div>
   );
 };

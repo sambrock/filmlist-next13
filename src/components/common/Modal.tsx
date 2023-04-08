@@ -1,25 +1,22 @@
 'use client';
 
+import { clsx } from 'clsx';
 import { useLockedBody } from 'usehooks-ts';
 
-export type ModalProps = {
-  isOpen: boolean;
-  close: () => void;
-  body: React.ReactNode;
-};
+type ModalContainerProps = { isOpen: boolean } & React.ComponentProps<'div'>;
 
-export const Modal = ({ isOpen, close, body }: ModalProps) => {
+export const ModalContainer = ({ isOpen, ...props }: ModalContainerProps) => {
   useLockedBody(isOpen);
 
-  if (!isOpen) return null;
   return (
-    <div className="fixed top-0 left-0 z-40 shadow-md shadow-neutral-900">
-      <div className="relative h-screen w-screen overflow-y-auto overflow-x-hidden">
-        <div className="fixed top-0 right-0 h-screen w-screen bg-black/75" onClick={close} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-neutral-900">
-          {body}
-        </div>
-      </div>
+    <div
+      {...props}
+      className={clsx(
+        'fixed top-0 left-0 z-50 flex h-full w-full items-start justify-center overflow-y-auto bg-black/60',
+        props.className
+      )}
+    >
+      {props.children}
     </div>
   );
 };

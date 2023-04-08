@@ -1,8 +1,9 @@
 'use client';
 
-import { useGetMovieDetails } from '@/hooks/api/useGetMovieDetails';
 import { atom, useAtom, useSetAtom } from 'jotai';
 import { useEventListener } from 'usehooks-ts';
+
+import { useGetMovieDetails } from '@/hooks/api/useGetMovieDetails';
 import { MovieDetails } from './MovieDetails';
 
 export const activeMovieIdAtom = atom<number>(-1);
@@ -18,7 +19,7 @@ export const useMovieDetails = () => {
       setIsMovieDetailsActive(true);
     },
     close: () => {
-      setActiveMovieId(-1);
+      // setActiveMovieId(-1);
       setIsMovieDetailsActive(false);
     },
   };
@@ -41,7 +42,6 @@ export const MovieDetailsStatic = ({ listMovieIds }: { listMovieIds: number[] })
       e.preventDefault();
       e.stopPropagation();
       setIsMovieDetailsActive(false);
-      setMovieId(-1);
     }
 
     if (e.key === 'ArrowRight') {

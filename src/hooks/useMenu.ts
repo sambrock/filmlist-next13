@@ -54,14 +54,21 @@ export const useMenu = ({
     <T>(props?: React.HTMLAttributes<T>): React.HTMLAttributes<T> => {
       return {
         ...props,
-        hidden: !state.isOpen,
+        // hidden: !state.isOpen,
         className: clsx('absolute right-0 mt-2', props?.className),
       };
     },
     [state]
   );
 
-  useOnClickOutside(containerRef, () => dispatch({ type: 'CLOSE' }), 'mouseup');
+  useOnClickOutside(
+    containerRef,
+    () => {
+      if (!state.isOpen) return;
+      dispatch({ type: 'CLOSE' });
+    },
+    'mouseup'
+  );
 
   useEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
