@@ -10,7 +10,7 @@ export const ListActionsEdit = () => {
   const setIsEditingDescription = useSetAtom(isEditingListDescriptionAtom);
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between mt-4 sm:mt-0">
       <div className="flex items-center">
         <Button onClick={() => setIsEditingDescription(true)} size="small" icon={<FormOutlined />}>
           Add description

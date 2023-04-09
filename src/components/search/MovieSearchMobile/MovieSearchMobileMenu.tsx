@@ -1,35 +1,21 @@
 'use client';
 
 import { useRef } from 'react';
-import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons';
-import { atom, useAtom, useSetAtom } from 'jotai';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { useAtom, useSetAtom } from 'jotai';
+import { clsx } from 'clsx';
 
+import { ButtonIcon } from '@/components/common/ButtonIcon';
 import { useSearchMovies } from '@/hooks/api/useSearchMovies';
-import type { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
-import { ButtonIcon } from '../common/ButtonIcon';
-import { searchQueryAtom } from './MovieSearch';
-import { MovieSearchResultsList, MovieSearchResultsListItem } from './MovieSearchResultsList';
+import { GET_SearchMovies } from '@/pages/api/v1/searchMovies';
 import { useListStore } from '@/store/list/useListStore';
-
-export const isMovieSearchMobileActiveAtom = atom(false);
-
-export const MovieSearchMobileButton = () => {
-  const setIsMovieSearchMobileActive = useSetAtom(isMovieSearchMobileActiveAtom);
-
-  return (
-    <button
-      className="flex w-full items-center gap-2 rounded-md bg-black-700 px-2 py-1 text-sm text-white/40 text-off-white placeholder:text-white/40 focus:outline-none"
-      onClick={() => setIsMovieSearchMobileActive(true)}
-    >
-      <PlusOutlined className="text-lg" />
-      <span className="mt-[3px]">Add a film</span>
-    </button>
-  );
-};
+import { searchQueryAtom } from '../MovieSearch';
+import { MovieSearchResultsList, MovieSearchResultsListItem } from '../MovieSearchResultsList';
+import { isMovieSearchMobileActiveAtom } from './MovieSearchMobile';
 
 const dispatch = useListStore.getState().dispatch;
 
-export const MovieSearchMobile = () => {
+export const MovieSearchMobileMenu = (props: React.ComponentProps<'div'>) => {
   const [q, setSearchQuery] = useAtom(searchQueryAtom);
   const setIsMovieSearchMobileActive = useSetAtom(isMovieSearchMobileActiveAtom);
 
@@ -40,7 +26,7 @@ export const MovieSearchMobile = () => {
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   return (
-    <div className="rounded-md bg-black-700 shadow-md shadow-black-900">
+    <div {...props} className={clsx('rounded-md bg-neutral-700 shadow-md shadow-neutral-900', props.className)}>
       <div className="flex items-center gap-2 px-2 py-1">
         <ButtonIcon icon={<ArrowLeftOutlined />} onClick={() => setIsMovieSearchMobileActive(false)} />
         <input

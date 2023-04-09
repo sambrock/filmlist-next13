@@ -8,7 +8,7 @@ export const KeyboardShortcut = ({
   label,
   ...props
 }: { defaultKeys: string[]; macosKeys?: string[]; label?: string } & React.ComponentProps<'span'>) => {
-  const { isMac } = userAgent();
+  const { isMac, isMobile } = userAgent();
 
   const getKeys = () => {
     if (isMac && macosKeys) {
@@ -17,6 +17,7 @@ export const KeyboardShortcut = ({
     return defaultKeys;
   };
 
+  if (isMobile) return null;
   return (
     <span {...props} className={clsx('whitespace-nowrap text-xs font-medium text-white/40', props.className)}>
       <span className="select-none rounded px-1" suppressHydrationWarning={true}>

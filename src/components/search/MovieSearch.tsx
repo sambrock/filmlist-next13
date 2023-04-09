@@ -84,7 +84,7 @@ export const MovieSearch = () => {
       ref={searchContainerRef}
       tabIndex={0}
       className={clsx('relative outline-none', {
-        'bg-neutral-800-blur rounded-md transition-colors hover:bg-neutral-700': !searchIsActive,
+        'bg-neutral-800-blur max-w-[504px] rounded-md transition-colors hover:bg-neutral-700': !searchIsActive,
         'rounded-t-md bg-neutral-700 ': searchIsActive,
       })}
       onFocus={() => {

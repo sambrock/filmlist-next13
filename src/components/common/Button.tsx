@@ -37,7 +37,7 @@ const _Button = <C extends React.ElementType = 'button'>(
           'rounded px-1.5 py-[1px] text-sm': size === 'small',
         },
         {
-          'bg-transparent text-white/40 hover:bg-neutral-700': tone === 'neutral',
+          'bg-neutral-700 text-white/40 hover:bg-neutral-700 sm:bg-transparent': tone === 'neutral',
           'bg-transparent text-red-500 hover:bg-neutral-700': tone === 'critical',
           'bg-neutral-800-blur hover-bg-neutral-700-blur text-white/40': tone === 'neutral-blur',
         },
