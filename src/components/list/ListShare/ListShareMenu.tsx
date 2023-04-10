@@ -3,8 +3,8 @@
 import { forwardRef } from 'react';
 import { clsx } from 'clsx';
 
-import { useListStore } from '@/store/list/useListStore';
 import { InputCopy } from '@/components/common/InputCopy';
+import { useListStore } from '@/store/list/useListStore';
 
 export const ListShareMenu = forwardRef<HTMLDivElement, React.ComponentProps<'div'>>((props, ref) => {
   const [listId, token] = useListStore((state) => [state.data.list.id, state.data.list.token]);

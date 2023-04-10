@@ -34,10 +34,7 @@ export async function generateMetadata({ params }: EditListPageProps) {
   };
 }
 
-const Index = async (props: any) => {
-  // Broken type here, doesn't pass next build type checking
-  // TODO: need to fix this
-  const { params, searchParams } = props as EditListPageProps;
+const Index = async ({ params, searchParams }: EditListPageProps) => {
   const { initialData, listCount, listMovieIds } = await getInitialListStoreData(params.listId);
 
   if (!initialData) {
