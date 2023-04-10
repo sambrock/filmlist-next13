@@ -14,7 +14,22 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+before(() => {
+  cy.exec('npm run db:reset && npm run db:push && npm run db:seed');
+});
+
+// Part of seed data
+export const LIST_DATA = {
+  id: '01hjd120833j',
+  title: 'My watchlist!',
+  description: 'A list of my favorite movies',
+  createdAt: '2023-02-28 20:11:47.047',
+  updatedAt: '2023-03-17 15:24:38.282',
+  userId: '',
+  token: 'rhunht19hbrwzgk8o2a',
+};

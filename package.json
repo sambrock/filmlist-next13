@@ -6,8 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest",
     "lint": "next lint",
+    "test": "vitest",
+    "test:e2e:dev": "cypress open",
+    "test:e2e:run": "cypress run",
+    "db:reset": "prisma migrate reset --force",
+    "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
     "postinstall": "npx prisma generate"
   },

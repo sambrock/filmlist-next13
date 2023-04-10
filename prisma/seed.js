@@ -1,21 +1,20 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const list = require('./seed-data/list.json');
-const movies = require('./seed-data/movie.json');
-const listMovies = require('./seed-data/listMovies.json');
-const sessions = require('./seed-data/session.json');
+const list = require('./test-data/list.json');
+const movies = require('./test-data/movie.json');
+const listMovies = require('./test-data/listMovies.json');
+const sessions = require('./test-data/session.json');
 
 async function main() {
-  // const listsCreated = await prisma.list.createMany({
-  //   data: list.map((l, i) => ({
-  //     ...l,
-  //     createdAt: new Date(l.createdAt),
-  //     updatedAt: new Date(l.updatedAt),
-  //     token: 'rhunht19hbrwzgk8o2' + i,
-  //   })),
-  // });
-  // console.log(`Created ${listsCreated.count} lists`);
+  const listsCreated = await prisma.list.createMany({
+    data: list.map((l, i) => ({
+      ...l,
+      createdAt: new Date(l.createdAt),
+      updatedAt: new Date(l.updatedAt),
+    })),
+  });
+  console.log(`Created ${listsCreated.count} lists`);
 
   const moviesCreated = await prisma.movie.createMany({
     data: movies.map((m) => ({ ...m, releaseDate: new Date(m.releaseDate) })),

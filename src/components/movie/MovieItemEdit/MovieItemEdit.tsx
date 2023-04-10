@@ -69,6 +69,7 @@ export const MovieItemEdit = memo(({ index, movie, posterSrc = 'default' }: Movi
           if (e.key === 'Enter') movieDetails.toggle(movie.id);
         }}
         tabIndex={0}
+        data-cy={`movie-item-${index + 1}`}
       >
         <MovieItemStaticPoster posterPath={movie.posterPath} posterSrc={posterSrc} title={movie.title} />
         <div
