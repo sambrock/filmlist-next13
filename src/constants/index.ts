@@ -1,7 +1,4 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : 'http://localhost:3000';
-export const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION || 'v1';
+export const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 export const NANO_ID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 export const NANO_ID_LENGTH = 12;
 export const MAX_SEARCH_RESULTS = 4;
@@ -13,6 +10,16 @@ export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;
 export const MAX_TITLE_LENGTH = 200;
 export const LIST_TOKEN_NAME = 'list_token';
 export const DEFAULT_TITLE = (prefix?: string) => (prefix ? `${prefix} - FILMQ` : 'FILMQ');
+
+export const BASE_URL = (() => {
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
+    return `https://${process.env.NEXT_PUBLIC_BASE_URL}`;
+  }
+  if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
+    return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  }
+  return 'http://localhost:3000';
+})();
 
 export const MOVIE_IMAGE_URL = {
   poster: {
