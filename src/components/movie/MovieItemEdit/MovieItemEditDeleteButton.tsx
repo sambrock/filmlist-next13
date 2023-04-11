@@ -33,6 +33,7 @@ export const MovieItemEditDeleteButton = ({ isSelected }: { isSelected: boolean 
         }
       }}
       icon={<MinusOutlined />}
-    ></ButtonIcon>
+      data-cy="movie-item-delete-button"
+    />
   );
 };

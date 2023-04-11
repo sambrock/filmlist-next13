@@ -10,7 +10,11 @@ export const MovieSearchResultsList = forwardRef<HTMLUListElement, React.PropsWi
   return (
     <Fragment>
       <div className="border-t border-neutral-600 pt-2" />
-      <ul ref={ref} className="mx-2 mb-2 max-h-80  overflow-y-auto rounded-b-md bg-neutral-700">
+      <ul
+        ref={ref}
+        className="mx-2 mb-2 max-h-80  overflow-y-auto rounded-b-md bg-neutral-700"
+        data-cy="movie-search-results"
+      >
         {props.children}
       </ul>
     </Fragment>

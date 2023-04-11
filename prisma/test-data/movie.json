@@ -1,0 +1,32 @@
+[
+  {
+    "id": 694,
+    "title": "The Shining",
+    "originalTitle": "The Shining",
+    "originalLanguage": "en",
+    "overview": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within.",
+    "releaseDate": "1980-05-23 00:00:00",
+    "posterPath": "/nRj5511mZdTl4saWEPoj9QroTIu.jpg",
+    "backdropPath": "/mmd1HnuvAzFc4iuVJcnBrhDNEKr.jpg"
+  },
+  {
+    "id": 808,
+    "title": "Shrek",
+    "originalTitle": "Shrek",
+    "originalLanguage": "en",
+    "overview": "It ain't easy bein' green -- especially if you're a likable (albeit smelly) ogre named Shrek. On a mission to retrieve a gorgeous princess from the clutches of a fire-breathing dragon, Shrek teams up with an unlikely compatriot -- a wisecracking donkey.",
+    "releaseDate": "2001-05-18 00:00:00",
+    "posterPath": "/jhTVNBVkdS4Wf6NXYA9kRKQU3YM.jpg",
+    "backdropPath": "/sRvXNDItGlWCqtO3j6wks52FmbD.jpg"
+  },
+  {
+    "id": 76600,
+    "title": "Avatar: The Way of Water",
+    "originalTitle": "Avatar: The Way of Water",
+    "originalLanguage": "en",
+    "overview": "Set more than a decade after the events of the first film, learn the story of the Sully family (Jake, Neytiri, and their kids), the trouble that follows them, the lengths they go to keep each other safe, the battles they fight to stay alive, and the tragedies they endure.",
+    "releaseDate": "2022-12-14 00:00:00",
+    "posterPath": "/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",
+    "backdropPath": "/s16H6tpK2utvwDtzZ8Qy4qm5Emw.jpg"
+  }
+ ]

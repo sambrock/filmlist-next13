@@ -56,6 +56,7 @@ export const ListTitleEdit = ({ initialTitle }: { initialTitle: string }) => {
       spellCheck={false}
       contentEditable={true}
       suppressContentEditableWarning={true}
+      data-cy="list-title"
     >
       {initialTitle}
     </div>

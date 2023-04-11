@@ -13,6 +13,7 @@ import { Observable } from '@/components/common/Observable';
 import { api } from '@/api';
 import { MAX_LIST_MOVIES } from '@/constants';
 import { MovieDetailsEdit } from '@/components/movie/MovieDetails/MovieDetailsEdit';
+import { useSsr } from 'usehooks-ts';
 
 export const movieListStore = createStore();
 export const selectedMovieItemsAtom = atom<number[]>([]);
@@ -55,7 +56,8 @@ export const ListMoviesEdit = ({
     shallow
   );
 
-  if (keys.length === 0 || !keys) {
+  const { isServer } = useSsr();
+  if (isServer) {
     return (
       <ListMoviesGrid>
         {(JSON.parse(initialMovies) as Movie[]).map((movie, index) => (
