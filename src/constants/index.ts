@@ -12,7 +12,6 @@ export const LIST_TOKEN_NAME = 'list_token';
 export const DEFAULT_TITLE = (prefix?: string) => (prefix ? `${prefix} - FILMQ` : 'FILMQ');
 
 export const BASE_URL = (() => {
-  console.log('TEST');
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
     return `https://${process.env.NEXT_PUBLIC_BASE_URL}`;
   }

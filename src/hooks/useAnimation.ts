@@ -54,7 +54,6 @@ export const useAnimation = (animateIn: boolean, { timeout = 200, animation = 'f
 
   const getAnimationProps = useCallback(
     <T>(animationState: TransitionStatus, props?: React.HTMLAttributes<T>) => {
-      if (animation === 'movie-modal') console.log(animationState);
       return {
         ...props,
         className: clsx(
