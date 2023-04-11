@@ -20,7 +20,12 @@ import './commands';
 // require('./commands')
 
 before(() => {
-  cy.exec('npm run db:reset && npm run db:push && npm run db:seed');
+  // cy.exec('npm run db:reset && npm run db:push && npm run db:seed');
+  cy.exec('npm run db:reset').then(() => {
+    cy.exec('npm run db:push').then(() => {
+      cy.exec('npm run db:seed');
+    });
+  });
 });
 
 // Part of seed data
