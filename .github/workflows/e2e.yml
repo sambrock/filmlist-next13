@@ -1,0 +1,19 @@
+name: E2E Cypress Testing
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  cypress-run:
+    name: Cypress run
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        env:
+          # pass GitHub token to detect new build vs re-run build
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          CYPRESS_baseUrl: https://filmq-git-dev-sambrock.vercel.app/
