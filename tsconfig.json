@@ -32,9 +32,6 @@
     "typeRoots": [
       "./src/pages/api/**/*.ts"
     ]
-    // "typeAcquisition": {
-    //   "include": ["./src/pages/api/**/*.ts"]
-    // }
   },
   "include": [
     "next-env.d.ts",

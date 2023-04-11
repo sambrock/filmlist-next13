@@ -1,4 +1,6 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://filmq.vercel.app';
+export const BASE_URL = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
 export const API_VERSION = process.env.NEXT_PUBLIC_API_VERSION || 'v1';
 export const NANO_ID_ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 export const NANO_ID_LENGTH = 12;
