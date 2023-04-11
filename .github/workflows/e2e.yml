@@ -18,6 +18,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           config: pageLoadTimeout=100000,baseUrl=https://filmq-git-dev-sambrock.vercel.app/
+          browser: chrome
         env:
           # pass GitHub token to detect new build vs re-run build
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
