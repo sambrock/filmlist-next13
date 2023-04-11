@@ -14,7 +14,7 @@ const nextConfig = {
   },
 
   compiler: {
-    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-cy$'] } : false,
+    reactRemoveProperties: process.env.VERCEL_ENV === 'production' ? { properties: ['^data-cy$'] } : false,
   },
 };
 
