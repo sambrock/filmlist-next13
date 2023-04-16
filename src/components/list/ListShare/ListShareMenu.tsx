@@ -9,8 +9,8 @@ import { useListStore } from '@/store/list/useListStore';
 export const ListShareMenu = forwardRef<HTMLDivElement, React.ComponentProps<'div'>>((props, ref) => {
   const [listId, token] = useListStore((state) => [state.data.list.id, state.data.list.token]);
 
-  const shareLink = `https://filmq.co/v/${listId}`;
-  const editLink = `https://filmq.co/e/${listId}?t=${token}`;
+  const shareLink = `https://filmlist.sambrock.com/v/${listId}`;
+  const editLink = `https://filmlist.sambrock.com/e/${listId}?t=${token}`;
 
   return (
     <div
