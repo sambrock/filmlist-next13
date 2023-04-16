@@ -9,7 +9,7 @@ export const MAX_DESCRIPTION_LENGTH = 3000;
 export const MAX_DESCRIPTION_PREVIEW_LENGTH = 450;
 export const MAX_TITLE_LENGTH = 200;
 export const LIST_TOKEN_NAME = 'list_token';
-export const DEFAULT_TITLE = (prefix?: string) => (prefix ? `${prefix} - FILMQ` : 'FILMQ');
+export const DEFAULT_TITLE = (prefix?: string) => (prefix ? `${prefix} - FILMLIST` : 'FILMLIST');
 
 export const BASE_URL = (() => {
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') {
