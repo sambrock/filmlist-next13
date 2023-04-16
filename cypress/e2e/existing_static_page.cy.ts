@@ -17,6 +17,6 @@ describe('Existing static page', () => {
 
   it('should have document title', () => {
     cy.visit(`/v/${LIST_DATA.id}`);
-    cy.title().should('eq', `${LIST_DATA.title || 'Untitled'} - FILMQ`);
+    cy.title().should('eq', `${LIST_DATA.title || 'Untitled'} - FILMLIST`);
   });
 });
