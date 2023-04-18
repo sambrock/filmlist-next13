@@ -6,6 +6,8 @@ import { ListMoviesGrid } from './ListMoviesGrid';
 import { Observable } from '@/components/common/Observable';
 import { useGetListMoviesInfinite } from '@/hooks/api/useGetListMoviesInfinite';
 import { MovieItemStatic } from '@/components/movie/MovieItemStatic/MovieItemStatic';
+import { MovieItemLoading } from '@/components/movie/MovieItemLoading';
+import { MAX_LIST_MOVIES } from '@/constants';
 
 type ListMovieStaticProps = {
   listId: string;
@@ -14,7 +16,7 @@ type ListMovieStaticProps = {
 };
 
 export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovieStaticProps) => {
-  const { data, size, setSize, hasMore } = useGetListMoviesInfinite(
+  const { data, size, setSize, hasMore, isLoading, isValidating } = useGetListMoviesInfinite(
     listId,
     listCount - JSON.parse(initialMovies).length
   );
@@ -28,9 +30,11 @@ export const ListMoviesStatic = ({ listId, initialMovies, listCount }: ListMovie
       {movies.map((movie, index) => (
         <MovieItemStatic key={movie.id} movie={movie} />
       ))}
+      {(isValidating || isLoading) &&
+        Array.from({ length: MAX_LIST_MOVIES }).map((_, index) => <MovieItemLoading key={index} />)}
       <Observable
         onObserve={() => {
-          if (!hasMore) return;
+          if (!hasMore || isLoading || isValidating) return;
           setSize(size + 1);
         }}
       />

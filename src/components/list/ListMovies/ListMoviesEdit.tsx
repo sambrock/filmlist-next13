@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import type { Movie } from '@prisma/client';
 import { shallow } from 'zustand/shallow';
 import useSWR from 'swr';
-import { atom, createStore, Provider } from 'jotai';
+import { atom, createStore, Provider, useSetAtom } from 'jotai';
+import { useSsr } from 'usehooks-ts';
 
 import { useListStore } from '@/store/list/useListStore';
 import { MovieItemEdit } from '@/components/movie/MovieItemEdit/MovieItemEdit';
@@ -13,7 +14,6 @@ import { Observable } from '@/components/common/Observable';
 import { api } from '@/api';
 import { MAX_LIST_MOVIES } from '@/constants';
 import { MovieDetailsEdit } from '@/components/movie/MovieDetails/MovieDetailsEdit';
-import { useSsr } from 'usehooks-ts';
 
 export const movieListStore = createStore();
 export const selectedMovieItemsAtom = atom<number[]>([]);
@@ -32,6 +32,7 @@ export const selectMovieItemAtom = atom(null, (get, set, index: number) => {
     set(selectedMovieItemsAtom, [index]);
   }
 });
+const placeholdersAtom = atom<number[]>([]);
 
 movieListStore.set(selectedMovieItemsAtom, []);
 
@@ -94,11 +95,21 @@ export const ListMoviesEdit = ({
 
 const dispatch = useListStore.getState().dispatch;
 
-export const ListMoviesEditObservable = ({ listId, isActive }: { listId: string; isActive: boolean }) => {
-  const [page, setPage] = useState(2);
+export const ListMoviesEditObservable = ({
+  listId,
+  isActive,
+  listCount,
+}: {
+  listId: string;
+  isActive: boolean;
+  listCount: number;
+}) => {
+  const [page, setPage] = useState(2); // (first page is loaded on the server)
 
   const isLoadingRef = useRef(false);
   const hasMoreRef = useRef(true);
+
+  const setPlaceholders = useSetAtom(placeholdersAtom);
 
   const { isLoading } = useSWR(
     [listId, page],

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useIntersectionObserver } from 'usehooks-ts';
+import { useIntersectionObserver, useInterval } from 'usehooks-ts';
 
 type ObservableProps = {
   onObserve?: () => void;
@@ -19,6 +19,12 @@ export const Observable = ({ onObserve, rootMargin = '50px 0px 100% 0px' }: Obse
       onObserve?.();
     }
   }, [observer?.isIntersecting, observer?.time]);
+
+  useInterval(() => {
+    if (observer?.isIntersecting) {
+      onObserve?.();
+    }
+  }, 1000);
 
   return <div ref={observerRef} />;
 };
