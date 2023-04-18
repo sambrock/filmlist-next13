@@ -45,7 +45,7 @@ export const EditListPage = async ({ initialData, listCount }: EditListPageProps
           />
           <ListMoviesEdit
             initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
-            observerLoader={<ListMoviesEditObservable listId={initialData.id} isActive={listCount > MAX_LIST_MOVIES} />}
+            observerLoader={<ListMoviesEditObservable listId={initialData.id} isActive={listCount > MAX_LIST_MOVIES} listCount={listCount} />}
           />
         </div>
       </main>
