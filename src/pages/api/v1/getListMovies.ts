@@ -5,7 +5,6 @@ import { handler } from '@/server/handler';
 import { prisma } from '@/server/prisma';
 import { MAX_LIST_MOVIES } from '@/constants';
 import type { Api } from '@/api/api.types';
-import { awaitTimeout } from '@/utils';
 
 export type ListMoviesWithMovie = Prisma.ListMoviesGetPayload<{
   where: { listId: number };

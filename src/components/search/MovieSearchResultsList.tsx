@@ -33,22 +33,19 @@ export const MovieSearchResultsListItem = ({
 }) => {
   return (
     <li
-      className={clsx('group flex cursor-pointer items-center gap-1 rounded-md p-1', {
+      className={clsx('group flex w-full cursor-pointer items-center gap-1 rounded-md p-1', {
         'bg-neutral-500': isHighlighted,
       })}
       {...props}
     >
       <MoviePoster posterPath={movie.posterPath} className="h-[48px] w-[32px] shadow-sm shadow-neutral-800" />
-      <div className="flex w-full flex-col gap-1 rounded py-[4.5px] px-2">
+      <div className="inline-flex flex-col gap-1 rounded py-[4.5px] px-2 md:max-w-[70%] lg:max-w-[80%]">
         <div className="flex items-center space-x-1">
           <div
-            className={clsx(
-              'max-w-[240px] overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-medium md:max-w-xs',
-              {
-                'text-off-white': isHighlighted,
-                'text-white/70': !isHighlighted,
-              }
-            )}
+            className={clsx('inline overflow-hidden overflow-ellipsis whitespace-nowrap text-sm font-medium', {
+              'text-off-white': isHighlighted,
+              'text-white/70': !isHighlighted,
+            })}
           >
             {movie.title}
           </div>
@@ -61,7 +58,7 @@ export const MovieSearchResultsListItem = ({
             {new Date(movie.releaseDate).getFullYear()}
           </div>
         </div>
-        <span className="max-w-xs overflow-hidden overflow-ellipsis whitespace-nowrap text-xs font-medium leading-none text-white/40">
+        <span className="overflow-hidden overflow-ellipsis whitespace-nowrap text-xs font-medium leading-none text-white/40">
           Dir. {movie.director}
         </span>
       </div>

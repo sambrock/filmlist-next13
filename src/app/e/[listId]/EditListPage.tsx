@@ -2,11 +2,10 @@ import { Fragment } from 'react';
 
 import type { InitialListStoreData } from '@/server/list/getInitialListStoreData';
 import { ListTitleEdit } from '@/components/list/ListTitle/ListTitleEdit';
-import { ListMoviesEdit, ListMoviesEditObservable } from '@/components/list/ListMovies/ListMoviesEdit';
+import { ListMoviesEdit } from '@/components/list/ListMovies/ListMoviesEdit';
 import { ListActionsEdit } from '@/components/list/ListActions/ListActionsEdit';
 import { ListHeader } from '@/components/list/ListHeader';
 import { ListDescriptionEdit } from '@/components/list/ListDescription/ListDescriptionEdit';
-import { MAX_LIST_MOVIES } from '@/constants';
 import { Header } from '@/components/layout/Header';
 import { MovieSearch } from '@/components/search/MovieSearch';
 import { ListShare } from '@/components/list/ListShare/ListShare';
@@ -45,7 +44,8 @@ export const EditListPage = async ({ initialData, listCount }: EditListPageProps
           />
           <ListMoviesEdit
             initialMovies={JSON.stringify(initialData?.movies.map((m) => m.movie) || [])}
-            observerLoader={<ListMoviesEditObservable listId={initialData.id} isActive={listCount > MAX_LIST_MOVIES} listCount={listCount} />}
+            listId={initialData.id}
+            listCount={listCount}
           />
         </div>
       </main>
