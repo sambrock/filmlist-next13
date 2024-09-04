@@ -11,7 +11,9 @@ export const saveTransactionMedia = async (transactions: Transaction[]) => {
   return await Promise.allSettled(
     movieTransactions.map(async (transaction) => {
       const { movie } = transaction.value as { movie: Movie };
+      console.log('SAVE MOVIE POSTER')
       await uploadMoviePoster(movie.posterPath);
+      console.log('SAVED')
     })
   );
 };
